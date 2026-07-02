@@ -3,13 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\CoinReport;
+use App\Models\Faq;
+use App\Models\Gift;
+use App\Models\Interest;
+use App\Models\Language;
+use App\Models\Package;
+use App\Models\Page;
+use App\Models\Plan;
 use App\Models\PayoutSetting;
 use App\Models\PlanPurchaseHistory;
+use App\Models\RelationGoal;
+use App\Models\Religion;
 use App\Models\Report;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -19,15 +30,83 @@ class AdminController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'data'         => [
-                'total_users'       => User::where('status', 1)->where('user_type', 'REAL_USER')->count(),
+                'total_users'       => User::where('user_type', 'REAL_USER')->count(),
+                'total_male'        => User::where('user_type', 'REAL_USER')->where('gender', 'Male')->count(),
+                'total_female'      => User::where('user_type', 'REAL_USER')->where('gender', 'Female')->count(),
                 'total_fake_users'  => User::where('user_type', 'FAKE_USER')->count(),
                 'total_subscribers' => User::where('is_subscribe', 1)->count(),
+                'new_users_today'   => User::whereDate('rdate', today())->count(),
                 'total_revenue'     => PlanPurchaseHistory::sum('amount'),
                 'pending_payouts'   => PayoutSetting::where('status', 'Pending')->count(),
                 'pending_reports'   => Report::count(),
-                'new_users_today'   => User::whereDate('rdate', today())->count(),
+                'total_interests'   => Interest::count(),
+                'total_languages'   => Language::count(),
+                'total_religions'   => Religion::count(),
+                'total_goals'       => RelationGoal::count(),
+                'total_faqs'        => Faq::count(),
+                'total_plans'       => Plan::count(),
+                'total_packages'    => Package::count(),
+                'total_gifts'       => Gift::count(),
+                'total_pages'       => Page::count(),
             ],
         ]);
+    }
+
+    public function staffList()
+    {
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'data'         => Admin::select('id', 'name', 'username', 'email')->get(),
+        ]);
+    }
+
+    public function staffStore(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string',
+            'username' => 'required|string|unique:tbl_admin,username',
+            'email'    => 'required|email|unique:tbl_admin,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        Admin::create([
+            'name'     => $request->name,
+            'username' => $request->username,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json(['ResponseCode' => '200', 'Result' => 'true', 'ResponseMsg' => 'Staff member added']);
+    }
+
+    public function staffDestroy(int $id)
+    {
+        Admin::findOrFail($id)->delete();
+        return response()->json(['ResponseCode' => '200', 'Result' => 'true', 'ResponseMsg' => 'Staff member removed']);
+    }
+
+    public function generateFakeUser(Request $request)
+    {
+        $request->validate([
+            'name'   => 'required|string',
+            'mobile' => 'required|string|unique:tbl_users,mobile',
+            'gender' => 'required|in:Male,Female',
+        ]);
+
+        User::create([
+            'name'      => $request->name,
+            'mobile'    => $request->mobile,
+            'email'     => $request->mobile . '@fake.lovmy.fr',
+            'gender'    => $request->gender,
+            'password'  => Hash::make('fake_' . $request->mobile),
+            'user_type' => 'FAKE_USER',
+            'status'    => 1,
+            'ccode'     => $request->ccode ?? '+33',
+            'rdate'     => now()->toDateString(),
+        ]);
+
+        return response()->json(['ResponseCode' => '200', 'Result' => 'true', 'ResponseMsg' => 'Fake user created']);
     }
 
     public function settings()
