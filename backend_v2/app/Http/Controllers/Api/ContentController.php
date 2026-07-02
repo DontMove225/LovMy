@@ -130,13 +130,20 @@ class ContentController extends Controller
         $setting = Setting::current();
 
         return response()->json([
-            'ResponseCode' => '200',
-            'Result'       => 'true',
-            'ResponseMsg'  => 'SMS settings',
-            'data'         => [
-                'sms_type' => $setting->sms_type,
-                'otp_auth' => $setting->otp_auth,
-            ],
+            'ResponseCode'         => '200',
+            'Result'               => 'true',
+            'ResponseMsg'          => 'SMS settings',
+            'SMS_TYPE'             => (string) ($setting->sms_type ?? ''),
+            'Admob_Enabled'        => (string) ($setting->admob ?? 'No'),
+            'maintainance_Enabled' => (string) ($setting->fmode ?? 'No'),
+            'Social_login_enabled' => (string) ($setting->slogin ?? 'No'),
+            'banner_id'            => (string) ($setting->banner_id ?? ''),
+            'in_id'                => (string) ($setting->in_id ?? ''),
+            'otp_auth'             => (string) ($setting->otp_auth ?? 'No'),
+            'gift_fun'             => (string) ($setting->coin_fun ?? 'No'),
+            'ios_in_id'            => (string) ($setting->ios_in_id ?? ''),
+            'ios_banner_id'        => (string) ($setting->ios_banner_id ?? ''),
+            'agora_app_id'         => (string) ($setting->agora_app_id ?? ''),
         ]);
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminContentController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContentController;
@@ -32,7 +33,7 @@ Route::get('/religionlist.php', [ContentController::class, 'religions']);
 Route::get('/faq.php',          [ContentController::class, 'faqs']);
 Route::get('/pagelist.php',     [ContentController::class, 'pages']);
 Route::post('/pagelist.php',    [ContentController::class, 'pages']);
-Route::post('/sms_type.php',    [ContentController::class, 'smsType']);
+Route::get('/sms_type.php',     [ContentController::class, 'smsType']);
 Route::post('/getdata.php',     [ContentController::class, 'referData']);
 
 // Payment gateways (public)
@@ -115,5 +116,54 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/payouts/approve',  [AdminController::class, 'approvePayout']);
         Route::get('/payments',          [AdminController::class, 'paymentList']);
         Route::post('/notifications',    [AdminController::class, 'sendNotification']);
+
+        // Staff
+        Route::get('/staff',             [AdminController::class, 'staffList']);
+        Route::post('/staff',            [AdminController::class, 'staffStore']);
+        Route::delete('/staff/{id}',     [AdminController::class, 'staffDestroy']);
+
+        // Fake users
+        Route::post('/fake-users',       [AdminController::class, 'generateFakeUser']);
+
+        // Content CRUD
+        Route::get('/interests',                    [AdminContentController::class, 'interestIndex']);
+        Route::post('/interests',                   [AdminContentController::class, 'interestStore']);
+        Route::delete('/interests/{id}',            [AdminContentController::class, 'interestDestroy']);
+
+        Route::get('/languages',                    [AdminContentController::class, 'languageIndex']);
+        Route::post('/languages',                   [AdminContentController::class, 'languageStore']);
+        Route::delete('/languages/{id}',            [AdminContentController::class, 'languageDestroy']);
+
+        Route::get('/religions',                    [AdminContentController::class, 'religionIndex']);
+        Route::post('/religions',                   [AdminContentController::class, 'religionStore']);
+        Route::delete('/religions/{id}',            [AdminContentController::class, 'religionDestroy']);
+
+        Route::get('/goals',                        [AdminContentController::class, 'goalIndex']);
+        Route::post('/goals',                       [AdminContentController::class, 'goalStore']);
+        Route::delete('/goals/{id}',                [AdminContentController::class, 'goalDestroy']);
+
+        Route::get('/gifts',                        [AdminContentController::class, 'giftIndex']);
+        Route::post('/gifts',                       [AdminContentController::class, 'giftStore']);
+        Route::delete('/gifts/{id}',                [AdminContentController::class, 'giftDestroy']);
+
+        Route::get('/faqs',                         [AdminContentController::class, 'faqIndex']);
+        Route::post('/faqs',                        [AdminContentController::class, 'faqStore']);
+        Route::put('/faqs/{id}',                    [AdminContentController::class, 'faqUpdate']);
+        Route::delete('/faqs/{id}',                 [AdminContentController::class, 'faqDestroy']);
+
+        Route::get('/plans',                        [AdminContentController::class, 'planIndex']);
+        Route::post('/plans',                       [AdminContentController::class, 'planStore']);
+        Route::put('/plans/{id}',                   [AdminContentController::class, 'planUpdate']);
+        Route::delete('/plans/{id}',                [AdminContentController::class, 'planDestroy']);
+
+        Route::get('/packages',                     [AdminContentController::class, 'packageIndex']);
+        Route::post('/packages',                    [AdminContentController::class, 'packageStore']);
+        Route::put('/packages/{id}',                [AdminContentController::class, 'packageUpdate']);
+        Route::delete('/packages/{id}',             [AdminContentController::class, 'packageDestroy']);
+
+        Route::get('/pages',                        [AdminContentController::class, 'pageIndex']);
+        Route::post('/pages',                       [AdminContentController::class, 'pageStore']);
+        Route::put('/pages/{id}',                   [AdminContentController::class, 'pageUpdate']);
+        Route::delete('/pages/{id}',                [AdminContentController::class, 'pageDestroy']);
     });
 });
