@@ -35,6 +35,48 @@ class User extends Authenticatable
         'is_verify' => 'boolean',
     ];
 
+    /**
+     * Sérialise le modèle en tableau compatible avec le modèle Flutter UserLogin.
+     * Flutter attend tous les champs en String (ancienne API PHP).
+     */
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+
+        // Forcer id en string — Flutter UserLogin attend String?
+        if (isset($array['id'])) {
+            $array['id'] = (string) $array['id'];
+        }
+
+        // Convertir les booleans en string "0"/"1"
+        foreach (['is_subscribe', 'is_verify'] as $field) {
+            if (array_key_exists($field, $array)) {
+                $array[$field] = $array[$field] ? '1' : '0';
+            }
+        }
+
+        // Convertir les nombres en string
+        foreach (['wallet', 'coin', 'plan_id', 'history_id', 'relation_goal', 'religion', 'code'] as $field) {
+            if (array_key_exists($field, $array)) {
+                $array[$field] = (string) ($array[$field] ?? '0');
+            }
+        }
+
+        // birth_date en string YYYY-MM-DD
+        if (isset($array['birth_date']) && $array['birth_date'] !== null) {
+            $array['birth_date'] = $this->birth_date?->format('Y-m-d');
+        }
+
+        // direct_chat, direct_audio, direct_video en string
+        foreach (['direct_chat', 'direct_audio', 'direct_video', 'status'] as $field) {
+            if (array_key_exists($field, $array)) {
+                $array[$field] = (string) ($array[$field] ?? '0');
+            }
+        }
+
+        return $array;
+    }
+
     public $timestamps = false;
 
     public function actions()

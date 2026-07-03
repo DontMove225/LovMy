@@ -27,7 +27,24 @@ class AuthController extends Controller
               ->orWhere('email', $request->mobile);
         })->where('status', 1)->first();
 
-        if (! $user || $user->password !== $request->password) {
+        if (! $user) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Invalid Email/Mobile No or Password!!!',
+            ]);
+        }
+
+        // Supporte les deux formats : bcrypt (nouveau) et plain text (ancienne migration)
+        $passwordValid = false;
+        try {
+            $passwordValid = \Illuminate\Support\Facades\Hash::check($request->password, $user->password);
+        } catch (\RuntimeException $e) {
+            // Le hash n'est pas bcrypt — comparer en plain text (anciens comptes migrés)
+            $passwordValid = ($user->password === $request->password);
+        }
+
+        if (! $passwordValid) {
             return response()->json([
                 'ResponseCode' => '401',
                 'Result'       => 'false',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -116,17 +117,58 @@ class HomeController extends Controller
             ];
         })->values();
 
+        // ─── totalliked : profils qui ont liké l'utilisateur (nouveaux likes non vus) ───
+        $totallikedRaw = Action::where('profile_id', $user->id)
+            ->where('action', 'LIKE')
+            ->pluck('uid')
+            ->toArray();
+
+        // Exclure ceux que l'utilisateur a déjà likés en retour
+        $alreadyLikedBack = Action::where('uid', $user->id)
+            ->whereIn('profile_id', $totallikedRaw)
+            ->pluck('profile_id')
+            ->toArray();
+
+        $newLikers = array_diff($totallikedRaw, $alreadyLikedBack);
+
+        $totallikedProfiles = [];
+        if (!empty($newLikers)) {
+            $totallikedProfiles = User::whereIn('id', $newLikers)
+                ->where('status', 1)
+                ->select(['id', 'name', 'profile_pic', 'birth_date', 'other_pic', 'is_verify'])
+                ->get()
+                ->map(function ($p) {
+                    $images = [];
+                    if ($p->profile_pic) $images[] = $p->profile_pic;
+                    $others = json_decode($p->other_pic ?? '[]', true) ?: [];
+                    foreach ($others as $img) { if ($img) $images[] = $img; }
+                    $age = $p->birth_date ? \Carbon\Carbon::parse($p->birth_date)->age : null;
+                    return [
+                        'profile_id'       => (string) $p->id,
+                        'profile_name'     => $p->name,
+                        'profile_bio'      => '',
+                        'profile_age'      => $age,
+                        'profile_distance' => '0 km',
+                        'profile_images'   => $images,
+                        'is_verify'        => $p->is_verify ? 'true' : 'false',
+                        'match_ratio'      => 80,
+                        'is_subscribe'     => '0',
+                    ];
+                })->values()->toArray();
+        }
+
         return response()->json([
             'ResponseCode'   => '200',
             'Result'         => 'true',
             'ResponseMsg'    => 'Home Data',
             'profilelist'    => $profilelist,
+            'totalliked'     => $totallikedProfiles,
             'currency'       => $setting->currency ?? '€',
             'coin_amt'       => $setting->coin_amt ?? 0,
             'coin_fun'       => $setting->coin_fun ?? 'Enabled',
-            'direct_chat'    => $user->direct_chat ?? 'No',
-            'Like_menu'      => $user->plan_id ? 'Yes' : 'No',
-            'audio_video'    => $user->direct_video ?? 'No',
+            'direct_chat'    => (string) ($user->direct_chat ?? 0),
+            'Like_menu'      => ($user->plan_id && $user->plan_id > 0) ? 'Yes' : 'No',
+            'audio_video'    => (string) ($user->direct_video ?? 0),
             'filter_include' => 'No',
             'plan_name'      => '',
             'plan_id'        => $user->plan_id ?? '',

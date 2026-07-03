@@ -136,12 +136,17 @@ class MatchController extends Controller
 
     public function delUnlike(Request $request)
     {
-        $request->validate(['uid' => 'required|integer', 'profile_id' => 'required|integer']);
+        $request->validate(['uid' => 'required|integer']);
 
-        Action::where('uid', $request->uid)
-            ->where('profile_id', $request->profile_id)
-            ->where('action', 'UNLIKE')
-            ->delete();
+        $query = Action::where('uid', $request->uid)
+            ->where('action', 'UNLIKE');
+
+        // Si profile_id fourni, supprimer seulement ce profil spécifique
+        if ($request->profile_id) {
+            $query->where('profile_id', $request->profile_id);
+        }
+
+        $query->delete();
 
         return response()->json([
             'ResponseCode' => '200',

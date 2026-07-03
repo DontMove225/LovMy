@@ -26,19 +26,84 @@ class GiftController extends Controller
     public function buyGift(Request $request)
     {
         $request->validate([
-            'uid'         => 'required|integer',
+            // Flutter envoie soit uid soit sender_id
             'receiver_id' => 'required|integer',
-            'gift_id'     => 'required|integer',
         ]);
 
-        $sender = User::find($request->uid);
-        $gift   = Gift::find($request->gift_id);
+        // Accepter uid ou sender_id (homeProvider envoie sender_id)
+        $senderId = $request->uid ?? $request->sender_id;
+        if (! $senderId) {
+            return response()->json(['ResponseCode' => '401', 'Result' => 'false', 'ResponseMsg' => 'Sender ID required']);
+        }
 
-        if (! $sender || ! $gift) {
+        $sender = User::find($senderId);
+
+        if (! $sender) {
             return response()->json([
                 'ResponseCode' => '401',
                 'Result'       => 'false',
-                'ResponseMsg'  => 'Invalid user or gift',
+                'ResponseMsg'  => 'Invalid user',
+            ]);
+        }
+
+        // ── Mode "home screen" : Flutter envoie gift_img (virgule-séparée) + coin ──
+        if ($request->has('gift_img')) {
+            $coinCost = (int) ($request->coin ?? 0);
+
+            if ($coinCost > 0 && $sender->coin < $coinCost) {
+                return response()->json([
+                    'ResponseCode' => '401',
+                    'Result'       => 'false',
+                    'ResponseMsg'  => 'Insufficient coins',
+                ]);
+            }
+
+            if ($coinCost > 0) {
+                $sender->decrement('coin', $coinCost);
+                CoinReport::create([
+                    'uid'     => $sender->id,
+                    'message' => 'Gift sent',
+                    'status'  => 'Debit',
+                    'amt'     => $coinCost,
+                    'tdate'   => now()->toDateString(),
+                ]);
+
+                $receiver = User::find($request->receiver_id);
+                if ($receiver) {
+                    $receiver->increment('coin', $coinCost);
+                    CoinReport::create([
+                        'uid'     => $receiver->id,
+                        'message' => 'Gift received',
+                        'status'  => 'Credit',
+                        'amt'     => $coinCost,
+                        'tdate'   => now()->toDateString(),
+                    ]);
+                }
+            }
+
+            GiftCollect::create([
+                'sender_id'   => $senderId,
+                'receiver_id' => $request->receiver_id,
+                'gift_img'    => $request->gift_img,
+            ]);
+
+            return response()->json([
+                'ResponseCode' => '200',
+                'Result'       => 'true',
+                'ResponseMsg'  => 'Gift sent successfully!',
+                'coin'         => (string) ($sender->fresh()->coin ?? 0),
+            ]);
+        }
+
+        // ── Mode "gift_id" classique ───────────────────────────────────────────────
+        $request->validate(['gift_id' => 'required|integer']);
+        $gift = Gift::find($request->gift_id);
+
+        if (! $gift) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Invalid gift',
             ]);
         }
 
@@ -74,7 +139,7 @@ class GiftController extends Controller
         }
 
         GiftCollect::create([
-            'sender_id'   => $request->uid,
+            'sender_id'   => $senderId,
             'receiver_id' => $request->receiver_id,
             'gift_img'    => $gift->img,
         ]);
@@ -83,6 +148,7 @@ class GiftController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Gift sent successfully!',
+            'coin'         => (string) ($sender->fresh()->coin ?? 0),
         ]);
     }
 

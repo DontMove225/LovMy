@@ -24,6 +24,43 @@ class Setting extends Model
 
     public static function current(): self
     {
-        return self::firstOrNew(['id' => 1]);
+        $setting = self::first();
+        if ($setting) {
+            return $setting;
+        }
+
+        // Retourner un objet Setting avec des valeurs par défaut
+        // si la table est vide (évite les erreurs null sur les champs text)
+        $default = new self();
+        $default->webname     = 'LovMy';
+        $default->weblogo     = '';
+        $default->timezone    = 'UTC';
+        $default->currency    = '€';
+        $default->one_key     = '';
+        $default->one_hash    = '';
+        $default->show_dark   = 0;
+        $default->sms_type    = '0';
+        $default->auth_key    = '';
+        $default->otp_id      = '';
+        $default->acc_id      = '';
+        $default->auth_token  = '';
+        $default->twilio_number = '';
+        $default->admob       = 'No';
+        $default->slogin      = 'No';
+        $default->mode        = 'Test';
+        $default->banner_id   = '';
+        $default->in_id       = '';
+        $default->fmode       = 'No';
+        $default->map_key     = '';
+        $default->coin_amt    = 1.0;
+        $default->otp_auth    = 'No';
+        $default->coin_limit  = 0.0;
+        $default->coin_fun    = 'Enabled';
+        $default->agora_app_id = '';
+        $default->scredit     = 0;
+        $default->rcredit     = 0;
+        $default->ios_banner_id = '';
+        $default->ios_in_id   = '';
+        return $default;
     }
 }
