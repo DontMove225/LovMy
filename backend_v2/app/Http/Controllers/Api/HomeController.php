@@ -263,17 +263,17 @@ class HomeController extends Controller
             ->whereNotNull('lats')
             ->whereNotNull('longs')
             ->where('lats', '!=', '')
+            ->whereNotNull('profile_pic')
+            ->where('profile_pic', '!=', '')
             ->select(['id', 'name', 'profile_pic', 'lats', 'longs', 'gender'])
             ->limit(100)
             ->get();
 
         $profilelist = $profiles->map(function ($p) {
-            $images = [];
-            if ($p->profile_pic) $images[] = $p->profile_pic;
             return [
                 'profile_id'     => (string) $p->id,
-                'profile_name'   => $p->name,
-                'profile_images' => $images,
+                'profile_name'   => $p->name ?? 'Unknown',
+                'profile_images' => [$p->profile_pic],
                 'profile_lat'    => $p->lats,
                 'profile_longs'  => $p->longs,
                 'gender'         => $p->gender,
