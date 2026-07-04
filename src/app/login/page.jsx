@@ -5,10 +5,6 @@ import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import axios from 'axios';
 
-export const metadata = {
-  title: 'Connexion',
-};
-
 export default function LoginPage() {
   const { basUrl, login } = useContext(MyContext);
   const router = useRouter();
