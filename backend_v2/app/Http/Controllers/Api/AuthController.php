@@ -184,6 +184,19 @@ class AuthController extends Controller
         ]);
     }
 
+    public function emailCheck(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $exists = User::where('email', $request->email)->exists();
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => $exists ? 'false' : 'true',
+            'ResponseMsg'  => $exists ? 'Cette adresse e-mail est déjà utilisée' : 'Email disponible',
+        ]);
+    }
+
     public function forgetPassword(Request $request)
     {
         $request->validate([

@@ -117,6 +117,16 @@ class ProfileController extends Controller
     {
         $request->validate(['uid' => 'required|integer', 'profile_id' => 'required|integer']);
 
+        $profile = User::where('status', 1)->find($request->profile_id);
+
+        if (! $profile) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Profile not found',
+            ]);
+        }
+
         \App\Models\Action::updateOrCreate(
             ['uid' => $request->uid, 'profile_id' => $request->profile_id, 'action' => 'VIEW'],
             ['created_at' => now()]
@@ -126,6 +136,24 @@ class ProfileController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Profile view recorded',
+            'data'         => [
+                'id'            => $profile->id,
+                'name'          => $profile->name,
+                'profile_pic'   => $profile->profile_pic,
+                'other_pic'     => $profile->other_pic,
+                'birth_date'    => $profile->birth_date,
+                'gender'        => $profile->gender,
+                'profile_bio'   => $profile->profile_bio,
+                'height'        => $profile->height,
+                'is_verify'     => $profile->is_verify,
+                'is_subscribe'  => $profile->is_subscribe,
+                'relation_goal' => $profile->relation_goal,
+                'interest'      => $profile->interest,
+                'language'      => $profile->language,
+                'religion'      => $profile->religion,
+                'lats'          => $profile->lats,
+                'longs'         => $profile->longs,
+            ],
         ]);
     }
 

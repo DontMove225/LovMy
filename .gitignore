@@ -1,30 +1,100 @@
-# Flutter
+# ─── Secrets & Configuration ──────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+!.env.local.example
+
+# ─── Laravel (backend_v2) ─────────────────────────────────────────────────────
+backend_v2/vendor/
+backend_v2/node_modules/
+backend_v2/storage/app/*
+!backend_v2/storage/app/.gitkeep
+backend_v2/storage/framework/cache/*
+!backend_v2/storage/framework/cache/.gitkeep
+backend_v2/storage/framework/sessions/*
+!backend_v2/storage/framework/sessions/.gitkeep
+backend_v2/storage/framework/views/*
+!backend_v2/storage/framework/views/.gitkeep
+backend_v2/storage/logs/*
+!backend_v2/storage/logs/.gitkeep
+backend_v2/bootstrap/cache/*
+!backend_v2/bootstrap/cache/.gitkeep
+backend_v2/.phpunit.result.cache
+backend_v2/public/storage
+backend_v2/public/hot
+
+# ─── Next.js (web_NextJS) ────────────────────────────────────────────────────
+web_NextJS/node_modules/
+web_NextJS/.next/
+web_NextJS/out/
+web_NextJS/.vercel/
+web_NextJS/yarn.lock
+
+# ─── Flutter / Dart (mobile) ─────────────────────────────────────────────────
 mobile/.dart_tool/
-mobile/build/
 mobile/.flutter-plugins
 mobile/.flutter-plugins-dependencies
-mobile/.pub-cache/
-mobile/.pub/
+mobile/build/
 mobile/ios/Pods/
 mobile/ios/.symlinks/
+mobile/ios/Flutter/Flutter.framework/
+mobile/ios/Flutter/Flutter.podspec/
+mobile/macos/Pods/
+mobile/macos/.symlinks/
 mobile/android/.gradle/
 mobile/android/local.properties
 mobile/android/key.properties
-mobile/*.jks
+mobile/*.iml
+mobile/dating.iml
+mobile/.metadata
+mobile/pubspec.lock
 
-# Laravel backend
-backend_v2/vendor/
-backend_v2/.env
-backend_v2/storage/logs/
-backend_v2/bootstrap/cache/*.php
-backend_v2/.phpunit.result.cache
-backend_v2/storage/app/public/images/
+# ─── React (web_ReactJS — ancien frontend, référence uniquement) ──────────────
+web_ReactJS/node_modules/
+web_ReactJS/build/
+web_ReactJS/.env
+web_ReactJS/.env.production
+web_ReactJS/yarn.lock
 
-# IDE
-.idea/
-.vscode/
-*.iml
+# ─── Ancien backend PHP (référence uniquement — exclure du repo principal) ───
+backend/
+web_ReactJS/
 
-# OS
+# ─── Fichiers sensibles à la racine ──────────────────────────────────────────
+db_lovmy.sql
+LovMy_Charte_Graphique_v1.0.pdf
+
+# ─── Archives & Binaires lourds ──────────────────────────────────────────────
+*.zip
+*.rar
+*.tar.gz
+*.gz
+LovMy_Logo_colored_version.zip
+front_mobile_and_Backend_documentation.zip
+backend.zip
+
+# ─── Éditeurs & OS ───────────────────────────────────────────────────────────
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.idea/
+*.iml
+.vscode/settings.json
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Tests & Coverage ────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
