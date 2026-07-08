@@ -6,9 +6,9 @@ import axios from 'axios';
 export const MyContext = createContext({});
 
 export function MyProvider({ children }) {
-  const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.fr/api/';
-  const imageBaseURL = process.env.NEXT_PUBLIC_IMAGE_URL || 'https://lovmy.fr/';
-  const paymentBaseURL = process.env.NEXT_PUBLIC_PAYMENT_URL || 'https://lovmy.fr/';
+  const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/';
+  const imageBaseURL = process.env.NEXT_PUBLIC_IMAGE_URL || 'https://lovmy.dontmove.app/';
+  const paymentBaseURL = process.env.NEXT_PUBLIC_PAYMENT_URL || 'https://lovmy.dontmove.app/';
 
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);

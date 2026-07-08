@@ -3,10 +3,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
-import axios from 'axios';
 
 export default function DashboardPage() {
-  const { basUrl, imageBaseURL } = useContext(MyContext);
+  const { imageBaseURL, apiPost } = useContext(MyContext);
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [profiles, setProfiles] = useState([]);
@@ -29,14 +28,14 @@ export default function DashboardPage() {
   const fetchHomeData = async () => {
     const userData = JSON.parse(localStorage.getItem('Register_User') || '{}');
     try {
-      const response = await axios.post(`${basUrl}home_data.php`, {
+      const result = await apiPost('home_data.php', {
         uid: userData.id,
         lats: 0,
         longs: 0,
       });
 
-      if (response.data.Result === 'true') {
-        setProfiles(response.data.data || []);
+      if (result.Result === 'true') {
+        setProfiles(result.data || []);
       }
     } catch (error) {
       console.error(error);
@@ -50,36 +49,36 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 px-4 py-10">
+    <main className="min-h-screen bg-obsidian px-4 py-10">
       <div className="mx-auto max-w-6xl space-y-6">
-        <section className="rounded-3xl bg-white p-8 shadow-xl">
+        <section className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-violet-600">Dashboard</p>
-              <h1 className="mt-2 text-4xl font-bold text-slate-900">Bienvenue, {user.name || 'utilisateur'}.</h1>
+              <p className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Dashboard</p>
+              <h1 className="mt-2 font-serif text-4xl text-white">Bienvenue, {user.name || 'utilisateur'}.</h1>
             </div>
             <button
               onClick={() => {
                 localStorage.removeItem('token');
                 router.push('/login');
               }}
-              className="rounded-2xl bg-slate-900 px-5 py-3 text-white transition hover:bg-slate-700"
+              className="rounded-2xl border border-[var(--line)] px-5 py-3 text-white transition hover:border-ember/40 hover:bg-ember/10"
             >
               Déconnexion
             </button>
           </div>
-          <p className="mt-4 text-slate-600">Voici les profils recommandés par le backend.</p>
+          <p className="mt-4 text-[var(--txt-soft)]">Voici les profils recommandés par le backend.</p>
         </section>
 
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {loading ? (
-            <div className="rounded-3xl bg-white p-8 shadow-xl">Chargement...</div>
+            <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-[var(--txt-soft)]">Chargement...</div>
           ) : profiles.length === 0 ? (
-            <div className="rounded-3xl bg-white p-8 shadow-xl">Aucun profil disponible pour le moment.</div>
+            <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-[var(--txt-soft)]">Aucun profil disponible pour le moment.</div>
           ) : (
             profiles.map((profile) => (
-              <article key={profile.id} className="overflow-hidden rounded-3xl bg-white shadow-lg">
-                <div className="h-60 w-full overflow-hidden bg-slate-200">
+              <article key={profile.id} className="overflow-hidden rounded-3xl border border-[var(--line)] bg-white/[0.03]">
+                <div className="h-60 w-full overflow-hidden bg-steel/20">
                   {profile.profile_pic ? (
                     <img
                       src={`${imageBaseURL}${profile.profile_pic}`}
@@ -87,14 +86,14 @@ export default function DashboardPage() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center bg-slate-200 text-slate-500">
+                    <div className="flex h-full items-center justify-center bg-steel/20 text-[var(--txt-faint)]">
                       Image non disponible
                     </div>
                   )}
                 </div>
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-slate-900">{profile.name || 'Profil'}</h2>
-                  <p className="mt-2 text-sm text-slate-600">{profile.bio || 'Aucune description'}</p>
+                  <h2 className="font-serif text-xl text-white">{profile.name || 'Profil'}</h2>
+                  <p className="mt-2 text-sm text-[var(--txt-soft)]">{profile.bio || 'Aucune description'}</p>
                 </div>
               </article>
             ))

@@ -1,40 +1,159 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { MyContext } from '@/context/MyProvider';
+import { FiCheck, FiX, FiStar } from 'react-icons/fi';
 
 export default function UpgradePage() {
-  const [user, setUser] = useState(null);
   const router = useRouter();
+  const { apiPost, getStoredUser } = useContext(MyContext);
+  const [me, setMe] = useState(null);
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const token = localStorage.getItem('token');
-    const data = localStorage.getItem('Register_User');
-    if (!token || !data) {
+    const stored = getStoredUser();
+    if (!token || !stored) {
       router.replace('/login');
       return;
     }
-    setUser(JSON.parse(data));
-  }, [router]);
+    setMe(stored);
+  }, [router, getStoredUser]);
 
-  if (!user) return null;
+  const loadPlans = useCallback(async () => {
+    setLoading(true);
+    try {
+      const result = await apiPost('plan.php', {});
+      if (result.Result === 'true') {
+        const seen = new Set();
+        const unique = (result.data || []).filter((p) => {
+          if (seen.has(p.title)) return false;
+          seen.add(p.title);
+          return true;
+        });
+        setPlans(unique);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [apiPost]);
+
+  useEffect(() => { loadPlans(); }, [loadPlans]);
+
+  const startCheckout = (plan, method) => {
+    const params = new URLSearchParams({
+      amount: plan.amt,
+      type: 'plan',
+      plan_id: plan.id,
+    });
+    router.push(`/${method}?${params.toString()}`);
+  };
+
+  if (!me || loading) {
+    return (
+      <main className="min-h-screen bg-obsidian px-4 py-10">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-[var(--txt-soft)]">
+          Chargement…
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-10">
-      <div className="mx-auto max-w-4xl rounded-3xl bg-white p-8 shadow-xl">
-        <h1 className="text-3xl font-semibold text-slate-900">Pass Premium</h1>
-        <p className="mt-4 text-slate-600">Bientôt disponible : options de mise à niveau et paiement.</p>
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Plan actuel</h2>
-            <p className="mt-4 text-sm text-slate-600">Standard</p>
-          </div>
-          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Prochaine étape</h2>
-            <p className="mt-4 text-sm text-slate-600">Intégrer les pages de paiement Razorpay / PayPal plus tard.</p>
-          </div>
+    <main className="min-h-screen bg-obsidian px-4 py-10">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-8 text-center">
+          <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Premium</span>
+          <h1 className="mt-2 font-serif text-4xl text-white">Passez à la vitesse supérieure</h1>
+          <p className="mt-3 text-[var(--txt-soft)]">Choisissez le plan qui vous correspond.</p>
         </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {plans.map((plan) => {
+            const isCurrent = me.plan_id === plan.id || (me.plan_id === 0 && plan.amt == 0);
+            const isFree = Number(plan.amt) === 0;
+            const isFeatured = plan.title === 'Premium';
+
+            const features = [
+              { label: 'Swipe & découverte de profils', on: true },
+              { label: 'Filtres de recherche avancés', on: !!plan.filter_include },
+              { label: 'Chat direct illimité', on: !!plan.direct_chat },
+              { label: 'Appels audio & vidéo', on: !!plan.audio_video },
+            ];
+
+            return (
+              <div
+                key={plan.id}
+                className={`relative flex flex-col rounded-3xl border p-7 ${
+                  isFeatured ? 'border-ember bg-gradient-to-b from-[#2a0f14] to-white/[0.03] shadow-[0_20px_50px_rgba(235,6,3,0.25)]' : 'border-[var(--line)] bg-white/[0.03]'
+                }`}
+              >
+                {isFeatured ? (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-passion px-4 py-1 font-mono text-[10px] uppercase tracking-wide text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)]">
+                    Meilleure offre
+                  </span>
+                ) : null}
+
+                <h2 className="font-serif text-2xl text-white">{plan.title}</h2>
+                <p className="mt-3">
+                  <span className="font-serif text-4xl text-white">{isFree ? 'Gratuit' : `${plan.amt} €`}</span>
+                  {!isFree ? <span className="text-sm text-[var(--txt-faint)]"> / {plan.day_limit} jours</span> : null}
+                </p>
+                <p className="mt-3 text-sm text-[var(--txt-soft)]">{plan.description}</p>
+
+                <ul className="mt-6 flex-1 space-y-2.5">
+                  {features.map((f) => (
+                    <li key={f.label} className="flex items-center gap-2.5 text-sm">
+                      {f.on ? (
+                        <FiCheck className="h-4 w-4 shrink-0 text-emerald-400" />
+                      ) : (
+                        <FiX className="h-4 w-4 shrink-0 text-[var(--txt-faint)]" />
+                      )}
+                      <span className={f.on ? 'text-white' : 'text-[var(--txt-faint)] line-through'}>{f.label}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {isCurrent ? (
+                  <span className="mt-6 rounded-2xl border border-[var(--line)] px-5 py-3 text-center text-sm font-semibold text-[var(--txt-soft)]">
+                    Plan actuel
+                  </span>
+                ) : isFree ? (
+                  <span className="mt-6 rounded-2xl border border-[var(--line)] px-5 py-3 text-center text-sm text-[var(--txt-faint)]">
+                    Plan de base
+                  </span>
+                ) : (
+                  <div className="mt-6 flex flex-col gap-2">
+                    <button
+                      onClick={() => startCheckout(plan, 'paypal')}
+                      className="rounded-2xl bg-gradient-passion px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+                    >
+                      Choisir — PayPal
+                    </button>
+                    <button
+                      onClick={() => startCheckout(plan, 'stripe')}
+                      className="rounded-2xl border border-[var(--line)] px-5 py-3 text-sm font-semibold text-white transition hover:border-ember/40"
+                    >
+                      Choisir — Carte bancaire
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {me.is_subscribe ? (
+          <div className="mt-8 flex items-center justify-center gap-2 rounded-2xl border border-ember/30 bg-ember/10 px-5 py-3 text-center text-sm text-white">
+            <FiStar className="h-4 w-4 text-ember" />
+            Abonnement actif jusqu&apos;au {me.plan_end_date ? new Date(me.plan_end_date).toLocaleDateString('fr-FR') : '—'}
+          </div>
+        ) : null}
       </div>
     </main>
   );

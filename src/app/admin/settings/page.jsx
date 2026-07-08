@@ -23,7 +23,7 @@ export default function AdminSettings() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
 
-  const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/v1/';
+  const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/';
   const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {
@@ -49,27 +49,27 @@ export default function AdminSettings() {
     }
   };
 
-  if (loading) return <div className="text-slate-400">Chargement…</div>;
+  if (loading) return <div className="text-[var(--txt-soft)]">Chargement…</div>;
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <h1 className="text-2xl font-bold text-white">Paramètres</h1>
+    <div className="max-w-2xl space-y-6">
+      <h1 className="font-serif text-2xl text-white">Paramètres</h1>
 
-      <form onSubmit={handleSave} className="space-y-4 rounded-2xl border border-slate-700 bg-slate-800 p-6">
+      <form onSubmit={handleSave} className="space-y-4 rounded-2xl border border-[var(--line)] bg-white/[0.03] p-6">
         {FIELDS.map(({ key, label, type }) => (
           <div key={key}>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">{label}</label>
+            <label className="mb-1.5 block text-sm font-medium text-[var(--txt-soft)]">{label}</label>
             <input
               type={type}
               value={form[key] ?? ''}
               onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-              className="w-full rounded-xl border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-white outline-none focus:border-violet-500"
+              className="w-full rounded-xl border border-[var(--line)] bg-white/5 px-4 py-2.5 text-sm text-white outline-none focus:border-ember"
             />
           </div>
         ))}
 
         {msg && (
-          <p className={`rounded-xl px-4 py-3 text-sm border ${msg.includes('succès') ? 'bg-emerald-900/50 text-emerald-400 border-emerald-800' : 'bg-red-900/50 text-red-400 border-red-800'}`}>
+          <p className={`rounded-xl border px-4 py-3 text-sm ${msg.includes('succès') ? 'border-emerald-800 bg-emerald-900/50 text-emerald-400' : 'border-ember/30 bg-ember/10 text-ember'}`}>
             {msg}
           </p>
         )}
@@ -77,7 +77,7 @@ export default function AdminSettings() {
         <button
           type="submit"
           disabled={saving}
-          className="rounded-xl bg-violet-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-60 transition"
+          className="rounded-xl bg-gradient-passion px-6 py-2.5 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-60"
         >
           {saving ? 'Sauvegarde…' : 'Sauvegarder'}
         </button>
