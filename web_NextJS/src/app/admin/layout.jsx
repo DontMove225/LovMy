@@ -34,23 +34,23 @@ export default function AdminLayout({ children }) {
   if (pathname === '/admin/login') return <>{children}</>;
   if (!ready) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-900">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-violet-500 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-obsidian">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-ember border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950">
+    <div className="flex min-h-screen bg-obsidian">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-slate-900 border-r border-slate-800 transition-transform duration-200 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex h-16 items-center gap-3 px-6 border-b border-slate-800">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-[var(--line)] bg-white/[0.02] transition-transform duration-200 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex h-16 items-center gap-3 border-b border-[var(--line)] px-6">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-passion">
             <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <span className="text-lg font-bold text-white">LovMy Admin</span>
+          <span className="font-serif text-lg text-white">LovMy Admin</span>
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
@@ -63,14 +63,14 @@ export default function AdminLayout({ children }) {
               return (
                 <div key={item.href}>
                   {showGroupLabel && item.group && (
-                    <p className="mt-4 mb-1 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+                    <p className="mt-4 mb-1 px-3 font-mono text-[10px] font-semibold uppercase tracking-widest text-[var(--txt-faint)]">
                       {item.group}
                     </p>
                   )}
                   <Link
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition ${active ? 'bg-violet-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition ${active ? 'bg-gradient-passion text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)]' : 'text-[var(--txt-soft)] hover:bg-white/5 hover:text-white'}`}
                   >
                     <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
@@ -83,19 +83,19 @@ export default function AdminLayout({ children }) {
           })()}
         </nav>
 
-        <div className="border-t border-slate-800 p-4">
+        <div className="border-t border-[var(--line)] p-4">
           <div className="mb-3 flex items-center gap-3 px-2">
-            <div className="h-8 w-8 rounded-full bg-violet-700 flex items-center justify-center text-sm font-bold text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-passion text-sm font-bold text-white">
               {admin?.username?.[0]?.toUpperCase() ?? 'A'}
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-white">{admin?.username ?? 'Admin'}</p>
-              <p className="text-xs text-slate-500">Administrateur</p>
+              <p className="text-xs text-[var(--txt-faint)]">Administrateur</p>
             </div>
           </div>
           <button
             onClick={adminLogout}
-            className="w-full rounded-xl px-3 py-2 text-left text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition"
+            className="w-full rounded-xl px-3 py-2 text-left text-sm text-[var(--txt-soft)] transition hover:bg-ember/10 hover:text-ember"
           >
             Se déconnecter
           </button>
@@ -109,20 +109,20 @@ export default function AdminLayout({ children }) {
 
       {/* Main */}
       <div className="flex flex-1 flex-col min-w-0">
-        <header className="flex h-16 items-center gap-4 border-b border-slate-800 bg-slate-900 px-6">
+        <header className="flex h-16 items-center gap-4 border-b border-[var(--line)] bg-white/[0.02] px-6">
           <button
-            className="lg:hidden text-slate-400 hover:text-white"
+            className="text-[var(--txt-soft)] hover:text-white lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="text-slate-400 text-sm">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--txt-faint)]">
             {navItems.find((n) => pathname.startsWith(n.href))?.label ?? 'Admin'}
           </span>
         </header>
-        <main className="flex-1 p-6 text-slate-100">{children}</main>
+        <main className="flex-1 p-6 text-[var(--txt)]">{children}</main>
       </div>
     </div>
   );

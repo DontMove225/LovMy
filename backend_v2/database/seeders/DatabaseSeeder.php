@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             PlanSeeder::class,
             PackageSeeder::class,
+            PaymentMethodSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

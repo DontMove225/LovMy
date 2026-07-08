@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AdminContentController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\HomeController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/user_login.php',    [AuthController::class, 'login']);
 Route::post('/reg_user.php',      [AuthController::class, 'register']);
 Route::post('/mobile_check.php',  [AuthController::class, 'mobileCheck']);
+Route::post('/email_check.php',   [AuthController::class, 'emailCheck']);
 Route::post('/forget_password.php', [AuthController::class, 'forgetPassword']);
 
 // Admin auth
@@ -87,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/plan_purchase.php',    [PlanController::class, 'purchasePlan']);
     Route::post('/package_purchase.php', [PlanController::class, 'purchasePackage']);
     Route::post('/coin_report.php',      [PlanController::class, 'coinReport']);
+    Route::post('/plan_history.php',     [PlanController::class, 'planHistory']);
 
     // Wallet
     Route::post('/wallet_up.php',         [WalletController::class, 'walletUp']);
@@ -96,6 +99,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Notifications
     Route::post('/u_notification_list.php', [NotificationController::class, 'list']);
+
+    // Messagerie
+    Route::post('/conversations.php', [ChatController::class, 'conversations']);
+    Route::post('/messages_list.php', [ChatController::class, 'messages']);
+    Route::post('/send_message.php',  [ChatController::class, 'send']);
 
     // Settings (public-ish)
     Route::post('/setting.php', [ContentController::class, 'settings']);

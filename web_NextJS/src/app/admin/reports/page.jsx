@@ -13,7 +13,7 @@ export default function AdminReports() {
   useEffect(() => {
     if (!ready) return;
     setLoading(true);
-    const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/v1/';
+    const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/';
     axios.get(`${basUrl}admin/reports`, { headers: { Authorization: `Bearer ${token}` } })
       .then((r) => { setReports(r.data.data); setTotal(r.data.total); })
       .catch(console.error)
@@ -22,12 +22,12 @@ export default function AdminReports() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Signalements <span className="text-slate-400 text-base font-normal">({total})</span></h1>
+      <h1 className="font-serif text-2xl text-white">Signalements <span className="text-base font-normal text-[var(--txt-faint)]">({total})</span></h1>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-800">
+      <div className="overflow-hidden rounded-2xl border border-[var(--line)] bg-white/[0.03]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-700 text-left text-slate-400">
+            <tr className="border-b border-[var(--line)] text-left text-[var(--txt-faint)]">
               <th className="px-4 py-3 font-medium">Signalé par</th>
               <th className="px-4 py-3 font-medium">Contre</th>
               <th className="px-4 py-3 font-medium">Raison</th>
@@ -36,15 +36,15 @@ export default function AdminReports() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={4} className="py-12 text-center text-slate-500">Chargement…</td></tr>
+              <tr><td colSpan={4} className="py-12 text-center text-[var(--txt-faint)]">Chargement…</td></tr>
             ) : reports.length === 0 ? (
-              <tr><td colSpan={4} className="py-12 text-center text-slate-500">Aucun signalement</td></tr>
+              <tr><td colSpan={4} className="py-12 text-center text-[var(--txt-faint)]">Aucun signalement</td></tr>
             ) : reports.map((r) => (
-              <tr key={r.id} className="border-b border-slate-700/50 hover:bg-slate-700/30">
+              <tr key={r.id} className="border-b border-[var(--line)] hover:bg-white/[0.03]">
                 <td className="px-4 py-3 text-white">{r.reporter?.name ?? `#${r.uid}`}</td>
-                <td className="px-4 py-3 text-slate-300">{r.reported?.name ?? `#${r.report_id}`}</td>
-                <td className="px-4 py-3 text-slate-300">{r.reason ?? '—'}</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">{r.created_at ? new Date(r.created_at).toLocaleDateString('fr-FR') : '—'}</td>
+                <td className="px-4 py-3 text-[var(--txt-soft)]">{r.reported?.name ?? `#${r.report_id}`}</td>
+                <td className="px-4 py-3 text-[var(--txt-soft)]">{r.reason ?? '—'}</td>
+                <td className="px-4 py-3 text-xs text-[var(--txt-faint)]">{r.created_at ? new Date(r.created_at).toLocaleDateString('fr-FR') : '—'}</td>
               </tr>
             ))}
           </tbody>

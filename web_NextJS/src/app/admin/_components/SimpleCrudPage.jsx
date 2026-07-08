@@ -24,7 +24,7 @@ export default function SimpleCrudPage({ title, endpoint, fields, canEdit = fals
   const [msg, setMsg] = useState('');
   const [saving, setSaving] = useState(false);
 
-  const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/v1/';
+  const basUrl = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.dontmove.app/api/';
   const headers = { Authorization: `Bearer ${token}` };
 
   const fetch = () => {
@@ -76,20 +76,20 @@ export default function SimpleCrudPage({ title, endpoint, fields, canEdit = fals
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">{title}</h1>
+      <h1 className="font-serif text-2xl text-white">{title}</h1>
 
       {/* Formulaire */}
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-700 bg-slate-800 p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-slate-300">{editing ? 'Modifier' : 'Ajouter'}</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[var(--line)] bg-white/[0.03] p-5">
+        <h2 className="text-sm font-semibold text-[var(--txt-soft)]">{editing ? 'Modifier' : 'Ajouter'}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {fields.map(({ key, label, type = 'text', required = true }) => (
             <div key={key}>
-              <label className="mb-1 block text-xs font-medium text-slate-400">{label}</label>
+              <label className="mb-1 block text-xs font-medium text-[var(--txt-faint)]">{label}</label>
               {type === 'select-status' ? (
                 <select
                   value={form[key] ?? '1'}
                   onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-                  className="w-full rounded-xl border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
+                  className="w-full rounded-xl border border-[var(--line)] bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-ember"
                 >
                   <option value="1">Actif</option>
                   <option value="0">Inactif</option>
@@ -100,7 +100,7 @@ export default function SimpleCrudPage({ title, endpoint, fields, canEdit = fals
                   value={form[key] ?? ''}
                   onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                   required={required}
-                  className="w-full rounded-xl border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-violet-500 resize-none"
+                  className="w-full resize-none rounded-xl border border-[var(--line)] bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-ember"
                 />
               ) : (
                 <input
@@ -108,21 +108,21 @@ export default function SimpleCrudPage({ title, endpoint, fields, canEdit = fals
                   value={form[key] ?? ''}
                   onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                   required={required}
-                  className="w-full rounded-xl border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
+                  className="w-full rounded-xl border border-[var(--line)] bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-ember"
                 />
               )}
             </div>
           ))}
         </div>
 
-        {msg && <p className="rounded-xl bg-red-900/50 px-4 py-2 text-sm text-red-400 border border-red-800">{msg}</p>}
+        {msg && <p className="rounded-xl border border-ember/30 bg-ember/10 px-4 py-2 text-sm text-ember">{msg}</p>}
 
         <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="rounded-xl bg-violet-600 px-5 py-2 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-60 transition">
+          <button type="submit" disabled={saving} className="rounded-xl bg-gradient-passion px-5 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-60">
             {saving ? 'Sauvegarde…' : editing ? 'Mettre à jour' : 'Ajouter'}
           </button>
           {editing && (
-            <button type="button" onClick={resetForm} className="rounded-xl bg-slate-700 px-5 py-2 text-sm text-slate-300 hover:bg-slate-600 transition">
+            <button type="button" onClick={resetForm} className="rounded-xl border border-[var(--line)] px-5 py-2 text-sm text-[var(--txt-soft)] transition hover:bg-white/5">
               Annuler
             </button>
           )}
@@ -130,10 +130,10 @@ export default function SimpleCrudPage({ title, endpoint, fields, canEdit = fals
       </form>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-800">
+      <div className="overflow-hidden rounded-2xl border border-[var(--line)] bg-white/[0.03]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-700 text-left text-slate-400">
+            <tr className="border-b border-[var(--line)] text-left text-[var(--txt-faint)]">
               <th className="px-4 py-3 font-medium">#</th>
               {fields.filter(f => f.key !== 'status').map(({ label, key }) => (
                 <th key={key} className="px-4 py-3 font-medium">{label}</th>
@@ -144,28 +144,28 @@ export default function SimpleCrudPage({ title, endpoint, fields, canEdit = fals
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={fields.length + 3} className="py-10 text-center text-slate-500">Chargement…</td></tr>
+              <tr><td colSpan={fields.length + 3} className="py-10 text-center text-[var(--txt-faint)]">Chargement…</td></tr>
             ) : items.length === 0 ? (
-              <tr><td colSpan={fields.length + 3} className="py-10 text-center text-slate-500">Aucun élément</td></tr>
+              <tr><td colSpan={fields.length + 3} className="py-10 text-center text-[var(--txt-faint)]">Aucun élément</td></tr>
             ) : items.map((item) => (
-              <tr key={item.id} className="border-b border-slate-700/50 hover:bg-slate-700/30">
-                <td className="px-4 py-3 text-slate-500 text-xs">{item.id}</td>
+              <tr key={item.id} className="border-b border-[var(--line)] hover:bg-white/[0.03]">
+                <td className="px-4 py-3 text-xs text-[var(--txt-faint)]">{item.id}</td>
                 {fields.filter(f => f.key !== 'status').map(({ key }) => (
-                  <td key={key} className="px-4 py-3 text-slate-200 max-w-xs truncate">{item[key] ?? '—'}</td>
+                  <td key={key} className="max-w-xs truncate px-4 py-3 text-[var(--txt)]">{item[key] ?? '—'}</td>
                 ))}
                 <td className="px-4 py-3">
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${item.status == 1 ? 'bg-emerald-900/50 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${item.status == 1 ? 'bg-emerald-900/50 text-emerald-400' : 'bg-white/5 text-[var(--txt-faint)]'}`}>
                     {item.status == 1 ? 'Actif' : 'Inactif'}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     {canEdit && (
-                      <button onClick={() => startEdit(item)} className="rounded-lg bg-slate-700 px-3 py-1 text-xs text-slate-300 hover:bg-slate-600 transition">
+                      <button onClick={() => startEdit(item)} className="rounded-lg border border-[var(--line)] px-3 py-1 text-xs text-[var(--txt-soft)] transition hover:bg-white/5">
                         Modifier
                       </button>
                     )}
-                    <button onClick={() => handleDelete(item.id)} className="rounded-lg bg-red-900/50 px-3 py-1 text-xs text-red-400 hover:bg-red-800 transition">
+                    <button onClick={() => handleDelete(item.id)} className="rounded-lg bg-ember/10 px-3 py-1 text-xs text-ember transition hover:bg-ember/20">
                       Supprimer
                     </button>
                   </div>
