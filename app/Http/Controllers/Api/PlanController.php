@@ -161,4 +161,21 @@ class PlanController extends Controller
             'total'        => $report->total(),
         ]);
     }
+
+    public function planHistory(Request $request)
+    {
+        $request->validate(['uid' => 'required|integer']);
+
+        $history = PlanPurchaseHistory::where('uid', $request->uid)
+            ->orderByDesc('id')
+            ->paginate(20);
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Plan purchase history',
+            'data'         => $history->items(),
+            'total'        => $history->total(),
+        ]);
+    }
 }
