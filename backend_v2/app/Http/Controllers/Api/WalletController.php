@@ -51,15 +51,24 @@ class WalletController extends Controller
     {
         $request->validate(['uid' => 'required|integer']);
 
+        $user = User::find($request->uid);
+
         $report = WalletReport::where('uid', $request->uid)
             ->orderByDesc('id')
             ->paginate(20);
+
+        $items = collect($report->items())->map(fn ($item) => [
+            'message' => $item->message,
+            'status'  => $item->status,
+            'amt'     => (string) $item->amt,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Wallet report',
-            'data'         => $report->items(),
+            'Walletitem'   => $items,
+            'wallet'       => (string) ($user->wallet ?? 0),
             'total'        => $report->total(),
         ]);
     }
@@ -136,11 +145,27 @@ class WalletController extends Controller
             ->orderByDesc('id')
             ->paginate(20);
 
+        $items = collect($payouts->items())->map(fn ($p) => [
+            'payout_id'  => (string) $p->id,
+            'amt'        => (string) $p->amt,
+            'coin'       => (string) $p->coin,
+            'status'     => $p->status,
+            'proof'      => $p->proof,
+            'r_date'     => optional($p->r_date)->toIso8601String(),
+            'r_type'     => $p->r_type,
+            'acc_number' => $p->acc_number ?? '',
+            'bank_name'  => $p->bank_name ?? '',
+            'acc_name'   => $p->acc_name ?? '',
+            'ifsc_code'  => $p->ifsc_code ?? '',
+            'upi_id'     => $p->upi_id ?? '',
+            'paypal_id'  => $p->paypal_id ?? '',
+        ]);
+
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Payout list',
-            'data'         => $payouts->items(),
+            'Payoutlist'   => $items,
             'total'        => $payouts->total(),
         ]);
     }

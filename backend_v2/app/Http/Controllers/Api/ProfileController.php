@@ -83,7 +83,7 @@ class ProfileController extends Controller
 
     public function uploadPhotoByUid(Request $request)
     {
-        $request->validate(['uid' => 'required|integer', 'image' => 'required|image|max:5120']);
+        $request->validate(['uid' => 'required|integer']);
         $user = User::find($request->uid);
         if (! $user) return response()->json(['ResponseCode' => '401', 'Result' => 'false', 'ResponseMsg' => 'User not found']);
         return $this->_doUploadPhoto($user, $request);
@@ -152,31 +152,56 @@ class ProfileController extends Controller
 
     private function _doUploadPhoto(User $user, Request $request)
     {
-        $path = $request->file('image')->store('images/profile', 'public');
-        $url  = Storage::url($path);
-        $user->update(['profile_pic' => $url]);
+        // Accepte soit un fichier multipart (image) soit du base64 (img)
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images/profile', 'public');
+        } elseif ($request->img) {
+            // Décoder le base64 et sauvegarder
+            $base64 = $request->img;
+            // Supprimer le préfixe data:image/...;base64, si présent
+            if (str_contains($base64, ',')) {
+                $base64 = substr($base64, strpos($base64, ',') + 1);
+            }
+            $imageData = base64_decode($base64);
+            $filename  = 'images/profile/' . uniqid() . '.jpg';
+            Storage::disk('public')->put($filename, $imageData);
+            $path = $filename;
+        } else {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'No image provided',
+            ]);
+        }
+
+        // Stocker uniquement le chemin relatif (ex: /storage/images/profile/xxx.jpg)
+        // Flutter concatene Config.baseUrl + profilePic, donc il ne faut PAS l'URL absolue
+        $relativePath = 'storage/' . $path;
+        $user->update(['profile_pic' => $relativePath]);
+        $fresh = $user->fresh();
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Profile picture updated!',
-            'ImagePath'    => $url,
+            'ImagePath'    => $relativePath,
+            'UserLogin'    => $fresh,
         ]);
     }
 
     private function _doUploadOtherPhoto(User $user, Request $request)
     {
         $path      = $request->file('image')->store('images/other', 'public');
-        $url       = Storage::url($path);
+        $relativePath = 'storage/' . $path;
         $otherPics = json_decode($user->other_pic ?? '[]', true) ?: [];
-        $otherPics[] = $url;
+        $otherPics[] = $relativePath;
         $user->update(['other_pic' => json_encode($otherPics)]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Photo uploaded!',
-            'ImagePath'    => $url,
+            'ImagePath'    => $relativePath,
             'AllPhotos'    => $otherPics,
         ]);
     }
@@ -184,8 +209,8 @@ class ProfileController extends Controller
     private function _doUploadIdentity(User $user, Request $request)
     {
         $path = $request->file('image')->store('images/identity', 'public');
-        $url  = Storage::url($path);
-        $user->update(['identity_picture' => $url, 'is_verify' => 0]);
+        $relativePath = 'storage/' . $path;
+        $user->update(['identity_picture' => $relativePath, 'is_verify' => 0]);
 
         return response()->json([
             'ResponseCode' => '200',

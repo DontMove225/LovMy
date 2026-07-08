@@ -12,7 +12,7 @@ class LanguageSeeder extends Seeder
         $languages = [
             ['img' => 'images/language/fr.png', 'title' => 'Français', 'status' => 1],
             ['img' => 'images/language/en.png', 'title' => 'Anglais', 'status' => 1],
-            ['img' => 'images/language/es.svg', 'title' => 'Espagnol', 'status' => 1],
+            ['img' => 'images/language/es.png', 'title' => 'Espagnol', 'status' => 1],
             ['img' => 'images/language/pt.png', 'title' => 'Portugais', 'status' => 1],
             ['img' => 'images/language/ar.png', 'title' => 'Arabe', 'status' => 1],
         ];

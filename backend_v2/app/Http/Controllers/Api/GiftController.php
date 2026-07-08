@@ -13,13 +13,17 @@ class GiftController extends Controller
 {
     public function giftList(Request $request)
     {
-        $gifts = Gift::where('status', 1)->get();
+        $gifts = Gift::where('status', 1)->get()->map(fn ($g) => [
+            'id'    => (string) $g->id,
+            'img'   => $g->img,
+            'price' => (string) $g->price,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Gift list',
-            'data'         => $gifts,
+            'giftlist'     => $gifts,
         ]);
     }
 
@@ -161,11 +165,17 @@ class GiftController extends Controller
             ->orderByDesc('id')
             ->paginate(20);
 
+        $items = collect($gifts->items())->map(fn ($g) => [
+            'gift_img' => $g->gift_img,
+            'name'     => $g->sender->name ?? '',
+            'img'      => $g->sender->profile_pic ?? '',
+        ]);
+
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'My gifts',
-            'data'         => $gifts->items(),
+            'giflist'      => $items,
             'total'        => $gifts->total(),
         ]);
     }

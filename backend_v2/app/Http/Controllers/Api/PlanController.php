@@ -16,25 +16,43 @@ class PlanController extends Controller
 {
     public function plans(Request $request)
     {
-        $plans = Plan::where('status', 1)->get();
+        $plans = Plan::where('status', 1)->get()->map(fn ($p) => [
+            'id'             => (string) $p->id,
+            'title'          => $p->title,
+            'amt'            => (string) $p->amt,
+            'description'    => $p->description,
+            'filter_include' => $p->filter_include ? '1' : '0',
+            'day_limit'      => (string) $p->day_limit,
+            'direct_chat'    => $p->direct_chat ? '1' : '0',
+            'audio_video'    => $p->audio_video ? '1' : '0',
+            'status'         => (string) $p->status,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Plans',
-            'data'         => $plans,
+            'PlanData'     => $plans,
         ]);
     }
 
     public function paymentGateway(Request $request)
     {
-        $gateways = PaymentMethod::where('status', 1)->where('p_show', 1)->get();
+        $gateways = PaymentMethod::where('status', 1)->where('p_show', 1)->get()->map(fn ($g) => [
+            'id'         => (string) $g->id,
+            'title'      => $g->title,
+            'img'        => $g->img,
+            'attributes' => $g->attributes,
+            'status'     => (string) $g->status,
+            'subtitle'   => $g->subtitle,
+            'p_show'     => (string) $g->p_show,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Payment gateways',
-            'data'         => $gateways,
+            'paymentdata'  => $gateways,
         ]);
     }
 
@@ -98,13 +116,17 @@ class PlanController extends Controller
 
     public function packages(Request $request)
     {
-        $packages = Package::where('status', 1)->get();
+        $packages = Package::where('status', 1)->get()->map(fn ($p) => [
+            'id'   => (string) $p->id,
+            'coin' => (string) $p->coin,
+            'amt'  => (string) $p->amt,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Coin packages',
-            'data'         => $packages,
+            'packlist'     => $packages,
         ]);
     }
 
@@ -149,15 +171,27 @@ class PlanController extends Controller
     {
         $request->validate(['uid' => 'required|integer']);
 
+        $user    = User::find($request->uid);
+        $setting = Setting::current();
+
         $report = CoinReport::where('uid', $request->uid)
             ->orderByDesc('id')
             ->paginate(20);
+
+        $items = collect($report->items())->map(fn ($item) => [
+            'message' => $item->message,
+            'status'  => $item->status,
+            'amt'     => (string) $item->amt,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Coin report',
-            'data'         => $report->items(),
+            'Coinitem'     => $items,
+            'coin'         => (string) ($user->coin ?? 0),
+            'coin_amt'     => (string) ($setting->coin_amt ?? 0),
+            'coin_limit'   => (string) ($setting->coin_limit ?? 0),
             'total'        => $report->total(),
         ]);
     }

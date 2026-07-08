@@ -30,7 +30,7 @@ Route::get('/goal.php',         [ContentController::class, 'relationGoals']);
 Route::get('/interest.php',     [ContentController::class, 'interests']);
 Route::get('/languagelist.php', [ContentController::class, 'languages']);
 Route::get('/religionlist.php', [ContentController::class, 'religions']);
-Route::get('/faq.php',          [ContentController::class, 'faqs']);
+Route::match(['GET','POST'], '/faq.php', [ContentController::class, 'faqs']);
 Route::get('/pagelist.php',     [ContentController::class, 'pages']);
 Route::post('/pagelist.php',    [ContentController::class, 'pages']);
 Route::get('/sms_type.php',     [ContentController::class, 'smsType']);

@@ -16,25 +16,30 @@ class ContentController extends Controller
 {
     public function faqs()
     {
-        $faqs = Faq::where('status', 1)->get();
+        $faqs = Faq::where('status', 1)->get()->map(fn ($f) => [
+            'id'       => (string) $f->id,
+            'question' => $f->question,
+            'answer'   => $f->answer,
+            'status'   => (string) $f->status,
+        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'FAQs',
-            'data'         => $faqs,
+            'FaqData'      => $faqs,
         ]);
     }
 
     public function pages()
     {
-        $pages = Page::where('status', 1)->select(['id', 'title', 'status'])->get();
+        $pages = Page::where('status', 1)->select(['id', 'title', 'status', 'description'])->get();
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Pages',
-            'data'         => $pages,
+            'pagelist'     => $pages,
         ]);
     }
 
@@ -149,15 +154,22 @@ class ContentController extends Controller
 
     public function referData(Request $request)
     {
-        $request->validate(['refercode' => 'required']);
+        $request->validate(['uid' => 'required|integer']);
 
-        $referrer = \App\Models\User::where('code', $request->refercode)->first();
+        $user    = \App\Models\User::find($request->uid);
+        $setting = Setting::current();
+
+        if (! $user) {
+            return response()->json(['ResponseCode' => '401', 'Result' => 'false', 'ResponseMsg' => 'User not found']);
+        }
 
         return response()->json([
             'ResponseCode' => '200',
-            'Result'       => $referrer ? 'true' : 'false',
-            'ResponseMsg'  => $referrer ? 'Referral code valid' : 'Invalid referral code',
-            'data'         => $referrer ? ['name' => $referrer->name] : null,
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Referral data',
+            'code'         => (string) ($user->code ?? ''),
+            'signupcredit' => (string) ($setting->scredit ?? 0),
+            'refercredit'  => (string) ($setting->rcredit ?? 0),
         ]);
     }
 }
