@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\MatchController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\StripeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WalletController;
 use Illuminate\Support\Facades\Route;
@@ -84,6 +85,10 @@ Route::post('/my_gift.php',     [GiftController::class, 'myGifts']);
 Route::post('/plan_purchase.php',    [PlanController::class, 'purchasePlan']);
 Route::post('/package_purchase.php', [PlanController::class, 'purchasePackage']);
 Route::post('/coin_report.php',      [PlanController::class, 'coinReport']);
+
+// Stripe (checkout is uid-based like its siblings above; webhook authenticates via Stripe signature, not uid)
+Route::post('/stripe/checkout.php', [StripeController::class, 'createCheckoutSession']);
+Route::post('/stripe/webhook',      [StripeController::class, 'webhook']);
 
 // Wallet
 Route::post('/wallet_up.php',        [WalletController::class, 'walletUp']);

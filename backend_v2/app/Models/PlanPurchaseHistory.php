@@ -12,7 +12,7 @@ class PlanPurchaseHistory extends Model
     protected $fillable = [
         'uid', 'plan_id', 'p_name', 't_date', 'amount', 'day',
         'plan_title', 'plan_description', 'expire_date', 'start_date',
-        'trans_id', 'p_method_id',
+        'trans_id', 'p_method_id', 'stripe_session_id',
     ];
 
     protected $casts = [

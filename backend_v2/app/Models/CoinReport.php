@@ -9,7 +9,7 @@ class CoinReport extends Model
     protected $table = 'coin_report';
     public $timestamps = false;
 
-    protected $fillable = ['uid', 'message', 'status', 'amt', 'tdate'];
+    protected $fillable = ['uid', 'message', 'status', 'amt', 'tdate', 'stripe_session_id'];
 
     protected $casts = ['tdate' => 'date', 'amt' => 'float'];
 

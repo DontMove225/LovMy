@@ -247,7 +247,12 @@ class HomeController extends Controller
 
     public function mapInfo(Request $request)
     {
-        $request->validate(['uid' => 'required|integer', 'lats' => 'required', 'longs' => 'required']);
+        $request->validate([
+            'uid'           => 'required|integer',
+            'lats'          => 'required|numeric',
+            'longs'         => 'required|numeric',
+            'radius_search' => 'nullable|numeric',
+        ]);
 
         $user = User::find($request->uid);
         if (! $user) {
@@ -256,6 +261,10 @@ class HomeController extends Controller
 
         $actedIds   = \App\Models\Action::where('uid', $user->id)->pluck('profile_id')->toArray();
         $actedIds[] = $user->id;
+
+        $userLat = (float) $request->lats;
+        $userLng = (float) $request->longs;
+        $radius  = (float) ($request->radius_search ?: $user->radius_search ?: 50);
 
         $profiles = User::where('status', 1)
             ->where('user_type', 'REAL_USER')
@@ -269,16 +278,34 @@ class HomeController extends Controller
             ->limit(100)
             ->get();
 
-        $profilelist = $profiles->map(function ($p) {
+        $profilelist = $profiles->map(function ($p) use ($userLat, $userLng) {
+            $pLat = (float) $p->lats;
+            $pLng = (float) $p->longs;
+            $distanceKm = null;
+            if ($userLat && $userLng && $pLat && $pLng) {
+                $R = 6371;
+                $dLat = deg2rad($pLat - $userLat);
+                $dLng = deg2rad($pLng - $userLng);
+                $a = sin($dLat/2)*sin($dLat/2) + cos(deg2rad($userLat))*cos(deg2rad($pLat))*sin($dLng/2)*sin($dLng/2);
+                $distanceKm = round($R * 2 * atan2(sqrt($a), sqrt(1-$a)), 1);
+            }
+
             return [
-                'profile_id'     => (string) $p->id,
-                'profile_name'   => $p->name ?? 'Unknown',
-                'profile_images' => [$p->profile_pic],
-                'profile_lat'    => $p->lats,
-                'profile_longs'  => $p->longs,
-                'gender'         => $p->gender,
-                'match_ratio'    => 80,
+                'profile_id'       => (string) $p->id,
+                'profile_name'     => $p->name ?? 'Unknown',
+                'profile_images'   => [$p->profile_pic],
+                'profile_lat'      => $p->lats,
+                'profile_longs'    => $p->longs,
+                'profile_distance' => $distanceKm !== null ? "{$distanceKm} km" : '0 km',
+                'gender'           => $p->gender,
+                'match_ratio'      => 80,
+                '_distance_km'     => $distanceKm,
             ];
+        })->filter(function ($p) use ($radius) {
+            return $p['_distance_km'] === null || $p['_distance_km'] <= $radius;
+        })->map(function ($p) {
+            unset($p['_distance_km']);
+            return $p;
         })->values();
 
         return response()->json([
