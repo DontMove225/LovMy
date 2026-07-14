@@ -11,18 +11,17 @@ use App\Models\RelationGoal;
 use App\Models\Religion;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ContentController extends Controller
 {
     public function faqs()
     {
-        $faqs = Faq::where('status', 1)->get();
-
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'FAQs',
-            'data'         => $faqs,
+            'data'         => Cache::remember('content.faqs', 300, fn () => Faq::where('status', 1)->get()),
         ]);
     }
 
@@ -62,7 +61,7 @@ class ContentController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Interests',
-            'data'         => Interest::where('status', 1)->get(),
+            'data'         => Cache::remember('content.interests', 300, fn () => Interest::where('status', 1)->get()),
         ]);
     }
 
@@ -72,7 +71,7 @@ class ContentController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Languages',
-            'data'         => Language::where('status', 1)->get(),
+            'data'         => Cache::remember('content.languages', 300, fn () => Language::where('status', 1)->get()),
         ]);
     }
 
@@ -82,7 +81,7 @@ class ContentController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Religions',
-            'data'         => Religion::where('status', 1)->get(),
+            'data'         => Cache::remember('content.religions', 300, fn () => Religion::where('status', 1)->get()),
         ]);
     }
 
@@ -92,7 +91,7 @@ class ContentController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Relation goals',
-            'data'         => RelationGoal::where('status', 1)->get(),
+            'data'         => Cache::remember('content.relation_goals', 300, fn () => RelationGoal::where('status', 1)->get()),
         ]);
     }
 

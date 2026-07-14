@@ -20,6 +20,7 @@ use App\Models\Report;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -29,26 +30,28 @@ class AdminController extends Controller
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
-            'data'         => [
-                'total_users'       => User::where('user_type', 'REAL_USER')->count(),
-                'total_male'        => User::where('user_type', 'REAL_USER')->where('gender', 'Male')->count(),
-                'total_female'      => User::where('user_type', 'REAL_USER')->where('gender', 'Female')->count(),
-                'total_fake_users'  => User::where('user_type', 'FAKE_USER')->count(),
-                'total_subscribers' => User::where('is_subscribe', 1)->count(),
-                'new_users_today'   => User::whereDate('rdate', today())->count(),
-                'total_revenue'     => PlanPurchaseHistory::sum('amount'),
-                'pending_payouts'   => PayoutSetting::where('status', 'Pending')->count(),
-                'pending_reports'   => Report::count(),
-                'total_interests'   => Interest::count(),
-                'total_languages'   => Language::count(),
-                'total_religions'   => Religion::count(),
-                'total_goals'       => RelationGoal::count(),
-                'total_faqs'        => Faq::count(),
-                'total_plans'       => Plan::count(),
-                'total_packages'    => Package::count(),
-                'total_gifts'       => Gift::count(),
-                'total_pages'       => Page::count(),
-            ],
+            'data'         => Cache::remember('admin_dashboard_stats', 60, function () {
+                return [
+                    'total_users'       => User::where('user_type', 'REAL_USER')->count(),
+                    'total_male'        => User::where('user_type', 'REAL_USER')->where('gender', 'Male')->count(),
+                    'total_female'      => User::where('user_type', 'REAL_USER')->where('gender', 'Female')->count(),
+                    'total_fake_users'  => User::where('user_type', 'FAKE_USER')->count(),
+                    'total_subscribers' => User::where('is_subscribe', 1)->count(),
+                    'new_users_today'   => User::whereDate('rdate', today())->count(),
+                    'total_revenue'     => PlanPurchaseHistory::sum('amount'),
+                    'pending_payouts'   => PayoutSetting::where('status', 'Pending')->count(),
+                    'pending_reports'   => Report::count(),
+                    'total_interests'   => Interest::count(),
+                    'total_languages'   => Language::count(),
+                    'total_religions'   => Religion::count(),
+                    'total_goals'       => RelationGoal::count(),
+                    'total_faqs'        => Faq::count(),
+                    'total_plans'       => Plan::count(),
+                    'total_packages'    => Package::count(),
+                    'total_gifts'       => Gift::count(),
+                    'total_pages'       => Page::count(),
+                ];
+            }),
         ]);
     }
 
@@ -111,23 +114,35 @@ class AdminController extends Controller
 
     public function settings()
     {
+        $setting = Setting::current();
+        $setting->makeVisible([
+            'one_key', 'one_hash', 'auth_key', 'otp_id', 'acc_id', 'auth_token',
+            'twilio_number', 'map_key', 'agora_app_id',
+        ]);
+
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
-            'data'         => Setting::current(),
+            'data'         => $setting,
         ]);
     }
 
     public function updateSettings(Request $request)
     {
         $setting = Setting::current();
-        $setting->fill($request->only([
+
+        $data = $request->only([
             'webname', 'weblogo', 'timezone', 'currency', 'one_key', 'one_hash',
             'show_dark', 'sms_type', 'auth_key', 'otp_id', 'acc_id', 'auth_token',
             'twilio_number', 'admob', 'slogin', 'mode', 'banner_id', 'in_id', 'fmode',
             'map_key', 'coin_amt', 'otp_auth', 'coin_limit', 'coin_fun', 'agora_app_id',
             'scredit', 'rcredit', 'ios_banner_id', 'ios_in_id',
-        ]));
+        ]);
+
+        // Laravel's ConvertEmptyStringsToNull middleware turns "" into null; several of
+        // these columns are NOT NULL, so silently drop untouched (null) fields instead
+        // of letting them wipe out existing values or fail the update.
+        $setting->fill(array_filter($data, fn ($value) => $value !== null));
         $setting->save();
 
         return response()->json([

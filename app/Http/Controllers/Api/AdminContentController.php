@@ -13,6 +13,7 @@ use App\Models\Plan;
 use App\Models\RelationGoal;
 use App\Models\Religion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AdminContentController extends Controller
 {
@@ -32,14 +33,16 @@ class AdminContentController extends Controller
 
     public function interestStore(Request $request)
     {
-        $request->validate(['interest' => 'required|string', 'status' => 'required|in:0,1']);
-        Interest::create(['interest' => $request->interest, 'status' => $request->status]);
+        $request->validate(['title' => 'required|string', 'img' => 'nullable|string', 'status' => 'required|in:0,1']);
+        Interest::create(['title' => $request->title, 'img' => $request->img ?? '', 'status' => $request->status]);
+        Cache::forget('content.interests');
         return $this->ok('Interest added');
     }
 
     public function interestDestroy(int $id)
     {
         Interest::findOrFail($id)->delete();
+        Cache::forget('content.interests');
         return $this->ok('Interest deleted');
     }
 
@@ -49,14 +52,16 @@ class AdminContentController extends Controller
 
     public function languageStore(Request $request)
     {
-        $request->validate(['language' => 'required|string', 'status' => 'required|in:0,1']);
-        Language::create(['language' => $request->language, 'status' => $request->status]);
+        $request->validate(['title' => 'required|string', 'img' => 'nullable|string', 'status' => 'required|in:0,1']);
+        Language::create(['title' => $request->title, 'img' => $request->img ?? '', 'status' => $request->status]);
+        Cache::forget('content.languages');
         return $this->ok('Language added');
     }
 
     public function languageDestroy(int $id)
     {
         Language::findOrFail($id)->delete();
+        Cache::forget('content.languages');
         return $this->ok('Language deleted');
     }
 
@@ -66,14 +71,16 @@ class AdminContentController extends Controller
 
     public function religionStore(Request $request)
     {
-        $request->validate(['religion' => 'required|string', 'status' => 'required|in:0,1']);
-        Religion::create(['religion' => $request->religion, 'status' => $request->status]);
+        $request->validate(['title' => 'required|string', 'status' => 'required|in:0,1']);
+        Religion::create(['title' => $request->title, 'status' => $request->status]);
+        Cache::forget('content.religions');
         return $this->ok('Religion added');
     }
 
     public function religionDestroy(int $id)
     {
         Religion::findOrFail($id)->delete();
+        Cache::forget('content.religions');
         return $this->ok('Religion deleted');
     }
 
@@ -83,14 +90,16 @@ class AdminContentController extends Controller
 
     public function goalStore(Request $request)
     {
-        $request->validate(['goal' => 'required|string', 'status' => 'required|in:0,1']);
-        RelationGoal::create(['goal' => $request->goal, 'status' => $request->status]);
+        $request->validate(['title' => 'required|string', 'subtitle' => 'nullable|string', 'status' => 'required|in:0,1']);
+        RelationGoal::create(['title' => $request->title, 'subtitle' => $request->subtitle ?? '', 'status' => $request->status]);
+        Cache::forget('content.relation_goals');
         return $this->ok('Goal added');
     }
 
     public function goalDestroy(int $id)
     {
         RelationGoal::findOrFail($id)->delete();
+        Cache::forget('content.relation_goals');
         return $this->ok('Goal deleted');
     }
 
@@ -100,8 +109,8 @@ class AdminContentController extends Controller
 
     public function giftStore(Request $request)
     {
-        $request->validate(['title' => 'required|string', 'price' => 'required|numeric', 'status' => 'required|in:0,1']);
-        Gift::create(['title' => $request->title, 'price' => $request->price, 'status' => $request->status]);
+        $request->validate(['img' => 'nullable|string', 'price' => 'required|numeric', 'status' => 'required|in:0,1']);
+        Gift::create(['img' => $request->img ?? '', 'price' => $request->price, 'status' => $request->status]);
         return $this->ok('Gift added');
     }
 
@@ -119,6 +128,7 @@ class AdminContentController extends Controller
     {
         $request->validate(['question' => 'required|string', 'answer' => 'required|string', 'status' => 'required|in:0,1']);
         Faq::create(['question' => $request->question, 'answer' => $request->answer, 'status' => $request->status]);
+        Cache::forget('content.faqs');
         return $this->ok('FAQ added');
     }
 
@@ -126,12 +136,14 @@ class AdminContentController extends Controller
     {
         $request->validate(['question' => 'required|string', 'answer' => 'required|string', 'status' => 'required|in:0,1']);
         Faq::findOrFail($id)->update(['question' => $request->question, 'answer' => $request->answer, 'status' => $request->status]);
+        Cache::forget('content.faqs');
         return $this->ok('FAQ updated');
     }
 
     public function faqDestroy(int $id)
     {
         Faq::findOrFail($id)->delete();
+        Cache::forget('content.faqs');
         return $this->ok('FAQ deleted');
     }
 

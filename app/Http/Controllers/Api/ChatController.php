@@ -14,38 +14,49 @@ class ChatController extends Controller
         $request->validate(['uid' => 'required|integer']);
         $uid = (int) $request->uid;
 
+        // 1 query: every message involving this user, most recent first.
         $messages = Message::where('sender_id', $uid)
             ->orWhere('receiver_id', $uid)
             ->orderByDesc('datetime')
             ->get(['sender_id', 'receiver_id', 'message', 'datetime']);
 
-        $seen = [];
-        $conversations = [];
+        $partnerIds = [];
+        $lastMessageByPartner = [];
 
         foreach ($messages as $msg) {
             $partnerId = $msg->sender_id == $uid ? $msg->receiver_id : $msg->sender_id;
-            if (isset($seen[$partnerId])) {
+            if (isset($lastMessageByPartner[$partnerId])) {
                 continue;
             }
-            $seen[$partnerId] = true;
+            $lastMessageByPartner[$partnerId] = $msg;
+            $partnerIds[] = $partnerId;
+        }
 
-            $partner = User::find($partnerId);
+        // 1 query: all conversation partners at once (was 1 per partner).
+        $partners = User::whereIn('id', $partnerIds)->get(['id', 'name', 'profile_pic'])->keyBy('id');
+
+        // 1 query: unread counts for every partner at once (was 1 per partner).
+        $unreadCounts = Message::where('receiver_id', $uid)
+            ->whereIn('sender_id', $partnerIds)
+            ->where('is_read', 0)
+            ->selectRaw('sender_id, count(*) as cnt')
+            ->groupBy('sender_id')
+            ->pluck('cnt', 'sender_id');
+
+        $conversations = [];
+        foreach ($partnerIds as $partnerId) {
+            $partner = $partners->get($partnerId);
             if (! $partner) {
                 continue;
             }
-
-            $unread = Message::where('sender_id', $partnerId)
-                ->where('receiver_id', $uid)
-                ->where('is_read', 0)
-                ->count();
 
             $conversations[] = [
                 'partner_id'   => $partner->id,
                 'name'         => $partner->name,
                 'profile_pic'  => $partner->profile_pic,
-                'last_message' => $msg->message,
-                'datetime'     => $msg->datetime,
-                'unread_count' => $unread,
+                'last_message' => $lastMessageByPartner[$partnerId]->message,
+                'datetime'     => $lastMessageByPartner[$partnerId]->datetime,
+                'unread_count' => $unreadCounts->get($partnerId, 0),
             ];
         }
 

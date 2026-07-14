@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -58,7 +57,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
         $path = $request->file('image')->store('images/profile', 'public');
-        $url  = Storage::url($path);
+        $url  = 'storage/' . $path;
 
         $user->update(['profile_pic' => $url]);
 
@@ -76,7 +75,7 @@ class ProfileController extends Controller
 
         $user      = $request->user();
         $path      = $request->file('image')->store('images/other', 'public');
-        $url       = Storage::url($path);
+        $url       = 'storage/' . $path;
         $otherPics = json_decode($user->other_pic ?? '[]', true);
         $otherPics[] = $url;
         $user->update(['other_pic' => json_encode($otherPics)]);
@@ -96,7 +95,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
         $path = $request->file('image')->store('images/identity', 'public');
-        $url  = Storage::url($path);
+        $url  = 'storage/' . $path;
 
         $user->update(['identity_picture' => $url, 'is_verify' => 0]);
 
@@ -111,7 +110,13 @@ class ProfileController extends Controller
     {
         $request->validate(['uid' => 'required|integer', 'profile_id' => 'required|integer']);
 
-        $profile = User::where('status', 1)->find($request->profile_id);
+        $profile = User::where('status', 1)
+            ->select([
+                'id', 'name', 'profile_pic', 'other_pic', 'birth_date', 'gender',
+                'profile_bio', 'height', 'is_verify', 'is_subscribe',
+                'relation_goal', 'interest', 'language', 'religion', 'lats', 'longs',
+            ])
+            ->find($request->profile_id);
 
         if (! $profile) {
             return response()->json([
