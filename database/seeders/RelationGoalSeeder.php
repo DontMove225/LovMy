@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\RelationGoal;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RelationGoalSeeder extends Seeder
 {
@@ -20,6 +20,8 @@ class RelationGoalSeeder extends Seeder
             ['title' => "Coup d'un soir 😍", 'subtitle' => "Vous recherchez uniquement des aventures pour des sensations fortes.", 'status' => 1],
         ];
 
-        DB::table('relation_goal')->insertOrIgnore($goals);
+        foreach ($goals as $goal) {
+            RelationGoal::updateOrCreate(['title' => $goal['title']], $goal);
+        }
     }
 }

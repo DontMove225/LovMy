@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Religion;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ReligionSeeder extends Seeder
 {
@@ -20,6 +20,8 @@ class ReligionSeeder extends Seeder
             ['title' => 'Autre', 'status' => 1],
         ];
 
-        DB::table('tbl_religion')->insertOrIgnore($religions);
+        foreach ($religions as $religion) {
+            Religion::updateOrCreate(['title' => $religion['title']], $religion);
+        }
     }
 }

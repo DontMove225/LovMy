@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PaymentMethodSeeder extends Seeder
 {
@@ -14,6 +14,8 @@ class PaymentMethodSeeder extends Seeder
             ['title' => 'Stripe', 'img' => 'images/payment/stripe.png', 'attributes' => '{}', 'subtitle' => 'Carte bancaire via Stripe', 'status' => 1, 'p_show' => 1],
         ];
 
-        DB::table('tbl_payment_list')->insertOrIgnore($methods);
+        foreach ($methods as $method) {
+            PaymentMethod::updateOrCreate(['title' => $method['title']], $method);
+        }
     }
 }

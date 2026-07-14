@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Language;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class LanguageSeeder extends Seeder
 {
@@ -17,6 +17,8 @@ class LanguageSeeder extends Seeder
             ['img' => 'images/language/ar.png', 'title' => 'Arabe', 'status' => 1],
         ];
 
-        DB::table('tbl_language')->insertOrIgnore($languages);
+        foreach ($languages as $language) {
+            Language::updateOrCreate(['title' => $language['title']], $language);
+        }
     }
 }

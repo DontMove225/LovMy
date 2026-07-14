@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Faq;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class FaqSeeder extends Seeder
 {
@@ -20,6 +20,8 @@ class FaqSeeder extends Seeder
             ['question' => 'LovMy peut-il être utilisé sur un ordinateur ?', 'answer' => 'Oui, LovMy est disponible sur web et sur les applications mobiles iOS et Android.', 'status' => 1],
         ];
 
-        DB::table('tbl_faq')->insertOrIgnore($faqs);
+        foreach ($faqs as $faq) {
+            Faq::updateOrCreate(['question' => $faq['question']], $faq);
+        }
     }
 }

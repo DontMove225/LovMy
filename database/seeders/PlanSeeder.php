@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Plan;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PlanSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('tbl_plan')->insertOrIgnore([
+        $plans = [
             [
                 'title'          => 'Gratuit',
                 'amt'            => 0,
@@ -43,6 +43,10 @@ class PlanSeeder extends Seeder
                 'status'         => 1,
                 'chat'           => 1,
             ],
-        ]);
+        ];
+
+        foreach ($plans as $plan) {
+            Plan::updateOrCreate(['title' => $plan['title']], $plan);
+        }
     }
 }

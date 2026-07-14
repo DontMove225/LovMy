@@ -28,23 +28,32 @@ class UserSeeder extends Seeder
         foreach ($users as $i => $data) {
             $mobile = '06' . str_pad((string) (10000000 + $i), 8, '0', STR_PAD_LEFT);
 
-            User::factory()->create([
-                'name'              => $data['name'],
-                'mobile'            => $mobile,
-                'email'             => strtolower(str_replace(' ', '.', $data['name'])) . '@example.com',
-                'gender'            => $data['gender'],
-                'birth_date'        => $data['birth_date'],
-                'search_preference' => $data['gender'] === 'FEMALE' ? 'MALE' : 'FEMALE',
-                'profile_bio'       => 'Nouveau·elle sur LovMy, hâte de faire de belles rencontres !',
-                'lats'              => (string) (48.8566 + (mt_rand(-500, 500) / 10000)),
-                'longs'             => (string) (2.3522 + (mt_rand(-500, 500) / 10000)),
-                'relation_goal'     => mt_rand(1, 8),
-                'religion'          => mt_rand(1, 8),
-                'interest'          => json_encode(fake()->randomElements($interests, mt_rand(2, 4))),
-                'language'          => json_encode(fake()->randomElements($languages, mt_rand(1, 2))),
-                'coin'              => mt_rand(0, 200),
-                'is_verify'         => mt_rand(0, 1),
-            ]);
+            User::updateOrCreate(
+                ['mobile' => $mobile],
+                [
+                    'name'              => $data['name'],
+                    'password'          => 'password123',
+                    'ccode'             => '+33',
+                    'status'            => 1,
+                    'user_type'         => 'REAL_USER',
+                    'email'             => strtolower(str_replace(' ', '.', $data['name'])) . '@example.com',
+                    'gender'            => $data['gender'],
+                    'birth_date'        => $data['birth_date'],
+                    'search_preference' => $data['gender'] === 'FEMALE' ? 'MALE' : 'FEMALE',
+                    'radius_search'     => '50',
+                    'profile_bio'       => 'Nouveau·elle sur LovMy, hâte de faire de belles rencontres !',
+                    'lats'              => (string) (48.8566 + (mt_rand(-500, 500) / 10000)),
+                    'longs'             => (string) (2.3522 + (mt_rand(-500, 500) / 10000)),
+                    'relation_goal'     => mt_rand(1, 8),
+                    'religion'          => mt_rand(1, 8),
+                    'interest'          => json_encode(fake()->randomElements($interests, mt_rand(2, 4))),
+                    'language'          => json_encode(fake()->randomElements($languages, mt_rand(1, 2))),
+                    'coin'              => mt_rand(0, 200),
+                    'is_verify'         => mt_rand(0, 1),
+                    'other_pic'         => '[]',
+                    'rdate'             => now(),
+                ]
+            );
         }
     }
 }

@@ -16,10 +16,13 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             ReligionSeeder::class,
             FaqSeeder::class,
+            PageSeeder::class,
             PlanSeeder::class,
             PackageSeeder::class,
             PaymentMethodSeeder::class,
+            GiftSeeder::class,
             UserSeeder::class,
+            LocationTestSeeder::class,
         ]);
     }
 }

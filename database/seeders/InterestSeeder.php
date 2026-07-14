@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Interest;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class InterestSeeder extends Seeder
 {
@@ -23,6 +23,8 @@ class InterestSeeder extends Seeder
             ['img' => 'images/interest/musique.png', 'title' => 'Musique', 'status' => 1],
         ];
 
-        DB::table('tbl_interest')->insertOrIgnore($interests);
+        foreach ($interests as $interest) {
+            Interest::updateOrCreate(['title' => $interest['title']], $interest);
+        }
     }
 }
