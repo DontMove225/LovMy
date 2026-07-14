@@ -2,6 +2,7 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { MyContext } from '@/context/MyProvider';
 import axios from 'axios';
 
@@ -113,14 +114,14 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center space-y-2">
-            <a href="/phonenumber" className="block text-sm text-blush hover:underline">
+            <Link href="/forgot-password" className="block text-sm text-blush hover:underline">
               Mot de passe oublié ?
-            </a>
+            </Link>
             <p className="text-sm text-[var(--txt-soft)]">
               Pas encore de compte ?{' '}
-              <a href="/register" className="font-medium text-blush hover:underline">
+              <Link href="/register" className="font-medium text-blush hover:underline">
                 Créer un compte
-              </a>
+              </Link>
             </p>
           </div>
         </div>

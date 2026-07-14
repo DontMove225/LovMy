@@ -14,6 +14,8 @@ const FIELDS = [
   { key: 'map_key',    label: 'Clé Google Maps',     type: 'text' },
   { key: 'agora_app_id', label: 'Agora App ID',      type: 'text' },
   { key: 'timezone',   label: 'Fuseau horaire',      type: 'text' },
+  { key: 'auth_key',   label: 'MSG91 Auth Key',      type: 'text' },
+  { key: 'otp_id',     label: 'MSG91 OTP Template ID', type: 'text' },
 ];
 
 export default function AdminSettings() {
@@ -42,8 +44,17 @@ export default function AdminSettings() {
     try {
       await axios.put(`${basUrl}admin/settings`, form, { headers });
       setMsg('Paramètres sauvegardés avec succès.');
-    } catch {
-      setMsg('Erreur lors de la sauvegarde.');
+    } catch (error) {
+      const status = error.response?.status;
+      const serverMsg = error.response?.data?.ResponseMsg || error.response?.data?.message;
+      if (!error.response) {
+        setMsg('Erreur réseau : impossible de joindre le serveur backend (vérifiez qu\'il est bien lancé).');
+      } else if (status === 401) {
+        setMsg('Session admin expirée, veuillez vous reconnecter.');
+      } else {
+        setMsg(`Erreur lors de la sauvegarde${status ? ` (${status})` : ''}${serverMsg ? ` : ${serverMsg}` : ''}.`);
+      }
+      console.error(error);
     } finally {
       setSaving(false);
     }
