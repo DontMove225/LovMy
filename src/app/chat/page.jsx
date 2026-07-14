@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
-import { FiSearch, FiSend } from 'react-icons/fi';
+import { useCall } from '@/context/CallProvider';
+import { FiSearch, FiSend, FiPhone, FiVideo } from 'react-icons/fi';
 
 function formatTime(datetime) {
   if (!datetime) return '';
@@ -12,9 +13,11 @@ function formatTime(datetime) {
   return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
 
-export default function ChatPage() {
+function ChatContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { apiPost, getStoredUser } = useContext(MyContext);
+  const { startCall } = useCall();
   const [me, setMe] = useState(null);
   const [conversations, setConversations] = useState([]);
   const [search, setSearch] = useState('');
@@ -54,6 +57,25 @@ export default function ChatPage() {
     if (me) fetchConversations(me.id);
   }, [me, fetchConversations]);
 
+  useEffect(() => {
+    if (!me) return;
+    const partnerId = searchParams.get('partner');
+    const partnerName = searchParams.get('name');
+    if (!partnerId) return;
+
+    setActive((current) => {
+      if (current?.partner_id === Number(partnerId)) return current;
+      const existing = conversations.find((c) => c.partner_id === Number(partnerId));
+      return existing || {
+        partner_id: Number(partnerId),
+        name: partnerName || 'Utilisateur',
+        last_message: '',
+        datetime: null,
+        unread_count: 0,
+      };
+    });
+  }, [me, searchParams, conversations]);
+
   const fetchMessages = useCallback(async (uid, partnerId) => {
     try {
       const result = await apiPost('messages_list.php', { uid, partner_id: partnerId });
@@ -68,7 +90,10 @@ export default function ChatPage() {
   useEffect(() => {
     if (!me || !active) return;
     fetchMessages(me.id, active.partner_id);
-    const interval = setInterval(() => fetchMessages(me.id, active.partner_id), 4000);
+    const interval = setInterval(() => {
+      if (document.hidden) return;
+      fetchMessages(me.id, active.partner_id);
+    }, 4000);
     return () => clearInterval(interval);
   }, [me, active, fetchMessages]);
 
@@ -158,10 +183,28 @@ export default function ChatPage() {
 
         {/* Thread */}
         <section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-[var(--line)] bg-white/[0.03]">
-          <div className="border-b border-[var(--line)] px-6 py-4">
+          <div className="flex items-center justify-between border-b border-[var(--line)] px-6 py-4">
             <h2 className="font-serif text-lg text-white">
               {active ? active.name : 'Sélectionnez une conversation'}
             </h2>
+            {active ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => startCall(active.partner_id, active.name, 'AUDIO')}
+                  className="grid h-9 w-9 place-items-center rounded-full border border-[var(--line)] text-[var(--txt-soft)] transition hover:border-ember/40 hover:text-white"
+                  aria-label="Appel audio"
+                >
+                  <FiPhone className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => startCall(active.partner_id, active.name, 'VIDEO')}
+                  className="grid h-9 w-9 place-items-center rounded-full border border-[var(--line)] text-[var(--txt-soft)] transition hover:border-ember/40 hover:text-white"
+                  aria-label="Appel vidéo"
+                >
+                  <FiVideo className="h-4 w-4" />
+                </button>
+              </div>
+            ) : null}
           </div>
 
           <div className="flex-1 space-y-3 overflow-y-auto px-6 py-4">
@@ -219,5 +262,13 @@ export default function ChatPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={null}>
+      <ChatContent />
+    </Suspense>
   );
 }

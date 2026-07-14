@@ -1,6 +1,7 @@
 import './globals.css';
 import { Fraunces, Manrope, Space_Grotesk } from 'next/font/google';
 import { MyProvider } from '@/context/MyProvider';
+import { CallProvider } from '@/context/CallProvider';
 import AppShell from './components/AppShell';
 
 const fraunces = Fraunces({
@@ -65,11 +66,13 @@ export default function RootLayout({ children }) {
     <html lang="fr" className={`${fraunces.variable} ${manrope.variable} ${spaceGrotesk.variable}`}>
       <body className="min-h-screen bg-obsidian text-[var(--txt)] font-sans antialiased">
         <MyProvider>
-          <AppShell>
-            <div id="main-content">
-              {children}
-            </div>
-          </AppShell>
+          <CallProvider>
+            <AppShell>
+              <div id="main-content">
+                {children}
+              </div>
+            </AppShell>
+          </CallProvider>
         </MyProvider>
       </body>
     </html>
