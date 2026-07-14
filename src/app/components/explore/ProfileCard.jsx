@@ -1,5 +1,11 @@
+'use client';
+
+import { memo, useState } from 'react';
 import Link from 'next/link';
-import { FiHeart, FiX, FiMapPin, FiCheckCircle } from 'react-icons/fi';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { FiHeart, FiX, FiMapPin, FiMessageSquare, FiGift, FiLock } from 'react-icons/fi';
+import GiftPicker from './GiftPicker';
 
 function calcAge(birthDate) {
   if (!birthDate) return null;
@@ -9,86 +15,141 @@ function calcAge(birthDate) {
   return Math.floor(diffMs / (365.25 * 24 * 60 * 60 * 1000));
 }
 
-export default function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, onLike, onPass }) {
+function CompatRing({ pct }) {
+  const r = 15.5;
+  const circumference = 2 * Math.PI * r;
+  return (
+    <div className="relative h-9 w-9 shrink-0">
+      <svg viewBox="0 0 36 36" className="h-9 w-9 -rotate-90">
+        <circle cx="18" cy="18" r={r} fill="rgba(8,7,20,0.55)" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
+        <circle
+          cx="18" cy="18" r={r} fill="none" stroke="#F64135" strokeWidth="3" strokeLinecap="round"
+          strokeDasharray={`${(pct / 100) * circumference} ${circumference}`}
+        />
+      </svg>
+      <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white">
+        {pct}%
+      </span>
+    </div>
+  );
+}
+
+function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount = 1, canChat = true, gifts = [], onLike, onPass, onGift }) {
+  const router = useRouter();
   const age = calcAge(profile.birth_date);
+  const [showGifts, setShowGifts] = useState(false);
+
+  const handleChat = () => {
+    if (!canChat) {
+      router.push('/upgrade');
+      return;
+    }
+    router.push(`/chat?partner=${profile.id}&name=${encodeURIComponent(profile.name || '')}`);
+  };
 
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-[var(--line)] bg-gradient-to-b from-[#15101f] to-[#0a0712] shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
-      <Link href={`/detail/${profile.id}`} className="block">
-        <div
-          className="relative h-64 w-full"
-          style={{ background: 'linear-gradient(160deg, var(--steel), var(--velvet) 60%, var(--nightred))' }}
-        >
-          {profile.profile_pic ? (
-            <img
-              src={`${imageBaseURL}${profile.profile_pic}`}
-              alt={profile.name || 'Profil'}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center font-serif text-6xl text-white/25">
-              {profile.name?.[0]?.toUpperCase() ?? '?'}
-            </div>
-          )}
+    <div>
+      <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-[var(--line)] shadow-[0_12px_30px_rgba(0,0,0,0.35)]">
+        <Link href={`/detail/${profile.id}`} className="absolute inset-0">
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(160deg, var(--steel), var(--velvet) 60%, var(--nightred))' }}
+          >
+            {profile.profile_pic ? (
+              <Image
+                src={`${imageBaseURL}${profile.profile_pic}`}
+                alt={profile.name || 'Profil'}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center font-serif text-6xl text-white/25">
+                {profile.name?.[0]?.toUpperCase() ?? '?'}
+              </div>
+            )}
+          </div>
+        </Link>
 
-          {profile.is_verify ? (
-            <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-obsidian/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-blush backdrop-blur">
-              <FiCheckCircle className="h-3 w-3" /> Vérifié
-            </span>
-          ) : null}
+        {/* Photo carousel dots */}
+        {photoCount > 1 ? (
+          <div className="absolute left-3 right-3 top-3 flex gap-1">
+            {Array.from({ length: photoCount }).map((_, i) => (
+              <span key={i} className={`h-0.5 flex-1 rounded-full ${i === 0 ? 'bg-white' : 'bg-white/30'}`} />
+            ))}
+          </div>
+        ) : null}
 
+        {/* Bottom gradient overlay */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-obsidian via-obsidian/60 to-transparent" />
+
+        {/* Compat ring */}
+        {compatPct != null ? (
+          <div className="absolute right-3 top-3">
+            <CompatRing pct={compatPct} />
+          </div>
+        ) : null}
+
+        {/* Bottom content */}
+        <Link href={`/detail/${profile.id}`} className="absolute inset-x-0 bottom-0 p-4">
           {distanceKm != null ? (
-            <span className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-obsidian/60 px-2.5 py-1 font-mono text-[11px] text-white backdrop-blur">
+            <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-obsidian/60 px-2.5 py-1 font-mono text-[11px] text-white backdrop-blur">
               <FiMapPin className="h-3 w-3" /> {distanceKm.toFixed(0)} km
             </span>
           ) : null}
-        </div>
-      </Link>
-
-      {(onLike || onPass) && (
-        <div className="absolute -bottom-5 right-5 flex gap-2">
-          {onPass ? (
-            <button
-              onClick={onPass}
-              className="grid h-11 w-11 place-items-center rounded-full border border-[var(--line)] bg-obsidian text-[var(--txt-soft)] shadow-lg transition hover:text-ember"
-              aria-label="Passer"
-            >
-              <FiX className="h-5 w-5" />
-            </button>
+          <p className="font-serif text-lg leading-tight text-white">
+            {profile.name || 'Profil'}
+            {age ? `, ${age}` : ''}
+          </p>
+          {profile.profile_bio ? (
+            <p className="mt-0.5 line-clamp-1 text-xs text-white/70">{profile.profile_bio}</p>
           ) : null}
-          {onLike ? (
-            <button
-              onClick={onLike}
-              className="grid h-11 w-11 place-items-center rounded-full bg-gradient-passion text-white shadow-[0_10px_24px_rgba(235,6,3,0.45)] transition hover:brightness-110"
-              aria-label="Liker"
-            >
-              <FiHeart className="h-5 w-5" />
-            </button>
-          ) : null}
-        </div>
-      )}
+        </Link>
+      </div>
 
-      <div className="px-5 pb-6 pt-8">
-        <h3 className="font-serif text-xl text-white">
-          {profile.name || 'Profil'}
-          {age ? `, ${age}` : ''}
-        </h3>
-        {profile.profile_bio ? (
-          <p className="mt-1 line-clamp-2 text-sm text-[var(--txt-soft)]">{profile.profile_bio}</p>
+      {/* Action row below the card */}
+      <div className="relative mt-3 flex items-center justify-center gap-2.5">
+        {onPass ? (
+          <button
+            onClick={onPass}
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-[var(--txt-soft)] transition hover:bg-ember/10 hover:text-ember"
+            aria-label="Passer"
+          >
+            <FiX className="h-4 w-4" />
+          </button>
+        ) : null}
+        {onLike ? (
+          <button
+            onClick={onLike}
+            className="grid h-11 w-11 place-items-center rounded-full bg-gradient-passion text-white shadow-[0_6px_16px_rgba(235,6,3,0.45)] transition hover:brightness-110"
+            aria-label="Liker"
+          >
+            <FiHeart className="h-[18px] w-[18px]" />
+          </button>
+        ) : null}
+        <button
+          onClick={handleChat}
+          className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-[var(--txt-soft)] transition hover:bg-white/10 hover:text-white"
+          aria-label={canChat ? 'Envoyer un message' : 'Fonctionnalité Premium'}
+        >
+          {canChat ? <FiMessageSquare className="h-4 w-4" /> : <FiLock className="h-4 w-4" />}
+        </button>
+        {onGift ? (
+          <button
+            onClick={() => setShowGifts((v) => !v)}
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-[var(--txt-soft)] transition hover:bg-white/10 hover:text-white"
+            aria-label="Envoyer un cadeau"
+          >
+            <FiGift className="h-4 w-4" />
+          </button>
         ) : null}
 
-        {compatPct != null ? (
-          <div className="mt-4 flex items-center gap-2.5">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-steel to-ember"
-                style={{ width: `${compatPct}%` }}
-              />
-            </div>
-            <span className="font-mono text-xs text-ember">{compatPct}%</span>
-          </div>
+        {showGifts ? (
+          <GiftPicker gifts={gifts} onSend={onGift} onClose={() => setShowGifts(false)} />
         ) : null}
       </div>
     </div>
   );
 }
+
+export default memo(ProfileCard);

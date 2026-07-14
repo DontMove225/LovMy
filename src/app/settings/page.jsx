@@ -2,6 +2,7 @@
 
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { MyContext } from '@/context/MyProvider';
 import { FiCamera } from 'react-icons/fi';
 
@@ -193,7 +194,13 @@ export default function SettingsPage() {
           <div className="mt-4 flex items-center gap-5">
             <div className="relative h-24 w-24 overflow-hidden rounded-full border border-[var(--line)] bg-gradient-passion">
               {me.profile_pic ? (
-                <img src={`${imageBaseURL}${me.profile_pic}`} alt={me.name} className="h-full w-full object-cover" />
+                <Image
+                  src={`${imageBaseURL}${me.profile_pic}`}
+                  alt={me.name}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                />
               ) : (
                 <div className="flex h-full w-full items-center justify-center font-serif text-3xl text-white">
                   {me.name?.[0]?.toUpperCase() ?? '?'}

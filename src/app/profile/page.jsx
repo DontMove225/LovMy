@@ -3,6 +3,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MyContext } from '@/context/MyProvider';
 import { FiEdit2, FiCheckCircle, FiStar } from 'react-icons/fi';
 
@@ -90,7 +91,13 @@ export default function ProfilePage() {
             style={{ background: 'linear-gradient(160deg, var(--steel), var(--velvet) 60%, var(--nightred))' }}
           >
             {photos.length > 0 ? (
-              <img src={`${imageBaseURL}${photos[0]}`} alt={user.name} className="h-full w-full object-cover" />
+              <Image
+                src={`${imageBaseURL}${photos[0]}`}
+                alt={user.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
+              />
             ) : (
               <div className="flex h-full items-center justify-center font-serif text-8xl text-white/20">
                 {user.name?.[0]?.toUpperCase() ?? '?'}

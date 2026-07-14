@@ -2,6 +2,7 @@
 
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { MyContext } from '@/context/MyProvider';
 import { FiSlash, FiUserX } from 'react-icons/fi';
 
@@ -71,9 +72,15 @@ export default function BlockUserPage() {
           <div className="space-y-3">
             {blocked.map((b) => (
               <div key={b.id} className="flex items-center gap-4 rounded-2xl border border-[var(--line)] bg-white/[0.03] p-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-passion text-sm font-bold text-white">
+                <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-passion text-sm font-bold text-white">
                   {b.profile?.profile_pic ? (
-                    <img src={`${imageBaseURL}${b.profile.profile_pic}`} alt={b.profile.name} className="h-full w-full object-cover" />
+                    <Image
+                      src={`${imageBaseURL}${b.profile.profile_pic}`}
+                      alt={b.profile.name}
+                      fill
+                      sizes="44px"
+                      className="object-cover"
+                    />
                   ) : (
                     b.profile?.name?.[0]?.toUpperCase() ?? '?'
                   )}
