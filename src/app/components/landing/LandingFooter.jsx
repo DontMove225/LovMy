@@ -1,15 +1,29 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const legalLinks = [
-  { label: 'Conditions générales d’utilisation', href: '/legal/cgu' },
-  { label: 'Politique de confidentialité', href: '/legal/confidentialite' },
-  { label: 'À propos', href: '/about' },
-  { label: 'FAQ', href: '/faq' },
-  { label: 'Contact', href: '/contact' },
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://lovmy.fr/api/';
 
-export default function LandingFooter() {
+async function getPageLinks() {
+  try {
+    const res = await fetch(`${API_URL}pagelist.php`, { method: 'POST', cache: 'no-store' });
+    const json = await res.json();
+    const pages = json.Result === 'true' ? (json.data || []) : [];
+
+    const findId = (title) => pages.find((p) => p.title === title)?.id;
+
+    return [
+      { label: 'À propos', id: findId('À propos') },
+      { label: 'Conditions Générales d’Utilisation', id: findId('Conditions Générales d\'Utilisation') },
+      { label: 'Politique de Confidentialité', id: findId('Politique de Confidentialité') },
+    ].filter((l) => l.id);
+  } catch {
+    return [];
+  }
+}
+
+export default async function LandingFooter() {
+  const legalPages = await getPageLinks();
+
   return (
     <footer className="border-t border-[var(--line)] px-7 py-16">
       <div className="mx-auto flex max-w-content flex-col items-center gap-8 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
@@ -22,11 +36,13 @@ export default function LandingFooter() {
             Édité par <b className="font-medium text-[var(--txt)]">Full IT</b>
           </p>
           <nav className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 sm:justify-start">
-            {legalLinks.map((l) => (
-              <Link key={l.href} href={l.href} className="text-xs text-[var(--txt-soft)] transition hover:text-white">
+            {legalPages.map((l) => (
+              <Link key={l.id} href={`/pages/${l.id}`} className="text-xs text-[var(--txt-soft)] transition hover:text-white">
                 {l.label}
               </Link>
             ))}
+            <Link href="/faq" className="text-xs text-[var(--txt-soft)] transition hover:text-white">FAQ</Link>
+            <Link href="/contact" className="text-xs text-[var(--txt-soft)] transition hover:text-white">Contact</Link>
           </nav>
         </div>
 

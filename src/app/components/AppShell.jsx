@@ -73,7 +73,7 @@ export default function AppShell({ children }) {
   return (
     <div className="flex min-h-screen bg-obsidian">
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 transform border-r border-[var(--line)] bg-white/[0.02] transition-transform duration-200 lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-[var(--line)] bg-obsidian transition-transform duration-200 lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -119,8 +119,8 @@ export default function AppShell({ children }) {
         <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-16 items-center justify-between gap-4 border-b border-[var(--line)] bg-white/[0.02] px-6">
+      <div className="flex min-w-0 flex-1 flex-col lg:pl-72">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-[var(--line)] bg-obsidian/95 px-6 backdrop-blur-xl">
           <button
             className="text-[var(--txt-soft)] hover:text-white lg:hidden"
             onClick={() => setSidebarOpen(true)}
