@@ -28,7 +28,7 @@ class AuthController extends Controller
               ->orWhere('email', $request->mobile);
         })->where('status', 1)->first();
 
-        if (! $user || $user->password !== $request->password) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
                 'ResponseCode' => '401',
                 'Result'       => 'false',
@@ -88,7 +88,7 @@ class AuthController extends Controller
         $user = User::create([
             'name'       => $request->name,
             'mobile'     => $request->mobile,
-            'password'   => $request->password,
+            'password'   => Hash::make($request->password),
             'ccode'      => $request->ccode ?? '',
             'email'      => $request->email ?? '',
             'gender'     => $request->gender ?? 'MALE',
@@ -303,7 +303,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $user->update(['password' => $request->password]);
+        $user->update(['password' => Hash::make($request->password)]);
 
         return response()->json([
             'ResponseCode' => '200',

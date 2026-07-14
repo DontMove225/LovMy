@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -32,7 +33,7 @@ class UserSeeder extends Seeder
                 ['mobile' => $mobile],
                 [
                     'name'              => $data['name'],
-                    'password'          => 'password123',
+                    'password'          => Hash::make('password123'),
                     'ccode'             => '+33',
                     'status'            => 1,
                     'user_type'         => 'REAL_USER',
