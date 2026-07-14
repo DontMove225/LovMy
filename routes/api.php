@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AdminContentController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\GiftController;
@@ -22,6 +23,9 @@ Route::post('/user_login.php',    [AuthController::class, 'login']);
 Route::post('/reg_user.php',      [AuthController::class, 'register']);
 Route::post('/mobile_check.php',  [AuthController::class, 'mobileCheck']);
 Route::post('/email_check.php',   [AuthController::class, 'emailCheck']);
+Route::post('/verify_registration_otp.php', [AuthController::class, 'verifyRegistrationOtp']);
+Route::post('/resend_registration_otp.php', [AuthController::class, 'resendRegistrationOtp']);
+Route::post('/send_forgot_password_otp.php', [AuthController::class, 'sendForgotPasswordOtp']);
 Route::post('/forget_password.php', [AuthController::class, 'forgetPassword']);
 
 // Admin auth
@@ -35,6 +39,8 @@ Route::get('/religionlist.php', [ContentController::class, 'religions']);
 Route::get('/faq.php',          [ContentController::class, 'faqs']);
 Route::get('/pagelist.php',     [ContentController::class, 'pages']);
 Route::post('/pagelist.php',    [ContentController::class, 'pages']);
+Route::get('/page.php',         [ContentController::class, 'page']);
+Route::post('/page.php',        [ContentController::class, 'page']);
 Route::get('/sms_type.php',     [ContentController::class, 'smsType']);
 Route::post('/getdata.php',     [ContentController::class, 'referData']);
 
@@ -104,6 +110,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/conversations.php', [ChatController::class, 'conversations']);
     Route::post('/messages_list.php', [ChatController::class, 'messages']);
     Route::post('/send_message.php',  [ChatController::class, 'send']);
+
+    // Appels Audio/Vidéo (TRTC)
+    Route::post('/call_initiate.php', [CallController::class, 'initiate']);
+    Route::post('/call_pending.php',  [CallController::class, 'pending']);
+    Route::post('/call_respond.php',  [CallController::class, 'respond']);
+    Route::post('/call_status.php',   [CallController::class, 'status']);
+    Route::post('/call_end.php',      [CallController::class, 'end']);
+    Route::post('/call_history.php',  [CallController::class, 'history']);
 
     // Settings (public-ish)
     Route::post('/setting.php', [ContentController::class, 'settings']);

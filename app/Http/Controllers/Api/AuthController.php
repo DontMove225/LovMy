@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Models\CoinReport;
 use App\Models\WalletReport;
+use App\Services\Msg91Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -46,7 +47,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(Request $request, Msg91Service $msg91)
     {
         $request->validate([
             'name'          => 'required|string',
@@ -73,6 +74,14 @@ class AuthController extends Controller
             ]);
         }
 
+        if (! $msg91->sendOtp($request->mobile)) {
+            return response()->json([
+                'ResponseCode' => '500',
+                'Result'       => 'false',
+                'ResponseMsg'  => "Impossible d'envoyer le code de vérification par SMS. Réessayez.",
+            ]);
+        }
+
         $setting = Setting::current();
         $referCode = rand(100000, 999999);
 
@@ -85,7 +94,7 @@ class AuthController extends Controller
             'gender'     => $request->gender ?? 'MALE',
             'birth_date' => $request->birth_date,
             'code'       => $referCode,
-            'status'     => 1,
+            'status'     => 0,
             'coin'       => $setting->scredit ?? 0,
             'wallet'     => 0,
             'lats'       => '',
@@ -124,15 +133,68 @@ class AuthController extends Controller
             }
         }
 
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Code de vérification envoyé par SMS',
+            'mobile'       => $user->mobile,
+        ], 201);
+    }
+
+    public function verifyRegistrationOtp(Request $request, Msg91Service $msg91)
+    {
+        $request->validate([
+            'mobile' => 'required|string',
+            'otp'    => 'required|string',
+        ]);
+
+        $user = User::where('mobile', $request->mobile)->first();
+
+        if (! $user) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'User not found',
+            ]);
+        }
+
+        if (! $msg91->verifyOtp($request->mobile, $request->otp)) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Code invalide ou expiré',
+            ]);
+        }
+
+        $user->update(['status' => 1]);
         $token = $user->createToken('user-token')->plainTextToken;
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
-            'ResponseMsg'  => 'Register Successfully!',
+            'ResponseMsg'  => 'Compte vérifié avec succès !',
             'UserLogin'    => $user,
             'token'        => $token,
-        ], 201);
+        ]);
+    }
+
+    public function resendRegistrationOtp(Request $request, Msg91Service $msg91)
+    {
+        $request->validate(['mobile' => 'required|string']);
+
+        if (! $msg91->resendOtp($request->mobile)) {
+            return response()->json([
+                'ResponseCode' => '500',
+                'Result'       => 'false',
+                'ResponseMsg'  => "Impossible de renvoyer le code. Réessayez.",
+            ]);
+        }
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Code renvoyé par SMS',
+        ]);
     }
 
     public function logout(Request $request)
@@ -181,10 +243,43 @@ class AuthController extends Controller
         ]);
     }
 
-    public function forgetPassword(Request $request)
+    public function sendForgotPasswordOtp(Request $request, Msg91Service $msg91)
+    {
+        $request->validate(['mobile' => 'required|string']);
+
+        $user = User::where('mobile', $request->mobile)
+            ->orWhere('email', $request->mobile)
+            ->first();
+
+        if (! $user) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'No account found with this mobile/email',
+            ]);
+        }
+
+        if (! $msg91->sendOtp($user->mobile)) {
+            return response()->json([
+                'ResponseCode' => '500',
+                'Result'       => 'false',
+                'ResponseMsg'  => "Impossible d'envoyer le code de vérification par SMS. Réessayez.",
+            ]);
+        }
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Code de vérification envoyé par SMS',
+            'mobile'       => $user->mobile,
+        ]);
+    }
+
+    public function forgetPassword(Request $request, Msg91Service $msg91)
     {
         $request->validate([
             'mobile'   => 'required|string',
+            'otp'      => 'required|string',
             'password' => 'required|string',
         ]);
 
@@ -197,6 +292,14 @@ class AuthController extends Controller
                 'ResponseCode' => '401',
                 'Result'       => 'false',
                 'ResponseMsg'  => 'No account found with this mobile/email',
+            ]);
+        }
+
+        if (! $msg91->verifyOtp($user->mobile, $request->otp)) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Code invalide ou expiré',
             ]);
         }
 
