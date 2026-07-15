@@ -11,11 +11,7 @@ const FIELDS = [
   { key: 'coin_limit', label: 'Seuil retrait (coins)', type: 'number' },
   { key: 'scredit',    label: 'Bonus inscription',   type: 'number' },
   { key: 'rcredit',    label: 'Bonus parrainage',    type: 'number' },
-  { key: 'map_key',    label: 'Clé Google Maps',     type: 'text' },
-  { key: 'agora_app_id', label: 'Agora App ID',      type: 'text' },
   { key: 'timezone',   label: 'Fuseau horaire',      type: 'text' },
-  { key: 'auth_key',   label: 'MSG91 Auth Key',      type: 'text' },
-  { key: 'otp_id',     label: 'MSG91 OTP Template ID', type: 'text' },
 ];
 
 export default function AdminSettings() {
@@ -64,7 +60,7 @@ export default function AdminSettings() {
 
   return (
     <div className="max-w-2xl space-y-6">
-      <h1 className="font-serif text-2xl text-white">Paramètres</h1>
+      <h1 className="font-serif text-2xl text-white">Communication</h1>
 
       <form onSubmit={handleSave} className="space-y-4 rounded-2xl border border-[var(--line)] bg-white/[0.03] p-6">
         {FIELDS.map(({ key, label, type }) => (
