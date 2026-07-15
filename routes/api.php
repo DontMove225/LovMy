@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AdminContentController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AdminTechnicalSettingsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\ChatController;
@@ -130,6 +131,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/dashboard',         [AdminController::class, 'dashboard']);
         Route::get('/settings',          [AdminController::class, 'settings']);
         Route::put('/settings',          [AdminController::class, 'updateSettings']);
+        Route::post('/technical-settings/verify-password', [AdminTechnicalSettingsController::class, 'verifyPassword'])
+            ->middleware('throttle:5,1');
+        Route::prefix('technical-settings')->middleware(['tech.password', 'throttle:30,1'])->group(function () {
+            Route::get('/',                 [AdminTechnicalSettingsController::class, 'index']);
+            Route::put('/',                 [AdminTechnicalSettingsController::class, 'update']);
+            Route::post('/change-password', [AdminTechnicalSettingsController::class, 'changePassword']);
+        });
         Route::get('/users',             [AdminController::class, 'userList']);
         Route::post('/users/ban',        [AdminController::class, 'banUser']);
         Route::post('/users/verify',     [AdminController::class, 'verifyUser']);

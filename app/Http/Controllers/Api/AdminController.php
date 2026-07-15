@@ -115,15 +115,11 @@ class AdminController extends Controller
     public function settings()
     {
         $setting = Setting::current();
-        $setting->makeVisible([
-            'one_key', 'one_hash', 'auth_key', 'otp_id', 'acc_id', 'auth_token',
-            'twilio_number', 'map_key', 'agora_app_id',
-        ]);
 
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
-            'data'         => $setting,
+            'data'         => \Illuminate\Support\Arr::only($setting->toArray(), Setting::COMMUNICATION_FIELDS),
         ]);
     }
 
@@ -131,13 +127,7 @@ class AdminController extends Controller
     {
         $setting = Setting::current();
 
-        $data = $request->only([
-            'webname', 'weblogo', 'timezone', 'currency', 'one_key', 'one_hash',
-            'show_dark', 'sms_type', 'auth_key', 'otp_id', 'acc_id', 'auth_token',
-            'twilio_number', 'admob', 'slogin', 'mode', 'banner_id', 'in_id', 'fmode',
-            'map_key', 'coin_amt', 'otp_auth', 'coin_limit', 'coin_fun', 'agora_app_id',
-            'scredit', 'rcredit', 'ios_banner_id', 'ios_in_id',
-        ]);
+        $data = $request->only(Setting::COMMUNICATION_FIELDS);
 
         // Laravel's ConvertEmptyStringsToNull middleware turns "" into null; several of
         // these columns are NOT NULL, so silently drop untouched (null) fields instead

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Call;
+use App\Models\Setting;
 use App\Services\TlsSigApiV2;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,9 @@ class CallController extends Controller
 {
     private function credentials(): ?array
     {
-        $sdkAppId = env('TRTC_SDK_APP_ID');
-        $secretKey = env('TRTC_SECRET_KEY');
+        $setting = Setting::current();
+        $sdkAppId = $setting->trtc_sdk_app_id;
+        $secretKey = $setting->trtc_secret_key;
 
         if (! $sdkAppId || ! $secretKey) {
             return null;
