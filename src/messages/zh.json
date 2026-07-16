@@ -1,0 +1,161 @@
+{
+  "Metadata": {
+    "title": "LovMy — Never be lonely",
+    "description": "LovMy是新一代交友平台，将智能匹配与人性温暖相结合。"
+  },
+  "Nav": {
+    "home": "首页",
+    "discover": "发现",
+    "messages": "消息",
+    "notifications": "通知",
+    "wallet": "钱包",
+    "premium": "会员",
+    "account": "账户",
+    "myProfile": "我的资料",
+    "buyCoins": "购买金币",
+    "settings": "设置与隐私",
+    "editProfile": "编辑资料",
+    "logout": "退出登录",
+    "defaultUser": "用户"
+  },
+  "LandingHeader": {
+    "concept": "理念",
+    "features": "功能",
+    "download": "下载",
+    "login": "登录"
+  },
+  "Hero": {
+    "kicker": "新一代交友方式",
+    "tagline": "Never be lonely",
+    "subtitle": "当智能遇见吸引力。",
+    "description": "算法的精准与情感的温度融为一体的交友应用。找到那个真正与你相似的人。",
+    "ctaRegister": "在网页上注册",
+    "ctaDownload": "下载应用",
+    "publisher": "发行方",
+    "publisherName": "Full IT",
+    "security": "安全性",
+    "securityValue": "四步验证"
+  },
+  "Concept": {
+    "eyebrow": "理念与定位",
+    "title": "一颗心，两个世界",
+    "techLabel": "科技的一面",
+    "techTitle": "智能",
+    "techText": "简洁的线条、精准度、增强的连接体验。标志中「机械」的部分体现了安全可靠的匹配。标志色：午夜钢蓝。",
+    "humanLabel": "人性的一面",
+    "humanTitle": "情感",
+    "humanText": "柔和的曲线、目光、存在感。标志中「生动」的部分承载着渴望、温柔与真实的相遇。标志色：激情红与温柔粉。",
+    "value1Label": "价值观 01",
+    "value1Title": "智能连接",
+    "value1Text": "数据服务于情感联结，而非相反。低调、公正、贴切。",
+    "value2Label": "价值观 02",
+    "value2Title": "真挚情感",
+    "value2Text": "我们诉诸内心。温暖、真诚、恰到好处的热情。",
+    "value3Label": "价值观 03",
+    "value3Title": "高级优雅",
+    "value3Text": "漆红、深黑、留白。一种感觉高端的体验。"
+  },
+  "Features": {
+    "eyebrow": "您将获得",
+    "title": "为真实相遇而生",
+    "matchingTitle": "AI智能匹配",
+    "matchingText": "兼容性算法会学习您的偏好，为您推荐真正合适的资料。",
+    "securityTitle": "安全与验证",
+    "securityText": "四步验证（邮箱、电话、自拍、身份证件），并对资料和内容进行积极审核。",
+    "videoTitle": "视频交友",
+    "videoText": "内置高清语音和视频通话功能，可直接在对话中使用，见面前先聊起来。",
+    "premiumTitle": "会员",
+    "premiumText": "无限点赞、隐身模式、资料曝光加速、回退功能及高级筛选，助您更进一步。"
+  },
+  "Testimonials": {
+    "eyebrow": "他们找到了彼此",
+    "title": "Never be lonely，真实发生",
+    "quote1": "我们在一个周二的晚上配对成功。三个月后，我们就住在了一起。",
+    "name1": "Camille，27岁",
+    "quote2": "见面前先视频通话，一切都不一样了。再也没有令人失望的惊讶。",
+    "name2": "Idriss，31岁",
+    "quote3": "匹配的精准度令人惊叹。我终于不再漫无目的地划来划去了。",
+    "name3": "Léa，24岁"
+  },
+  "DownloadCta": {
+    "eyebrow": "无论您身在何处",
+    "title": "随身携带LovMy",
+    "text": "移动应用即将登陆iOS和安卓平台。在此之前，请先在网页上注册。",
+    "comingSoon": "即将上线",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "cta": "在网页上注册"
+  },
+  "Footer": {
+    "brandDoc": "品牌文档",
+    "publisher": "发行方",
+    "publisherName": "Full IT",
+    "faq": "常见问题",
+    "contact": "联系我们",
+    "tagline": "Never be lonely",
+    "copyright": "© {year} LovMy — 保留所有权利"
+  },
+  "Login": {
+    "title": "欢迎来到LovMy",
+    "subtitle": "登录以继续",
+    "emailOrPhone": "邮箱或手机号码",
+    "emailOrPhonePlaceholder": "邮箱或手机号",
+    "password": "密码",
+    "submit": "登录",
+    "submitLoading": "登录中…",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "还没有账户？",
+    "createAccount": "创建账户",
+    "errorRequired": "请输入您的账号和密码。",
+    "errorGeneric": "登录失败，请检查您的登录信息。",
+    "errorNetwork": "网络错误，请稍后重试。"
+  },
+  "Register": {
+    "title": "创建账户",
+    "subtitle": "注册以开始使用LovMy。",
+    "name": "姓名",
+    "email": "邮箱",
+    "password": "密码",
+    "submit": "继续",
+    "errorRequired": "所有字段均为必填项。",
+    "errorGeneric": "无法验证该邮箱",
+    "errorNetwork": "网络错误，请稍后重试。"
+  },
+  "SocialLogin": {
+    "orContinueWith": "或使用以下方式继续",
+    "continueWithFacebook": "使用Facebook继续",
+    "errorGeneric": "无法登录。",
+    "errorNetwork": "网络错误，请稍后重试。"
+  },
+  "AdminLogin": {
+    "title": "LovMy管理后台",
+    "subtitle": "仅限管理员访问",
+    "username": "账号",
+    "password": "密码",
+    "submit": "登录",
+    "submitLoading": "登录中…",
+    "errorRequired": "请输入账号和密码。",
+    "errorGeneric": "登录信息无效。"
+  },
+  "Explore": {
+    "tabDiscover": "发现",
+    "tabLikedMe": "喜欢我的人",
+    "tabFavourites": "收藏",
+    "tabPassed": "已跳过",
+    "eyebrow": "发现",
+    "title": "找到你的匹配对象",
+    "subtitle": "LovMy根据您的偏好为您推荐的资料。",
+    "filters": "筛选",
+    "loading": "加载中…",
+    "noProfiles": "暂时没有资料。",
+    "distanceFallback": "所选范围内没有资料 — 以下是距离最近的可用资料。",
+    "newMatch": "✨ 与{name}成功匹配！",
+    "giftSent": "已将{gift}送给{name}！",
+    "giftInsufficientCoins": "金币不足，无法赠送此礼物。"
+  },
+  "NotFound": {
+    "title": "页面未找到",
+    "description": "您要查找的页面不存在或已被移动。",
+    "backHome": "返回首页"
+  }
+}

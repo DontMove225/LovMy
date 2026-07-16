@@ -3,7 +3,31 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Fraunces, Manrope, Space_Grotesk } from 'next/font/google';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import '../globals.css';
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  style: ['normal', 'italic'],
+  weight: ['400', '700'],
+  display: 'swap',
+});
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  weight: ['500', '600', '700'],
+  display: 'swap',
+});
 
 const navItems = [
   { group: null,        href: '/admin/dashboard',    label: 'Tableau de Bord',           icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -27,21 +51,32 @@ const navItems = [
   { group: 'Système',   href: '/admin/technical-settings', label: 'Paramètres techniques', icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' },
 ];
 
+function Shell({ children }) {
+  return (
+    <html lang="fr" className={`${fraunces.variable} ${manrope.variable} ${spaceGrotesk.variable}`}>
+      <body className="min-h-screen bg-obsidian text-[var(--txt)] font-sans antialiased">{children}</body>
+    </html>
+  );
+}
+
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const { admin, ready, adminLogout } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (pathname === '/admin/login') return <>{children}</>;
+  if (pathname === '/admin/login') return <Shell>{children}</Shell>;
   if (!ready) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-obsidian">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-ember border-t-transparent" />
-      </div>
+      <Shell>
+        <div className="flex min-h-screen items-center justify-center bg-obsidian">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-ember border-t-transparent" />
+        </div>
+      </Shell>
     );
   }
 
   return (
+    <Shell>
     <div className="flex min-h-screen bg-obsidian">
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-[var(--line)] bg-obsidian transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -126,5 +161,6 @@ export default function AdminLayout({ children }) {
         <main className="flex-1 p-6 text-[var(--txt)]">{children}</main>
       </div>
     </div>
+    </Shell>
   );
 }

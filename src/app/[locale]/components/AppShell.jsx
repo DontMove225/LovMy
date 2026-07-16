@@ -1,34 +1,36 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import {
   FiHome, FiCompass, FiMessageCircle, FiBell, FiUser,
   FiCreditCard, FiDollarSign, FiStar, FiSettings, FiLogOut, FiMenu,
 } from 'react-icons/fi';
-
-const navItems = [
-  { href: '/dashboard', label: 'Accueil', icon: FiHome },
-  { href: '/explore', label: 'Découverte', icon: FiCompass },
-  { href: '/chat', label: 'Messages', icon: FiMessageCircle },
-  { href: '/notification', label: 'Notifications', icon: FiBell },
-  { href: '/wallet', label: 'Wallet', icon: FiCreditCard },
-  { href: '/upgrade', label: 'Premium', icon: FiStar },
-];
-
-const accountItems = [
-  { href: '/profile', label: 'Mon profil', icon: FiUser },
-  { href: '/buyCoin', label: 'Acheter des coins', icon: FiDollarSign },
-  { href: '/settings', label: 'Paramètres & confidentialité', icon: FiSettings },
-];
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function AppShell({ children }) {
+  const t = useTranslations('Nav');
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  const navItems = [
+    { href: '/dashboard', label: t('home'), icon: FiHome },
+    { href: '/explore', label: t('discover'), icon: FiCompass },
+    { href: '/chat', label: t('messages'), icon: FiMessageCircle },
+    { href: '/notification', label: t('notifications'), icon: FiBell },
+    { href: '/wallet', label: t('wallet'), icon: FiCreditCard },
+    { href: '/upgrade', label: t('premium'), icon: FiStar },
+  ];
+
+  const accountItems = [
+    { href: '/profile', label: t('myProfile'), icon: FiUser },
+    { href: '/buyCoin', label: t('buyCoins'), icon: FiDollarSign },
+    { href: '/settings', label: t('settings'), icon: FiSettings },
+  ];
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -88,9 +90,9 @@ export default function AppShell({ children }) {
             {userName?.[0]?.toUpperCase() ?? 'U'}
           </div>
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-white">{userName || 'Utilisateur'}</p>
+            <p className="truncate text-sm font-medium text-white">{userName || t('defaultUser')}</p>
             <Link href="/profile" className="text-xs text-blush hover:underline">
-              Modifier le profil
+              {t('editProfile')}
             </Link>
           </div>
         </div>
@@ -99,7 +101,7 @@ export default function AppShell({ children }) {
           {navItems.map(renderLink)}
 
           <p className="mb-1 mt-6 px-3 font-mono text-[10px] uppercase tracking-widest text-[var(--txt-faint)]">
-            Compte
+            {t('account')}
           </p>
           {accountItems.map(renderLink)}
         </nav>
@@ -110,7 +112,7 @@ export default function AppShell({ children }) {
             className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[var(--txt-soft)] transition hover:bg-ember/10 hover:text-ember"
           >
             <FiLogOut className="h-[18px] w-[18px]" />
-            Déconnexion
+            {t('logout')}
           </button>
         </div>
       </aside>
@@ -128,6 +130,7 @@ export default function AppShell({ children }) {
             <FiMenu className="h-6 w-6" />
           </button>
           <div className="ml-auto flex items-center gap-3">
+            <LanguageSwitcher />
             <Link
               href="/notification"
               className="rounded-full p-2 text-[var(--txt-soft)] transition hover:bg-white/5 hover:text-white"
@@ -138,7 +141,7 @@ export default function AppShell({ children }) {
               href="/upgrade"
               className="rounded-full bg-gradient-passion px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wide text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)] transition hover:brightness-110"
             >
-              Premium
+              {t('premium')}
             </Link>
           </div>
         </header>

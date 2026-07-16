@@ -1,0 +1,161 @@
+{
+  "Metadata": {
+    "title": "LovMy — Never be lonely",
+    "description": "LovMy is the next-generation dating platform that connects the intelligence of matching with the warmth of human connection."
+  },
+  "Nav": {
+    "home": "Home",
+    "discover": "Discover",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "wallet": "Wallet",
+    "premium": "Premium",
+    "account": "Account",
+    "myProfile": "My profile",
+    "buyCoins": "Buy coins",
+    "settings": "Settings & privacy",
+    "editProfile": "Edit profile",
+    "logout": "Log out",
+    "defaultUser": "User"
+  },
+  "LandingHeader": {
+    "concept": "Concept",
+    "features": "Features",
+    "download": "Download",
+    "login": "Log in"
+  },
+  "Hero": {
+    "kicker": "Next-generation dating",
+    "tagline": "Never be lonely",
+    "subtitle": "When intelligence meets attraction.",
+    "description": "The dating app where algorithmic precision and emotional warmth become one. Find someone who's really like you.",
+    "ctaRegister": "Sign up on the web",
+    "ctaDownload": "Download the app",
+    "publisher": "Published by",
+    "publisherName": "Full IT",
+    "security": "Security",
+    "securityValue": "4-step verification"
+  },
+  "Concept": {
+    "eyebrow": "Concept & positioning",
+    "title": "One heart, two worlds",
+    "techLabel": "The technology side",
+    "techTitle": "Intelligence",
+    "techText": "Clean lines, precision, augmented matchmaking. The \"machine\" part of the logo embodies safe, reliable matching. Signature colour: Midnight Steel.",
+    "humanLabel": "The human side",
+    "humanTitle": "Emotion",
+    "humanText": "Soft curves, gaze, presence. The \"living\" part of the logo carries desire, tenderness, real encounters. Signature colours: Passion Red & Tender Pink.",
+    "value1Label": "Value 01",
+    "value1Title": "Smart connection",
+    "value1Text": "Data in service of the bond, never the other way around. Discreet, fair, relevant.",
+    "value2Label": "Value 02",
+    "value2Title": "Authentic emotion",
+    "value2Text": "We speak to the heart. Warmth, sincerity, controlled intensity.",
+    "value3Label": "Value 03",
+    "value3Title": "Premium elegance",
+    "value3Text": "Lacquered red, deep black, space. An experience that feels high-end."
+  },
+  "Features": {
+    "eyebrow": "What you get",
+    "title": "Built for real encounters",
+    "matchingTitle": "AI matching",
+    "matchingText": "A compatibility algorithm that learns from your preferences to suggest profiles that truly matter to you.",
+    "securityTitle": "Security & verification",
+    "securityText": "4-step verification (email, phone, selfie, ID document) and active moderation of profiles and content.",
+    "videoTitle": "Video dating",
+    "videoText": "Built-in HD audio and video calls, right from your conversations, before meeting in person.",
+    "premiumTitle": "Premium",
+    "premiumText": "Unlimited likes, incognito mode, profile boost, rewind, and advanced filters to go further."
+  },
+  "Testimonials": {
+    "eyebrow": "They found each other",
+    "title": "Never be lonely, for real",
+    "quote1": "We matched on a Tuesday evening. Three months later, we were moving in together.",
+    "name1": "Camille, 27",
+    "quote2": "Video calls before meeting in person change everything. No more bad surprises.",
+    "name2": "Idriss, 31",
+    "quote3": "The matching is stunningly relevant. I finally stopped swiping into the void.",
+    "name3": "Léa, 24"
+  },
+  "DownloadCta": {
+    "eyebrow": "Wherever you are",
+    "title": "Take LovMy with you",
+    "text": "The mobile app is coming soon to iOS and Android. In the meantime, sign up on the web.",
+    "comingSoon": "Coming soon on",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "cta": "Sign up on the web"
+  },
+  "Footer": {
+    "brandDoc": "Brand document",
+    "publisher": "Published by",
+    "publisherName": "Full IT",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "tagline": "Never be lonely",
+    "copyright": "© {year} LovMy — All rights reserved"
+  },
+  "Login": {
+    "title": "Welcome to LovMy",
+    "subtitle": "Log in to continue",
+    "emailOrPhone": "Email or phone number",
+    "emailOrPhonePlaceholder": "Email or mobile",
+    "password": "Password",
+    "submit": "Log in",
+    "submitLoading": "Logging in…",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account yet?",
+    "createAccount": "Create an account",
+    "errorRequired": "Please enter your username and password.",
+    "errorGeneric": "Login failed. Check your credentials.",
+    "errorNetwork": "Network error. Please try again later."
+  },
+  "Register": {
+    "title": "Create an account",
+    "subtitle": "Sign up to get started on LovMy.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Continue",
+    "errorRequired": "All fields are required.",
+    "errorGeneric": "Unable to verify the email",
+    "errorNetwork": "Network error, please try again later."
+  },
+  "SocialLogin": {
+    "orContinueWith": "Or continue with",
+    "continueWithFacebook": "Continue with Facebook",
+    "errorGeneric": "Unable to log in.",
+    "errorNetwork": "Network error. Please try again later."
+  },
+  "AdminLogin": {
+    "title": "LovMy Admin",
+    "subtitle": "Restricted to administrators",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Log in",
+    "submitLoading": "Logging in…",
+    "errorRequired": "Please enter a username and password.",
+    "errorGeneric": "Invalid credentials."
+  },
+  "Explore": {
+    "tabDiscover": "Discover",
+    "tabLikedMe": "Liked me",
+    "tabFavourites": "Favourites",
+    "tabPassed": "Passed",
+    "eyebrow": "Discover",
+    "title": "Find your match",
+    "subtitle": "Profiles recommended by LovMy, ranked according to your preferences.",
+    "filters": "Filters",
+    "loading": "Loading…",
+    "noProfiles": "No profiles for now.",
+    "distanceFallback": "No profiles within the requested radius — here are the closest profiles available.",
+    "newMatch": "✨ New match with {name}!",
+    "giftSent": "{gift} sent to {name}!",
+    "giftInsufficientCoins": "Not enough coins for this gift."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home"
+  }
+}

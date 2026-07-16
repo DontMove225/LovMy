@@ -1,5 +1,9 @@
-import './globals.css';
+import '../globals.css';
+import { notFound } from 'next/navigation';
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { setRequestLocale } from 'next-intl/server';
 import { Fraunces, Manrope, Space_Grotesk } from 'next/font/google';
+import { routing } from '@/i18n/routing';
 import { MyProvider } from '@/context/MyProvider';
 import { CallProvider } from '@/context/CallProvider';
 import AppShell from './components/AppShell';
@@ -25,6 +29,10 @@ const spaceGrotesk = Space_Grotesk({
   weight: ['500', '600', '700'],
   display: 'swap',
 });
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export const metadata = {
   title: {
@@ -61,19 +69,29 @@ export const viewport = {
   themeColor: '#080714',
 };
 
-export default function RootLayout({ children }) {
+const RTL_LOCALES = ['ar'];
+
+export default async function LocaleLayout({ children, params }) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+
+  setRequestLocale(locale);
+  const dir = RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr';
+
   return (
-    <html lang="fr" className={`${fraunces.variable} ${manrope.variable} ${spaceGrotesk.variable}`}>
+    <html lang={locale} dir={dir} className={`${fraunces.variable} ${manrope.variable} ${spaceGrotesk.variable}`}>
       <body className="min-h-screen bg-obsidian text-[var(--txt)] font-sans antialiased">
-        <MyProvider>
-          <CallProvider>
-            <AppShell>
-              <div id="main-content">
-                {children}
-              </div>
-            </AppShell>
-          </CallProvider>
-        </MyProvider>
+        <NextIntlClientProvider>
+          <MyProvider>
+            <CallProvider>
+              <AppShell>
+                <div id="main-content">
+                  {children}
+                </div>
+              </AppShell>
+            </CallProvider>
+          </MyProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

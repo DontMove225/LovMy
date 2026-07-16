@@ -1,12 +1,14 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { MyContext } from '@/context/MyProvider';
-import SocialLoginButtons from '@/app/components/SocialLoginButtons';
+import SocialLoginButtons from '@/app/[locale]/components/SocialLoginButtons';
 import axios from 'axios';
 
 export default function RegisterPage() {
+  const t = useTranslations('Register');
   const { basUrl } = useContext(MyContext);
   const router = useRouter();
   const [name, setName] = useState('');
@@ -17,7 +19,7 @@ export default function RegisterPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!name || !email || !password) {
-      setMessage('Tous les champs sont requis.');
+      setMessage(t('errorRequired'));
       return;
     }
 
@@ -30,10 +32,10 @@ export default function RegisterPage() {
         localStorage.setItem('Register_User', JSON.stringify({ name, email, password }));
         router.push('/phonenumber');
       } else {
-        setMessage(response.data.ResponseMsg || 'Impossible de vérifier l’email');
+        setMessage(response.data.ResponseMsg || t('errorGeneric'));
       }
     } catch (error) {
-      setMessage('Erreur réseau, réessayez plus tard.');
+      setMessage(t('errorNetwork'));
       console.error(error);
     }
   };
@@ -48,40 +50,37 @@ export default function RegisterPage() {
         }}
       />
       <div className="relative w-full max-w-md rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 backdrop-blur-xl">
-        <h1 className="font-serif text-3xl text-white">Créer un compte</h1>
-        <p className="mt-3 text-[var(--txt-soft)]">Inscris-toi pour commencer sur LovMy.</p>
+        <h1 className="font-serif text-3xl text-white">{t('title')}</h1>
+        <p className="mt-3 text-[var(--txt-soft)]">{t('subtitle')}</p>
 
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <label className="block">
-            <span className="text-sm font-medium text-[var(--txt-soft)]">Nom</span>
+            <span className="text-sm font-medium text-[var(--txt-soft)]">{t('name')}</span>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="mt-2 w-full rounded-2xl border border-[var(--line)] bg-white/5 px-4 py-3 text-white outline-none transition focus:border-ember focus:ring-2 focus:ring-ember/20"
-              placeholder="First name"
             />
           </label>
 
           <label className="block">
-            <span className="text-sm font-medium text-[var(--txt-soft)]">Email</span>
+            <span className="text-sm font-medium text-[var(--txt-soft)]">{t('email')}</span>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-2 w-full rounded-2xl border border-[var(--line)] bg-white/5 px-4 py-3 text-white outline-none transition focus:border-ember focus:ring-2 focus:ring-ember/20"
-              placeholder="Email address"
             />
           </label>
 
           <label className="block">
-            <span className="text-sm font-medium text-[var(--txt-soft)]">Mot de passe</span>
+            <span className="text-sm font-medium text-[var(--txt-soft)]">{t('password')}</span>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-2 w-full rounded-2xl border border-[var(--line)] bg-white/5 px-4 py-3 text-white outline-none transition focus:border-ember focus:ring-2 focus:ring-ember/20"
-              placeholder="Password"
             />
           </label>
 
@@ -91,7 +90,7 @@ export default function RegisterPage() {
             type="submit"
             className="w-full rounded-2xl bg-gradient-passion px-5 py-3 text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
           >
-            Continuer
+            {t('submit')}
           </button>
         </form>
 

@@ -1,8 +1,9 @@
-import Link from 'next/link';
-
-export const metadata = { title: 'Page introuvable' };
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export default function NotFound() {
+  const t = useTranslations('NotFound');
+
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-obsidian px-4 py-10">
       <div
@@ -14,13 +15,13 @@ export default function NotFound() {
       />
       <div className="relative max-w-md rounded-3xl border border-[var(--line)] bg-white/[0.03] p-10 text-center backdrop-blur-xl">
         <p className="font-serif text-6xl text-ember">404</p>
-        <h1 className="mt-4 font-serif text-2xl text-white">Page introuvable</h1>
-        <p className="mt-3 text-[var(--txt-soft)]">La page que vous recherchez n&apos;existe pas ou a été déplacée.</p>
+        <h1 className="mt-4 font-serif text-2xl text-white">{t('title')}</h1>
+        <p className="mt-3 text-[var(--txt-soft)]">{t('description')}</p>
         <Link
           href="/dashboard"
           className="mt-6 inline-block rounded-2xl bg-gradient-passion px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
         >
-          Retour à l&apos;accueil
+          {t('backHome')}
         </Link>
       </div>
     </main>

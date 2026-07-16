@@ -1,37 +1,23 @@
 import { FiTarget, FiShield, FiVideo, FiStar } from 'react-icons/fi';
-
-const features = [
-  {
-    Icon: FiTarget,
-    title: 'Matching IA',
-    text: 'Un algorithme de compatibilité qui apprend de vos préférences pour vous proposer des profils vraiment pertinents.',
-  },
-  {
-    Icon: FiShield,
-    title: 'Sécurité & vérification',
-    text: 'Vérification en 4 étapes (email, téléphone, selfie, pièce d’identité) et modération active des profils et contenus.',
-  },
-  {
-    Icon: FiVideo,
-    title: 'Video Dating',
-    text: 'Appels audio et vidéo HD intégrés, directement depuis vos conversations, avant de se rencontrer en vrai.',
-  },
-  {
-    Icon: FiStar,
-    title: 'Premium',
-    text: 'Likes illimités, mode invisible, boost de profil, rewind et filtres avancés pour aller plus loin.',
-  },
-];
+import { useTranslations } from 'next-intl';
 
 export default function Features() {
+  const t = useTranslations('Features');
+  const features = [
+    { Icon: FiTarget, title: t('matchingTitle'), text: t('matchingText') },
+    { Icon: FiShield, title: t('securityTitle'), text: t('securityText') },
+    { Icon: FiVideo, title: t('videoTitle'), text: t('videoText') },
+    { Icon: FiStar, title: t('premiumTitle'), text: t('premiumText') },
+  ];
+
   return (
     <section id="fonctionnalites" className="border-t border-[var(--line)] px-7 py-24">
       <div className="mx-auto max-w-content">
         <div className="mb-12 flex flex-wrap items-baseline gap-4">
           <span className="font-mono text-sm tracking-[0.2em] text-[var(--txt-faint)]">02</span>
           <div>
-            <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Ce que vous obtenez</span>
-            <h2 className="mt-2 font-serif text-4xl text-white sm:text-5xl">Fait pour de vraies rencontres</h2>
+            <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">{t('eyebrow')}</span>
+            <h2 className="mt-2 font-serif text-4xl text-white sm:text-5xl">{t('title')}</h2>
           </div>
         </div>
 

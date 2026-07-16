@@ -1,12 +1,14 @@
 'use client';
 
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import Script from 'next/script';
 import axios from 'axios';
 import { MyContext } from '@/context/MyProvider';
 
 export default function SocialLoginButtons({ onError }) {
+  const t = useTranslations('SocialLogin');
   const { basUrl, login } = useContext(MyContext);
   const router = useRouter();
   const googleButtonRef = useRef(null);
@@ -49,16 +51,16 @@ export default function SocialLoginButtons({ onError }) {
           login(userData, response.data.token);
           router.push('/dashboard');
         } else {
-          onError?.(response.data.ResponseMsg || 'Connexion impossible.');
+          onError?.(response.data.ResponseMsg || t('errorGeneric'));
         }
       } catch (error) {
-        onError?.('Erreur réseau. Veuillez réessayer plus tard.');
+        onError?.(t('errorNetwork'));
         console.error(error);
       } finally {
         setLoading(false);
       }
     },
-    [basUrl, login, router, onError]
+    [basUrl, login, router, onError, t]
   );
 
   const handleGoogleCredential = useCallback(
@@ -133,7 +135,7 @@ export default function SocialLoginButtons({ onError }) {
 
       <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-[var(--txt-soft)]">
         <span className="h-px flex-1 bg-[var(--line)]" />
-        Ou continuer avec
+        {t('orContinueWith')}
         <span className="h-px flex-1 bg-[var(--line)]" />
       </div>
 
@@ -146,7 +148,7 @@ export default function SocialLoginButtons({ onError }) {
           onClick={handleFacebookLogin}
           className="flex w-full items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[#1877F2] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Continuer avec Facebook
+          {t('continueWithFacebook')}
         </button>
       )}
     </div>

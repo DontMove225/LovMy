@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { MyContext } from '@/context/MyProvider';
 import { FiSliders, FiHeart } from 'react-icons/fi';
 import ProfileCard from '../components/explore/ProfileCard';
@@ -13,11 +14,11 @@ const EMPTY_FILTERS = {
   verified_only: false, premium_only: false,
 };
 
-const TABS = [
-  { key: 'discover', label: 'Découverte', endpoint: 'home_data.php', icon: FiHeart },
-  { key: 'likedMe', label: 'Qui m’a liké', endpoint: 'like_me.php', icon: FiHeart },
-  { key: 'favourites', label: 'Favoris', endpoint: 'favourite.php', icon: FiHeart },
-  { key: 'passed', label: 'Passés', endpoint: 'passed.php', icon: FiHeart },
+const TAB_KEYS = [
+  { key: 'discover', labelKey: 'tabDiscover', endpoint: 'home_data.php', icon: FiHeart },
+  { key: 'likedMe', labelKey: 'tabLikedMe', endpoint: 'like_me.php', icon: FiHeart },
+  { key: 'favourites', labelKey: 'tabFavourites', endpoint: 'favourite.php', icon: FiHeart },
+  { key: 'passed', labelKey: 'tabPassed', endpoint: 'passed.php', icon: FiHeart },
 ];
 
 function haversineKm(lat1, lon1, lat2, lon2) {
@@ -55,7 +56,9 @@ function sharedInterestPct(mineJson, theirsJson) {
 }
 
 export default function ExplorePage() {
+  const t = useTranslations('Explore');
   const router = useRouter();
+  const TABS = TAB_KEYS.map((tab) => ({ ...tab, label: t(tab.labelKey) }));
   const { apiPost, apiGet, imageBaseURL, getStoredUser } = useContext(MyContext);
   const [me, setMe] = useState(null);
   const [tab, setTab] = useState('discover');
@@ -201,7 +204,7 @@ export default function ExplorePage() {
         action,
       });
       if (action === 'LIKE' && result.is_match) {
-        showToast(`✨ Nouveau match avec ${profile.name} !`);
+        showToast(t('newMatch', { name: profile.name }));
       }
     } catch (error) {
       console.error(error);
@@ -218,8 +221,8 @@ export default function ExplorePage() {
       });
       showToast(
         result.Result === 'true'
-          ? `${gift.img} envoyé à ${profile.name} !`
-          : result.ResponseMsg || 'Coins insuffisants pour ce cadeau.'
+          ? t('giftSent', { gift: gift.img, name: profile.name })
+          : result.ResponseMsg || t('giftInsufficientCoins')
       );
     } catch (error) {
       console.error(error);
@@ -230,24 +233,24 @@ export default function ExplorePage() {
     <main className="min-h-screen bg-obsidian px-4 py-10">
       <div className="mx-auto max-w-6xl space-y-6">
         <section className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Découverte</span>
-          <h1 className="mt-2 font-serif text-3xl text-white">Trouvez votre match</h1>
-          <p className="mt-2 text-[var(--txt-soft)]">Les profils recommandés par LovMy, classés selon vos préférences.</p>
+          <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">{t('eyebrow')}</span>
+          <h1 className="mt-2 font-serif text-3xl text-white">{t('title')}</h1>
+          <p className="mt-2 text-[var(--txt-soft)]">{t('subtitle')}</p>
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              {TABS.map((t) => (
+              {TABS.map((tabItem) => (
                 <button
-                  key={t.key}
-                  onClick={() => setTab(t.key)}
+                  key={tabItem.key}
+                  onClick={() => setTab(tabItem.key)}
                   className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition ${
-                    tab === t.key
+                    tab === tabItem.key
                       ? 'bg-gradient-passion text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)]'
                       : 'border border-[var(--line)] text-[var(--txt-soft)] hover:text-white'
                   }`}
                 >
-                  <t.icon className="h-3.5 w-3.5" />
-                  {t.label}
+                  <tabItem.icon className="h-3.5 w-3.5" />
+                  {tabItem.label}
                 </button>
               ))}
             </div>
@@ -260,7 +263,7 @@ export default function ExplorePage() {
                     : 'border-[var(--line)] text-[var(--txt-soft)] hover:text-white'
                 }`}
               >
-                <FiSliders className="h-4 w-4" /> Filtres
+                <FiSliders className="h-4 w-4" /> {t('filters')}
               </button>
             ) : null}
           </div>
@@ -285,17 +288,17 @@ export default function ExplorePage() {
 
         {!loading && distanceFallback && profiles.length > 0 ? (
           <div className="rounded-2xl border border-[var(--line)] bg-white/[0.03] px-5 py-3 text-center text-sm text-[var(--txt-soft)]">
-            Aucun profil dans le rayon demandé — voici les profils les plus proches disponibles.
+            {t('distanceFallback')}
           </div>
         ) : null}
 
         {loading ? (
           <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
-            Chargement…
+            {t('loading')}
           </div>
         ) : profiles.length === 0 ? (
           <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
-            Aucun profil pour le moment.
+            {t('noProfiles')}
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

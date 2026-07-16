@@ -1,7 +1,12 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 export default function Hero() {
+  const t = useTranslations('Hero');
+  const tNav = useTranslations('LandingHeader');
+
   return (
     <header className="relative overflow-hidden">
       <div
@@ -17,36 +22,38 @@ export default function Hero() {
           LovMy
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="#concept" className="text-sm text-[var(--txt-soft)] transition hover:text-white">Concept</a>
-          <a href="#fonctionnalites" className="text-sm text-[var(--txt-soft)] transition hover:text-white">Fonctionnalités</a>
-          <a href="#telecharger" className="text-sm text-[var(--txt-soft)] transition hover:text-white">Télécharger</a>
+          <a href="#concept" className="text-sm text-[var(--txt-soft)] transition hover:text-white">{tNav('concept')}</a>
+          <a href="#fonctionnalites" className="text-sm text-[var(--txt-soft)] transition hover:text-white">{tNav('features')}</a>
+          <a href="#telecharger" className="text-sm text-[var(--txt-soft)] transition hover:text-white">{tNav('download')}</a>
         </nav>
-        <Link
-          href="/login"
-          className="rounded-full border border-blush/40 px-5 py-2 text-sm font-medium text-white transition hover:border-blush"
-        >
-          Se connecter
-        </Link>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+          <Link
+            href="/login"
+            className="rounded-full border border-blush/40 px-5 py-2 text-sm font-medium text-white transition hover:border-blush"
+          >
+            {tNav('login')}
+          </Link>
+        </div>
       </div>
 
       <div className="relative mx-auto grid max-w-content items-center gap-10 px-7 pb-24 pt-10 md:grid-cols-2 md:pb-28 md:pt-16">
         <div>
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">
-            Rencontres nouvelle génération
+            {t('kicker')}
           </span>
           <h1 className="mt-5 font-serif text-6xl leading-[1.04] tracking-tight text-white sm:text-7xl">
             Lov<em className="italic text-ember">My</em>
           </h1>
           <p className="mt-6 flex items-center gap-4 font-mono text-sm uppercase tracking-[0.34em] text-blush sm:text-base">
             <span className="h-px w-9 bg-gradient-to-r from-ember to-transparent" />
-            Never be lonely
+            {t('tagline')}
           </p>
           <p className="mt-4 max-w-md font-serif text-xl italic text-[var(--txt-soft)]">
-            Quand l&apos;intelligence rencontre l&apos;attirance.
+            {t('subtitle')}
           </p>
           <p className="mt-6 max-w-md text-base text-[var(--txt-soft)]">
-            L&apos;application de rencontre où la précision de l&apos;algorithme et la chaleur de l&apos;émotion
-            ne font qu&apos;un. Trouvez quelqu&apos;un qui vous ressemble, vraiment.
+            {t('description')}
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
@@ -54,19 +61,19 @@ export default function Hero() {
               href="/register"
               className="rounded-full bg-gradient-passion px-8 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
             >
-              S&apos;inscrire sur le web
+              {t('ctaRegister')}
             </Link>
             <a
               href="#telecharger"
               className="rounded-full border border-blush/40 px-8 py-3.5 text-sm font-semibold text-white transition hover:border-blush"
             >
-              Télécharger l&apos;app
+              {t('ctaDownload')}
             </a>
           </div>
 
           <div className="mt-10 flex flex-wrap gap-7 font-mono text-xs uppercase tracking-[0.14em] text-[var(--txt-faint)]">
-            <span>Édité par <b className="font-medium text-[var(--txt)]">Full IT</b></span>
-            <span>Sécurité <b className="font-medium text-[var(--txt)]">Vérification en 4 étapes</b></span>
+            <span>{t('publisher')} <b className="font-medium text-[var(--txt)]">{t('publisherName')}</b></span>
+            <span>{t('security')} <b className="font-medium text-[var(--txt)]">{t('securityValue')}</b></span>
           </div>
         </div>
 

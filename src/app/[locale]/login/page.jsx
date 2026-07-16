@@ -1,13 +1,14 @@
 'use client';
 
 import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link, useRouter } from '@/i18n/navigation';
 import { MyContext } from '@/context/MyProvider';
-import SocialLoginButtons from '@/app/components/SocialLoginButtons';
+import SocialLoginButtons from '@/app/[locale]/components/SocialLoginButtons';
 import axios from 'axios';
 
 export default function LoginPage() {
+  const t = useTranslations('Login');
   const { basUrl, login } = useContext(MyContext);
   const router = useRouter();
   const [mobile, setMobile] = useState('');
@@ -24,7 +25,7 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!mobile || !password) {
-      setMessage('Veuillez renseigner votre identifiant et mot de passe.');
+      setMessage(t('errorRequired'));
       return;
     }
 
@@ -44,10 +45,10 @@ export default function LoginPage() {
         login(userData, authToken);
         router.push('/dashboard');
       } else {
-        setMessage(response.data.ResponseMsg || 'Échec de connexion. Vérifiez vos identifiants.');
+        setMessage(response.data.ResponseMsg || t('errorGeneric'));
       }
     } catch (error) {
-      setMessage('Erreur réseau. Veuillez réessayer plus tard.');
+      setMessage(t('errorNetwork'));
       console.error(error);
     } finally {
       setLoading(false);
@@ -66,28 +67,28 @@ export default function LoginPage() {
       <div className="relative w-full max-w-md">
         <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 backdrop-blur-xl">
           <div className="mb-8 text-center">
-            <h1 className="font-serif text-3xl text-white">Bienvenue sur LovMy</h1>
-            <p className="mt-2 text-[var(--txt-soft)]">Connectez-vous pour continuer</p>
+            <h1 className="font-serif text-3xl text-white">{t('title')}</h1>
+            <p className="mt-2 text-[var(--txt-soft)]">{t('subtitle')}</p>
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-[var(--txt-soft)]">
-                Email ou numéro de téléphone
+                {t('emailOrPhone')}
               </label>
               <input
                 type="text"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 className="w-full rounded-2xl border border-[var(--line)] bg-white/5 px-4 py-3 text-white outline-none transition focus:border-ember focus:ring-2 focus:ring-ember/20"
-                placeholder="Email ou mobile"
+                placeholder={t('emailOrPhonePlaceholder')}
                 autoComplete="username"
               />
             </div>
 
             <div>
               <label className="mb-1.5 block text-sm font-medium text-[var(--txt-soft)]">
-                Mot de passe
+                {t('password')}
               </label>
               <input
                 type="password"
@@ -110,7 +111,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full rounded-2xl bg-gradient-passion px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {loading ? 'Connexion en cours…' : 'Se connecter'}
+              {loading ? t('submitLoading') : t('submit')}
             </button>
           </form>
 
@@ -120,12 +121,12 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center space-y-2">
             <Link href="/forgot-password" className="block text-sm text-blush hover:underline">
-              Mot de passe oublié ?
+              {t('forgotPassword')}
             </Link>
             <p className="text-sm text-[var(--txt-soft)]">
-              Pas encore de compte ?{' '}
+              {t('noAccount')}{' '}
               <Link href="/register" className="font-medium text-blush hover:underline">
-                Créer un compte
+                {t('createAccount')}
               </Link>
             </p>
           </div>

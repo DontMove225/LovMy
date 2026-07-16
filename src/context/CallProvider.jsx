@@ -2,8 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { MyContext } from './MyProvider';
-import IncomingCallModal from '@/app/components/call/IncomingCallModal';
-import CallScreen from '@/app/components/call/CallScreen';
+import IncomingCallModal from '@/app/[locale]/components/call/IncomingCallModal';
+import CallScreen from '@/app/[locale]/components/call/CallScreen';
 
 export const CallContext = createContext({});
 
