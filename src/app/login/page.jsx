@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { MyContext } from '@/context/MyProvider';
+import SocialLoginButtons from '@/app/components/SocialLoginButtons';
 import axios from 'axios';
 
 export default function LoginPage() {
@@ -112,6 +113,10 @@ export default function LoginPage() {
               {loading ? 'Connexion en cours…' : 'Se connecter'}
             </button>
           </form>
+
+          <div className="mt-6">
+            <SocialLoginButtons onError={setMessage} />
+          </div>
 
           <div className="mt-6 text-center space-y-2">
             <Link href="/forgot-password" className="block text-sm text-blush hover:underline">

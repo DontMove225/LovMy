@@ -15,6 +15,10 @@ const FIELDS = [
   { key: 'stripe_secret',        label: 'Stripe Secret' },
   { key: 'paypal_client_id',     label: 'PayPal Client ID' },
   { key: 'paypal_client_secret', label: 'PayPal Client Secret' },
+  { key: 'google_client_id',     label: 'Google Client ID (connexion sociale)' },
+  { key: 'facebook_app_id',      label: 'Facebook App ID (connexion sociale)' },
+  { key: 'facebook_app_secret',  label: 'Facebook App Secret (connexion sociale)' },
+  { key: 'firebase_credentials', label: 'Firebase — JSON du compte de service' },
 ];
 
 export default function AdminTechnicalSettings() {

@@ -6,10 +6,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { MyContext } from '@/context/MyProvider';
 
-const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeOQq4XMUh');
-
-function StripeForm({ amount, type, planId, packageId }) {
-  const { apiPost, getStoredUser } = useContext(MyContext);
+function StripeForm({ type, planId, packageId }) {
+  const { apiPost } = useContext(MyContext);
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
@@ -25,38 +23,51 @@ function StripeForm({ amount, type, planId, packageId }) {
     if (!card) return;
 
     setIsProcessing(true);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card,
-    });
-
-    if (error) {
-      setMessage(error.message || 'Erreur Stripe');
-      setIsProcessing(false);
-      return;
-    }
+    setMessage('');
 
     try {
-      const me = getStoredUser();
-      let result;
-      if (type === 'plan' && planId) {
-        result = await apiPost('plan_purchase.php', {
-          uid: me.id,
-          plan_id: planId,
-          trans_id: paymentMethod.id,
-          p_method_id: 2,
-          amount,
-        });
-      } else if (type === 'package' && packageId) {
-        result = await apiPost('package_purchase.php', {
-          uid: me.id,
-          package_id: packageId,
-          trans_id: paymentMethod.id,
-        });
+      const intentResult = await apiPost('stripe/create-intent', {
+        type,
+        plan_id: type === 'plan' ? planId : undefined,
+        package_id: type === 'package' ? packageId : undefined,
+      });
+
+      if (intentResult.Result !== 'true') {
+        setMessage(intentResult.ResponseMsg || 'Impossible de démarrer le paiement.');
+        setIsProcessing(false);
+        return;
       }
 
-      if (result?.UserData) {
-        localStorage.setItem('Register_User', JSON.stringify(result.UserData));
+      const { client_secret: clientSecret } = intentResult.data;
+
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: { card },
+      });
+
+      if (error) {
+        setMessage(error.message || 'Erreur Stripe');
+        setIsProcessing(false);
+        return;
+      }
+
+      if (paymentIntent.status !== 'succeeded') {
+        setMessage('Le paiement n\'a pas pu être confirmé.');
+        setIsProcessing(false);
+        return;
+      }
+
+      const confirmResult = await apiPost('stripe/confirm', {
+        payment_intent_id: paymentIntent.id,
+      });
+
+      if (confirmResult.Result !== 'true') {
+        setMessage(confirmResult.ResponseMsg || 'Le paiement a réussi mais la confirmation a échoué. Contactez le support.');
+        setIsProcessing(false);
+        return;
+      }
+
+      if (confirmResult.UserData) {
+        localStorage.setItem('Register_User', JSON.stringify(confirmResult.UserData));
       }
       router.push('/PaymentRespons?status=success&method=stripe');
     } catch (err) {
@@ -80,7 +91,7 @@ function StripeForm({ amount, type, planId, packageId }) {
         disabled={!stripe || isProcessing}
         className="w-full rounded-2xl bg-gradient-passion px-5 py-3 text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-50"
       >
-        {isProcessing ? 'Traitement…' : `Payer ${amount ? `$${amount}` : ''}`}
+        {isProcessing ? 'Traitement…' : 'Payer'}
       </button>
     </form>
   );
@@ -88,8 +99,10 @@ function StripeForm({ amount, type, planId, packageId }) {
 
 function StripeContent() {
   const searchParams = useSearchParams();
-  const [amount, setAmount] = useState('0.00');
   const router = useRouter();
+  const { apiPost } = useContext(MyContext);
+  const [stripePromise, setStripePromise] = useState(null);
+  const [amount, setAmount] = useState('0.00');
 
   const type = searchParams.get('type');
   const planId = searchParams.get('plan_id');
@@ -102,14 +115,32 @@ function StripeContent() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await apiPost('setting.php', {});
+        const publishableKey = result.data?.stripe_key;
+        if (publishableKey) {
+          setStripePromise(loadStripe(publishableKey));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [apiPost]);
+
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
       <div className="mx-auto max-w-2xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
         <h1 className="font-serif text-3xl text-white">Stripe</h1>
-        <p className="mt-3 text-[var(--txt-soft)]">Montant : ${amount}</p>
-        <Elements stripe={stripePromise}>
-          <StripeForm amount={amount} type={type} planId={planId} packageId={packageId} />
-        </Elements>
+        <p className="mt-3 text-[var(--txt-soft)]">Montant estimé : ${amount}</p>
+        {stripePromise ? (
+          <Elements stripe={stripePromise}>
+            <StripeForm type={type} planId={planId} packageId={packageId} />
+          </Elements>
+        ) : (
+          <p className="mt-6 text-sm text-[var(--txt-soft)]">Chargement du module de paiement…</p>
+        )}
         <button
           type="button"
           onClick={() => router.push('/payment')}

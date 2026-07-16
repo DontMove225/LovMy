@@ -3,6 +3,7 @@
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
+import SocialLoginButtons from '@/app/components/SocialLoginButtons';
 import axios from 'axios';
 
 export default function RegisterPage() {
@@ -93,6 +94,10 @@ export default function RegisterPage() {
             Continuer
           </button>
         </form>
+
+        <div className="mt-6">
+          <SocialLoginButtons onError={setMessage} />
+        </div>
       </div>
     </main>
   );
