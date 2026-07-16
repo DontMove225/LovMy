@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPushNotificationJob;
 use App\Models\Admin;
 use App\Models\CoinReport;
 use App\Models\Faq;
@@ -264,8 +265,15 @@ class AdminController extends Controller
                 'title'       => $request->title,
                 'description' => $request->description,
             ]);
+
+            $fcmToken = User::whereKey($request->uid)->value('fcm_token');
+            if ($fcmToken) {
+                SendPushNotificationJob::dispatch([$fcmToken], $request->title, $request->description);
+            }
         } else {
             User::where('status', 1)->chunk(100, function ($users) use ($request) {
+                $tokens = [];
+
                 foreach ($users as $user) {
                     \App\Models\Notification::create([
                         'uid'         => $user->id,
@@ -273,6 +281,14 @@ class AdminController extends Controller
                         'title'       => $request->title,
                         'description' => $request->description,
                     ]);
+
+                    if ($user->fcm_token) {
+                        $tokens[] = $user->fcm_token;
+                    }
+                }
+
+                if ($tokens) {
+                    SendPushNotificationJob::dispatch($tokens, $request->title, $request->description);
                 }
             });
         }

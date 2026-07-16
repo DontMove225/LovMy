@@ -10,7 +10,9 @@ use App\Models\PlanPurchaseHistory;
 use App\Models\User;
 use App\Models\Setting;
 use App\Models\CoinReport;
+use App\Services\StripePaymentService;
 use Illuminate\Http\Request;
+use Stripe\Exception\ApiErrorException;
 
 class PlanController extends Controller
 {
@@ -142,6 +144,63 @@ class PlanController extends Controller
             'Result'       => 'true',
             'ResponseMsg'  => "Successfully purchased {$package->coin} coins!",
             'UserData'     => $user->fresh(),
+        ]);
+    }
+
+    public function createStripeIntent(Request $request, StripePaymentService $stripe)
+    {
+        $request->validate([
+            'type'       => 'required|in:plan,package',
+            'plan_id'    => 'required_if:type,plan|integer',
+            'package_id' => 'required_if:type,package|integer',
+        ]);
+
+        $referenceId = $request->type === 'plan' ? $request->plan_id : $request->package_id;
+
+        try {
+            $result = $stripe->createIntent($request->user(), $request->type, (int) $referenceId);
+        } catch (ApiErrorException $e) {
+            return response()->json([
+                'ResponseCode' => '500',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Erreur Stripe : ' . $e->getMessage(),
+            ], 500);
+        }
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'data'         => $result,
+        ]);
+    }
+
+    public function confirmStripePayment(Request $request, StripePaymentService $stripe)
+    {
+        $request->validate(['payment_intent_id' => 'required|string']);
+
+        try {
+            $credited = $stripe->creditUser($request->payment_intent_id);
+        } catch (ApiErrorException $e) {
+            return response()->json([
+                'ResponseCode' => '500',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Erreur Stripe : ' . $e->getMessage(),
+            ], 500);
+        }
+
+        if (! $credited) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Paiement non confirmé.',
+            ]);
+        }
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Paiement confirmé, compte mis à jour !',
+            'UserData'     => $request->user()->fresh(),
         ]);
     }
 

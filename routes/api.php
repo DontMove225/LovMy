@@ -28,6 +28,7 @@ Route::post('/verify_registration_otp.php', [AuthController::class, 'verifyRegis
 Route::post('/resend_registration_otp.php', [AuthController::class, 'resendRegistrationOtp']);
 Route::post('/send_forgot_password_otp.php', [AuthController::class, 'sendForgotPasswordOtp']);
 Route::post('/forget_password.php', [AuthController::class, 'forgetPassword']);
+Route::post('/auth/social',          [AuthController::class, 'socialLogin']);
 
 // Admin auth
 Route::post('/auth/admin/login', [AuthController::class, 'adminLogin']);
@@ -56,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Auth
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me',      [AuthController::class, 'me']);
+    Route::post('/auth/fcm-token', [AuthController::class, 'updateFcmToken']);
 
     // Profile
     Route::post('/profile_info.php',  [ProfileController::class, 'info']);
@@ -95,6 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Plans & Subscriptions
     Route::post('/plan_purchase.php',    [PlanController::class, 'purchasePlan']);
     Route::post('/package_purchase.php', [PlanController::class, 'purchasePackage']);
+    Route::post('/stripe/create-intent', [PlanController::class, 'createStripeIntent']);
+    Route::post('/stripe/confirm',       [PlanController::class, 'confirmStripePayment']);
     Route::post('/coin_report.php',      [PlanController::class, 'coinReport']);
     Route::post('/plan_history.php',     [PlanController::class, 'planHistory']);
 

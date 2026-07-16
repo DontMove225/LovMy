@@ -9,8 +9,10 @@ use App\Models\User;
 use App\Models\CoinReport;
 use App\Models\WalletReport;
 use App\Services\Msg91Service;
+use App\Services\SocialAuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -208,6 +210,19 @@ class AuthController extends Controller
         ]);
     }
 
+    public function updateFcmToken(Request $request)
+    {
+        $request->validate(['fcm_token' => 'required|string']);
+
+        $request->user()->update(['fcm_token' => $request->fcm_token]);
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Token enregistré.',
+        ]);
+    }
+
     public function me(Request $request)
     {
         return response()->json([
@@ -309,6 +324,87 @@ class AuthController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Password updated successfully!',
+        ]);
+    }
+
+    public function socialLogin(Request $request, SocialAuthService $social)
+    {
+        $request->validate([
+            'provider' => 'required|in:google,facebook',
+            'token'    => 'required|string',
+        ]);
+
+        $profile = $request->provider === 'google'
+            ? $social->verifyGoogleToken($request->token)
+            : $social->verifyFacebookToken($request->token);
+
+        if (! $profile) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Impossible de vérifier votre compte '.ucfirst($request->provider).'.',
+            ]);
+        }
+
+        $column = $request->provider === 'google' ? 'google_id' : 'facebook_id';
+
+        $user = User::where($column, $profile['provider_id'])->first()
+            ?? User::where('email', $profile['email'])->first();
+
+        if ($user) {
+            if (! $user->{$column}) {
+                $user->update([$column => $profile['provider_id']]);
+            }
+        } else {
+            $setting = Setting::current();
+            $referCode = rand(100000, 999999);
+
+            $user = User::create([
+                'name'              => $profile['name'],
+                'email'             => $profile['email'],
+                $column             => $profile['provider_id'],
+                'password'          => Hash::make(Str::random(40)),
+                'status'            => 1,
+                'code'              => $referCode,
+                'coin'              => $setting->scredit ?? 0,
+                'gender'            => 'MALE',
+                'search_preference' => 'FEMALE',
+                'radius_search'     => '50',
+                'relation_goal'     => 0,
+                'interest'          => '[]',
+                'language'          => '[]',
+                'religion'          => 0,
+                'other_pic'         => '[]',
+                'rdate'             => now(),
+            ]);
+
+            if (($setting->scredit ?? 0) > 0) {
+                CoinReport::create([
+                    'uid'     => $user->id,
+                    'message' => 'Register Bonus',
+                    'status'  => 'Credit',
+                    'amt'     => $setting->scredit,
+                    'tdate'   => now()->toDateString(),
+                ]);
+            }
+        }
+
+        if ($user->status == 0) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Compte suspendu.',
+            ]);
+        }
+
+        $token = $user->createToken('user-token')->plainTextToken;
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Login successfully!',
+            'UserLogin'    => $user,
+            'token'        => $token,
         ]);
     }
 

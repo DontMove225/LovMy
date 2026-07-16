@@ -14,6 +14,8 @@ class Setting extends Model
         'trtc_sdk_app_id', 'trtc_secret_key',
         'stripe_key', 'stripe_secret',
         'paypal_client_id', 'paypal_client_secret',
+        'google_client_id', 'facebook_app_id', 'facebook_app_secret',
+        'firebase_credentials',
     ];
 
     public const COMMUNICATION_FIELDS = [
@@ -31,6 +33,8 @@ class Setting extends Model
         'scredit', 'rcredit', 'ios_banner_id', 'ios_in_id',
         'trtc_sdk_app_id', 'trtc_secret_key', 'stripe_key', 'stripe_secret',
         'paypal_client_id', 'paypal_client_secret', 'tech_password',
+        'google_client_id', 'facebook_app_id', 'facebook_app_secret',
+        'firebase_credentials',
     ];
 
     protected $hidden = [
@@ -38,6 +42,8 @@ class Setting extends Model
         'twilio_number', 'map_key', 'agora_app_id',
         'trtc_sdk_app_id', 'trtc_secret_key', 'stripe_key', 'stripe_secret',
         'paypal_client_id', 'paypal_client_secret', 'tech_password',
+        'google_client_id', 'facebook_app_id', 'facebook_app_secret',
+        'firebase_credentials',
     ];
 
     protected $casts = [
@@ -52,6 +58,10 @@ class Setting extends Model
         'paypal_client_id'     => 'encrypted',
         'paypal_client_secret' => 'encrypted',
         'tech_password'        => 'hashed',
+        'google_client_id'     => 'encrypted',
+        'facebook_app_id'      => 'encrypted',
+        'facebook_app_secret'  => 'encrypted',
+        'firebase_credentials' => 'encrypted',
     ];
 
     public static function current(): self

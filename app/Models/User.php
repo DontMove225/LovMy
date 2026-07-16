@@ -20,6 +20,7 @@ class User extends Authenticatable
         'plan_start_date', 'plan_end_date', 'is_subscribe', 'history_id',
         'height', 'identity_picture', 'is_verify', 'direct_audio',
         'direct_video', 'direct_chat', 'coin', 'user_type',
+        'google_id', 'facebook_id', 'fcm_token',
     ];
 
     protected $hidden = ['password'];

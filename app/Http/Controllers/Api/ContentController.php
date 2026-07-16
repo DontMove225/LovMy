@@ -112,6 +112,7 @@ class ContentController extends Controller
                 'coin_limit'   => $setting->coin_limit,
                 'agora_app_id' => $setting->agora_app_id,
                 'map_key'      => $setting->map_key,
+                'stripe_key'   => $setting->stripe_key,
                 'admob'        => $setting->admob,
                 'banner_id'    => $setting->banner_id,
                 'in_id'        => $setting->in_id,
@@ -143,6 +144,8 @@ class ContentController extends Controller
             'ios_in_id'            => (string) ($setting->ios_in_id ?? ''),
             'ios_banner_id'        => (string) ($setting->ios_banner_id ?? ''),
             'agora_app_id'         => (string) ($setting->agora_app_id ?? ''),
+            'google_client_id'     => (string) ($setting->google_client_id ?? ''),
+            'facebook_app_id'      => (string) ($setting->facebook_app_id ?? ''),
         ]);
     }
 
