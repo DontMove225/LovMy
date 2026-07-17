@@ -15,7 +15,7 @@ class Setting extends Model
         'stripe_key', 'stripe_secret',
         'paypal_client_id', 'paypal_client_secret',
         'google_client_id', 'facebook_app_id', 'facebook_app_secret',
-        'firebase_credentials',
+        'firebase_credentials', 'firebase_web_config', 'firebase_vapid_key',
     ];
 
     public const COMMUNICATION_FIELDS = [
@@ -34,7 +34,7 @@ class Setting extends Model
         'trtc_sdk_app_id', 'trtc_secret_key', 'stripe_key', 'stripe_secret',
         'paypal_client_id', 'paypal_client_secret', 'tech_password',
         'google_client_id', 'facebook_app_id', 'facebook_app_secret',
-        'firebase_credentials',
+        'firebase_credentials', 'firebase_web_config', 'firebase_vapid_key',
     ];
 
     protected $hidden = [
@@ -43,7 +43,7 @@ class Setting extends Model
         'trtc_sdk_app_id', 'trtc_secret_key', 'stripe_key', 'stripe_secret',
         'paypal_client_id', 'paypal_client_secret', 'tech_password',
         'google_client_id', 'facebook_app_id', 'facebook_app_secret',
-        'firebase_credentials',
+        'firebase_credentials', 'firebase_web_config', 'firebase_vapid_key',
     ];
 
     protected $casts = [
@@ -62,6 +62,8 @@ class Setting extends Model
         'facebook_app_id'      => 'encrypted',
         'facebook_app_secret'  => 'encrypted',
         'firebase_credentials' => 'encrypted',
+        'firebase_web_config'  => 'encrypted',
+        'firebase_vapid_key'   => 'encrypted',
     ];
 
     public static function current(): self

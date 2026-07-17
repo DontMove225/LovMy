@@ -146,6 +146,8 @@ class ContentController extends Controller
             'agora_app_id'         => (string) ($setting->agora_app_id ?? ''),
             'google_client_id'     => (string) ($setting->google_client_id ?? ''),
             'facebook_app_id'      => (string) ($setting->facebook_app_id ?? ''),
+            'firebase_web_config'  => json_decode($setting->firebase_web_config ?? '', true),
+            'firebase_vapid_key'   => (string) ($setting->firebase_vapid_key ?? ''),
         ]);
     }
 
