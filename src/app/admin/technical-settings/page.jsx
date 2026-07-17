@@ -19,6 +19,8 @@ const FIELDS = [
   { key: 'facebook_app_id',      label: 'Facebook App ID (connexion sociale)' },
   { key: 'facebook_app_secret',  label: 'Facebook App Secret (connexion sociale)' },
   { key: 'firebase_credentials', label: 'Firebase — JSON du compte de service' },
+  { key: 'firebase_web_config',  label: 'Firebase — config Web (JSON apiKey/authDomain/...)' },
+  { key: 'firebase_vapid_key',   label: 'Firebase — clé VAPID (Web Push)' },
 ];
 
 export default function AdminTechnicalSettings() {

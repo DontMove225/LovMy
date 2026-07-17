@@ -7,6 +7,7 @@ import { routing } from '@/i18n/routing';
 import { MyProvider } from '@/context/MyProvider';
 import { CallProvider } from '@/context/CallProvider';
 import AppShell from './components/AppShell';
+import PushNotificationManager from './components/PushNotificationManager';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -83,6 +84,7 @@ export default async function LocaleLayout({ children, params }) {
       <body className="min-h-screen bg-obsidian text-[var(--txt)] font-sans antialiased">
         <NextIntlClientProvider>
           <MyProvider>
+            <PushNotificationManager />
             <CallProvider>
               <AppShell>
                 <div id="main-content">
