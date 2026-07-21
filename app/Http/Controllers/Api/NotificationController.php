@@ -24,4 +24,30 @@ class NotificationController extends Controller
             'total'        => $notifications->total(),
         ]);
     }
+
+    public function unreadCount(Request $request)
+    {
+        $count = Notification::where('uid', $request->user()->id)
+            ->where('is_read', false)
+            ->count();
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'count'        => $count,
+        ]);
+    }
+
+    public function markRead(Request $request)
+    {
+        Notification::where('uid', $request->user()->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Notifications marquées comme lues',
+        ]);
+    }
 }

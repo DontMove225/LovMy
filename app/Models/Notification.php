@@ -9,9 +9,9 @@ class Notification extends Model
     protected $table = 'tbl_notification';
     public $timestamps = false;
 
-    protected $fillable = ['uid', 'datetime', 'title', 'description'];
+    protected $fillable = ['uid', 'datetime', 'title', 'description', 'is_read'];
 
-    protected $casts = ['datetime' => 'datetime'];
+    protected $casts = ['datetime' => 'datetime', 'is_read' => 'boolean'];
 
     public function user()
     {

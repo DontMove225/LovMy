@@ -110,6 +110,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Notifications
     Route::post('/u_notification_list.php', [NotificationController::class, 'list']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::post('/notifications/mark-read',   [NotificationController::class, 'markRead']);
 
     // Messagerie
     Route::post('/conversations.php', [ChatController::class, 'conversations']);
