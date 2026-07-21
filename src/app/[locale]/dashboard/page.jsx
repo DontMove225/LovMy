@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import LocationPermissionModal from '../components/map/LocationPermissionModal';
+import { FiCrosshair } from 'react-icons/fi';
 
 function calcAge(birthDate) {
   if (!birthDate) return null;
@@ -26,6 +27,7 @@ export default function DashboardPage() {
 
   const mapDivRef = useRef(null);
   const mapRef = useRef(null);
+  const myMarkerRef = useRef(null);
   const markersRef = useRef([]);
   const infoWindowRef = useRef(null);
 
@@ -101,13 +103,13 @@ export default function DashboardPage() {
     }
     const script = document.createElement('script');
     script.id = 'google-maps-script';
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${mapKey}`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${mapKey}&loading=async`;
     script.async = true;
     script.onload = () => setScriptLoaded(true);
     document.body.appendChild(script);
   }, [mapKey]);
 
-  // Initialize map once script + position are ready
+  // Initialize map once script + position are ready (runs only once)
   useEffect(() => {
     if (!scriptLoaded || !position || !mapDivRef.current || mapRef.current) return;
     mapRef.current = new window.google.maps.Map(mapDivRef.current, {
@@ -115,24 +117,37 @@ export default function DashboardPage() {
       zoom: 12,
       disableDefaultUI: true,
       zoomControl: true,
-      styles: [{ elementType: 'geometry', stylers: [{ color: '#0a0712' }] }],
     });
     infoWindowRef.current = new window.google.maps.InfoWindow();
-
-    new window.google.maps.Marker({
-      position,
-      map: mapRef.current,
-      icon: {
-        path: window.google.maps.SymbolPath.CIRCLE,
-        scale: 8,
-        fillColor: '#F64135',
-        fillOpacity: 1,
-        strokeColor: '#fff',
-        strokeWeight: 2,
-      },
-      title: 'Vous',
-    });
   }, [scriptLoaded, position]);
+
+  // Re-center the map and move "my" marker whenever position changes
+  // (e.g. after clicking "refresh location") — the map init effect above
+  // only runs once, so without this, a later position update never showed.
+  useEffect(() => {
+    if (!mapRef.current || !position) return;
+
+    mapRef.current.panTo(position);
+
+    if (myMarkerRef.current) {
+      myMarkerRef.current.setPosition(position);
+    } else {
+      myMarkerRef.current = new window.google.maps.Marker({
+        position,
+        map: mapRef.current,
+        icon: {
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale: 8,
+          fillColor: '#F64135',
+          fillOpacity: 1,
+          strokeColor: '#fff',
+          strokeWeight: 2,
+        },
+        title: 'Vous',
+        zIndex: 999,
+      });
+    }
+  }, [position]);
 
   // Render profile markers
   useEffect(() => {
@@ -178,7 +193,7 @@ export default function DashboardPage() {
 
   return (
     <main className="relative h-[calc(100vh-64px)] bg-obsidian lg:h-screen">
-      <div className="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 items-center gap-3 rounded-full border border-[var(--line)] bg-obsidian/80 px-5 py-2.5 backdrop-blur">
+      <div className="animate-rise absolute left-1/2 top-4 z-10 flex -translate-x-1/2 items-center gap-3 rounded-full border border-[var(--line)] bg-obsidian/80 px-5 py-2.5 backdrop-blur">
         <span className="font-mono text-xs uppercase tracking-wide text-[var(--txt-soft)]">
           {loading
             ? 'Recherche…'
@@ -186,6 +201,17 @@ export default function DashboardPage() {
               ? `Aucun profil dans votre rayon — ${profiles.length} profil${profiles.length > 1 ? 's' : ''} le${profiles.length > 1 ? 's' : ''} plus proche${profiles.length > 1 ? 's' : ''}`
               : `${profiles.length} profil${profiles.length > 1 ? 's' : ''} à proximité`}
         </span>
+        {locationState === 'granted' || locationState === 'requesting' ? (
+          <button
+            type="button"
+            onClick={requestLocation}
+            disabled={locationState === 'requesting'}
+            title="Actualiser ma position"
+            className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--txt-soft)] transition hover:text-white disabled:opacity-50"
+          >
+            <FiCrosshair className={`h-3.5 w-3.5 ${locationState === 'requesting' ? 'animate-spin' : ''}`} />
+          </button>
+        ) : null}
       </div>
 
       {locationState !== 'granted' ? (

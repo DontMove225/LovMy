@@ -124,6 +124,8 @@
   "SocialLogin": {
     "orContinueWith": "또는 다음으로 계속하기",
     "continueWithFacebook": "Facebook으로 계속하기",
+    "continueWithGoogle": "Google로 계속하기",
+    "notConfiguredYet": "설정이 필요합니다 — 곧 제공 예정",
     "errorGeneric": "로그인할 수 없습니다.",
     "errorNetwork": "네트워크 오류입니다. 나중에 다시 시도해 주세요."
   },

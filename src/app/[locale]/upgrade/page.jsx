@@ -4,6 +4,8 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import { FiCheck, FiX, FiStar } from 'react-icons/fi';
+import PremiumBadge from '@/components/ui/PremiumBadge';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 export default function UpgradePage() {
   const router = useRouter();
@@ -57,7 +59,8 @@ export default function UpgradePage() {
   if (!me || loading) {
     return (
       <main className="min-h-screen bg-obsidian px-4 py-10">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-[var(--txt-soft)]">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-[var(--txt-soft)]">
+          <HeartbeatLoader size={56} />
           Chargement…
         </div>
       </main>
@@ -66,10 +69,10 @@ export default function UpgradePage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-5xl animate-rise">
         <div className="mb-8 text-center">
-          <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Premium</span>
-          <h1 className="mt-2 font-serif text-4xl text-white">Passez à la vitesse supérieure</h1>
+          <PremiumBadge />
+          <h1 className="mt-3 font-serif text-4xl text-white">Passez à la vitesse supérieure</h1>
           <p className="mt-3 text-[var(--txt-soft)]">Choisissez le plan qui vous correspond.</p>
         </div>
 
@@ -89,8 +92,8 @@ export default function UpgradePage() {
             return (
               <div
                 key={plan.id}
-                className={`relative flex flex-col rounded-3xl border p-7 ${
-                  isFeatured ? 'border-ember bg-gradient-to-b from-[#2a0f14] to-white/[0.03] shadow-[0_20px_50px_rgba(235,6,3,0.25)]' : 'border-[var(--line)] bg-white/[0.03]'
+                className={`relative flex flex-col rounded-3xl border p-7 transition-transform duration-300 hover:-translate-y-1 ${
+                  isFeatured ? 'border-ember bg-gradient-to-b from-[#2a0f14] to-white/[0.03] shadow-[0_24px_70px_-24px_rgba(68,0,4,0.7)]' : 'border-[var(--line)] bg-white/[0.03]'
                 }`}
               >
                 {isFeatured ? (
@@ -131,9 +134,10 @@ export default function UpgradePage() {
                   <div className="mt-6 flex flex-col gap-2">
                     <button
                       onClick={() => startCheckout(plan, 'paypal')}
-                      className="rounded-2xl bg-gradient-passion px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+                      className="group relative overflow-hidden rounded-2xl bg-gradient-passion px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)]"
                     >
-                      Choisir — PayPal
+                      <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                      <span className="relative">Choisir — PayPal</span>
                     </button>
                     <button
                       onClick={() => startCheckout(plan, 'stripe')}

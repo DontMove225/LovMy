@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
 
 function PaymentResponsContent() {
   const searchParams = useSearchParams();
@@ -16,8 +17,13 @@ function PaymentResponsContent() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center">
-        <h1 className="font-serif text-3xl text-white">Résultat du paiement</h1>
+      <div className="mx-auto max-w-xl animate-rise rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center">
+        {status === 'success' ? (
+          <FiCheckCircle className="mx-auto h-14 w-14 text-emerald-400" />
+        ) : status === 'cancel' ? (
+          <FiXCircle className="mx-auto h-14 w-14 text-ember" />
+        ) : null}
+        <h1 className="mt-4 font-serif text-3xl text-white">Résultat du paiement</h1>
         <p className="mt-4 text-[var(--txt-soft)]">Méthode : {method}</p>
         {status === 'success' ? (
           <p className="mt-6 text-xl font-semibold text-emerald-400">Paiement réussi !</p>
@@ -28,9 +34,10 @@ function PaymentResponsContent() {
         )}
         <button
           onClick={() => router.push('/')}
-          className="mt-8 rounded-2xl bg-gradient-passion px-6 py-3 text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+          className="group relative mt-8 overflow-hidden rounded-2xl bg-gradient-passion px-6 py-3 text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)]"
         >
-          Retour à l&apos;accueil
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+          <span className="relative">Retour à l&apos;accueil</span>
         </button>
       </div>
     </main>

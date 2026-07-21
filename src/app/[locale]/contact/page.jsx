@@ -9,7 +9,7 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-obsidian px-4 py-16">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-2xl animate-rise">
         <Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--txt-soft)] hover:text-white">
           <FiArrowLeft className="h-4 w-4" /> Retour à l&apos;accueil
         </Link>

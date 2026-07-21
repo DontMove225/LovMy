@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import {
@@ -8,9 +8,11 @@ import {
   FiCreditCard, FiDollarSign, FiStar, FiSettings, FiLogOut, FiMenu,
 } from 'react-icons/fi';
 import LanguageSwitcher from './LanguageSwitcher';
+import { MyContext } from '@/context/MyProvider';
 
 export default function AppShell({ children }) {
   const t = useTranslations('Nav');
+  const { unreadCount, refreshUnreadCount } = useContext(MyContext);
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,6 +46,13 @@ export default function AppShell({ children }) {
     }
   }, [pathname]);
 
+  useEffect(() => {
+    if (!isLogged) return undefined;
+    refreshUnreadCount();
+    const interval = setInterval(refreshUnreadCount, 30000);
+    return () => clearInterval(interval);
+  }, [isLogged, refreshUnreadCount]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('UserId');
@@ -68,6 +77,11 @@ export default function AppShell({ children }) {
       >
         <Icon className="h-[18px] w-[18px] shrink-0 stroke-[1.6]" />
         {label}
+        {href === '/notification' && unreadCount > 0 && (
+          <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-passion px-1.5 font-mono text-[10px] font-semibold leading-none text-white">
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        )}
       </Link>
     );
   };
@@ -133,9 +147,14 @@ export default function AppShell({ children }) {
             <LanguageSwitcher />
             <Link
               href="/notification"
-              className="rounded-full p-2 text-[var(--txt-soft)] transition hover:bg-white/5 hover:text-white"
+              className="relative rounded-full p-2 text-[var(--txt-soft)] transition hover:bg-white/5 hover:text-white"
             >
               <FiBell className="h-5 w-5" />
+              {unreadCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-passion px-1 font-mono text-[9px] font-semibold leading-none text-white shadow-[0_0_8px_rgba(235,6,3,0.6)] animate-halo">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </Link>
             <Link
               href="/upgrade"

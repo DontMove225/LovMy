@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 const StatCard = ({ label, value, color = 'text-white' }) => (
-  <div className="rounded-2xl border border-[var(--line)] bg-white/[0.03] p-5">
+  <div className="rounded-2xl border border-[var(--line)] bg-white/[0.03] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-ember/30">
     <p className="font-mono text-xs font-medium uppercase tracking-wide text-[var(--txt-faint)]">{label}</p>
     <p className={`mt-2 font-serif text-3xl ${color}`}>
       {value ?? <span className="inline-block h-8 w-20 animate-pulse rounded-lg bg-white/10" />}

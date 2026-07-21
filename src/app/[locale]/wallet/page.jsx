@@ -97,15 +97,15 @@ export default function WalletPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-5xl space-y-6">
+      <div className="mx-auto max-w-5xl space-y-6 animate-rise">
         <section className="grid gap-5 sm:grid-cols-2">
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
+          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 transition-transform duration-300 hover:-translate-y-1">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--txt-faint)]">Solde Coins</p>
             <p className="mt-3 flex items-center gap-2 font-serif text-4xl text-white">
               <FiZap className="h-7 w-7 text-ember" /> {me.coin ?? 0}
             </p>
           </div>
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
+          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 transition-transform duration-300 hover:-translate-y-1">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--txt-faint)]">Portefeuille</p>
             <p className="mt-3 flex items-center gap-2 font-serif text-4xl text-white">
               <FiCreditCard className="h-7 w-7 text-blush" /> {me.wallet ?? 0} €

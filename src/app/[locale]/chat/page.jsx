@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import { useCall } from '@/context/CallProvider';
 import { FiSearch, FiSend, FiPhone, FiVideo } from 'react-icons/fi';
+import { ChatBubble } from '@/components/ui/ChatBubble';
 
 function formatTime(datetime) {
   if (!datetime) return '';
@@ -129,7 +130,7 @@ function ChatContent() {
 
   return (
     <main className="h-[calc(100vh-64px)] bg-obsidian px-4 py-6 lg:h-screen">
-      <div className="mx-auto flex h-full max-w-6xl gap-5">
+      <div className="mx-auto flex h-full max-w-6xl gap-5 animate-rise">
         {/* Conversation list */}
         <aside className="flex w-full max-w-sm flex-col overflow-hidden rounded-3xl border border-[var(--line)] bg-white/[0.03]">
           <div className="border-b border-[var(--line)] p-4">
@@ -218,18 +219,12 @@ function ChatContent() {
                   const mine = m.sender_id === me.id;
                   return (
                     <div key={m.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
-                      <div
-                        className={`max-w-xs rounded-2xl px-4 py-2.5 text-sm sm:max-w-md ${
-                          mine
-                            ? 'bg-gradient-passion text-white'
-                            : 'border border-[var(--line)] bg-white/5 text-[var(--txt)]'
-                        }`}
-                      >
+                      <ChatBubble fromMe={mine}>
                         <p>{m.message}</p>
                         <p className={`mt-1 font-mono text-[10px] ${mine ? 'text-white/70' : 'text-[var(--txt-faint)]'}`}>
                           {formatTime(m.datetime)}
                         </p>
-                      </div>
+                      </ChatBubble>
                     </div>
                   );
                 })
@@ -253,9 +248,13 @@ function ChatContent() {
               <button
                 type="submit"
                 disabled={sending || !draft.trim()}
-                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-passion text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-50"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-passion text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-50"
               >
-                <FiSend className="h-4 w-4" />
+                {sending ? (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                ) : (
+                  <FiSend className="h-4 w-4" />
+                )}
               </button>
             </form>
           ) : null}

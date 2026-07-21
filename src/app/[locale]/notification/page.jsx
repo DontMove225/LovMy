@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import { FiBell } from 'react-icons/fi';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 function formatDate(d) {
   if (!d) return '';
@@ -14,7 +15,7 @@ function formatDate(d) {
 
 export default function NotificationPage() {
   const router = useRouter();
-  const { apiPost, getStoredUser } = useContext(MyContext);
+  const { apiPost, getStoredUser, clearUnreadCount } = useContext(MyContext);
   const [me, setMe] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,12 +36,14 @@ export default function NotificationPage() {
     try {
       const result = await apiPost('u_notification_list.php', { uid });
       setNotifications(result.Result === 'true' ? (result.data || []) : []);
+      await apiPost('notifications/mark-read');
+      clearUnreadCount();
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  }, [apiPost]);
+  }, [apiPost, clearUnreadCount]);
 
   useEffect(() => { if (me) load(me.id); }, [me, load]);
 
@@ -48,14 +51,15 @@ export default function NotificationPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-rise">
         <div className="mb-6 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Notifications</span>
           <h1 className="mt-2 font-serif text-3xl text-white">Vos notifications</h1>
         </div>
 
         {loading ? (
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
+          <div className="flex flex-col items-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-center text-[var(--txt-soft)]">
+            <HeartbeatLoader size={48} />
             Chargement…
           </div>
         ) : notifications.length === 0 ? (
@@ -66,7 +70,17 @@ export default function NotificationPage() {
         ) : (
           <div className="space-y-3">
             {notifications.map((n) => (
-              <div key={n.id} className="flex gap-4 rounded-2xl border border-[var(--line)] bg-white/[0.03] p-5">
+              <div
+                key={n.id}
+                className={`relative flex gap-4 rounded-2xl border p-5 transition ${
+                  n.is_read
+                    ? 'border-[var(--line)] bg-white/[0.03]'
+                    : 'border-ember/30 bg-ember/[0.06]'
+                }`}
+              >
+                {!n.is_read && (
+                  <span className="absolute right-4 top-5 h-2 w-2 rounded-full bg-ember shadow-[0_0_8px_rgba(246,65,53,0.7)]" />
+                )}
                 <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-passion">
                   <FiBell className="h-4 w-4 text-white" />
                 </div>

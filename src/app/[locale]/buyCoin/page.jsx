@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import { FiZap } from 'react-icons/fi';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 export default function BuyCoinPage() {
   const router = useRouter();
@@ -58,7 +59,8 @@ export default function BuyCoinPage() {
   if (!me || loading) {
     return (
       <main className="min-h-screen bg-obsidian px-4 py-10">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-[var(--txt-soft)]">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-[var(--txt-soft)]">
+          <HeartbeatLoader size={56} />
           Chargement…
         </div>
       </main>
@@ -67,7 +69,7 @@ export default function BuyCoinPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-5xl animate-rise">
         <div className="mb-8 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Coins</span>
           <h1 className="mt-2 font-serif text-3xl text-white">Acheter des coins</h1>
@@ -79,7 +81,7 @@ export default function BuyCoinPage() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {packages.map((pkg) => (
-            <div key={pkg.id} className="flex flex-col items-center rounded-3xl border border-[var(--line)] bg-white/[0.03] p-6 text-center">
+            <div key={pkg.id} className="flex flex-col items-center rounded-3xl border border-[var(--line)] bg-white/[0.03] p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-ember/40 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.35)]">
               <FiZap className="h-8 w-8 text-ember" />
               <p className="mt-3 font-serif text-2xl text-white">{pkg.coin}</p>
               <p className="text-xs text-[var(--txt-faint)]">coins</p>

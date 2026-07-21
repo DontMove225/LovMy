@@ -63,8 +63,9 @@ export default function AdminStaff() {
           </div>
         </div>
         {msg && <p className="text-sm text-ember">{msg}</p>}
-        <button type="submit" disabled={saving} className="rounded-xl bg-gradient-passion px-5 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-60">
-          {saving ? 'Création…' : 'Créer'}
+        <button type="submit" disabled={saving} className="group relative overflow-hidden rounded-xl bg-gradient-passion px-5 py-2 text-sm font-semibold text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)] disabled:pointer-events-none disabled:opacity-60">
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+          <span className="relative">{saving ? 'Création…' : 'Créer'}</span>
         </button>
       </form>
 

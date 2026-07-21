@@ -4,7 +4,7 @@ import { memo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FiHeart, FiX, FiMapPin, FiMessageSquare, FiGift, FiLock } from 'react-icons/fi';
+import { FiHeart, FiX, FiMapPin, FiMessageSquare, FiGift, FiLock, FiCheck } from 'react-icons/fi';
 import GiftPicker from './GiftPicker';
 
 function calcAge(birthDate) {
@@ -38,6 +38,7 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
   const router = useRouter();
   const age = calcAge(profile.birth_date);
   const [showGifts, setShowGifts] = useState(false);
+  const [liking, setLiking] = useState(false);
 
   const handleChat = () => {
     if (!canChat) {
@@ -47,9 +48,17 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
     router.push(`/chat?partner=${profile.id}&name=${encodeURIComponent(profile.name || '')}`);
   };
 
+  const handleLike = () => {
+    setLiking(true);
+    setTimeout(() => setLiking(false), 700);
+    onLike?.();
+  };
+
   return (
     <div>
-      <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-[var(--line)] shadow-[0_12px_30px_rgba(0,0,0,0.35)]">
+      <div
+        className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-[var(--line)] shadow-[0_12px_30px_rgba(0,0,0,0.35)] transition-shadow duration-300 hover:shadow-[0_24px_70px_-24px_rgba(68,0,4,0.7)]"
+      >
         <Link href={`/detail/${profile.id}`} className="absolute inset-0">
           <div
             className="absolute inset-0"
@@ -61,7 +70,7 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
                 alt={profile.name || 'Profil'}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
             ) : (
               <div className="flex h-full items-center justify-center font-serif text-6xl text-white/25">
@@ -70,6 +79,7 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
             )}
           </div>
         </Link>
+
 
         {/* Photo carousel dots */}
         {photoCount > 1 ? (
@@ -97,9 +107,14 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
               <FiMapPin className="h-3 w-3" /> {distanceKm.toFixed(0)} km
             </span>
           ) : null}
-          <p className="font-serif text-lg leading-tight text-white">
+          <p className="flex items-center gap-1.5 font-serif text-lg leading-tight text-white">
             {profile.name || 'Profil'}
             {age ? `, ${age}` : ''}
+            {profile.is_verify ? (
+              <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-passion">
+                <FiCheck className="h-2.5 w-2.5 text-white" strokeWidth={3} />
+              </span>
+            ) : null}
           </p>
           {profile.profile_bio ? (
             <p className="mt-0.5 line-clamp-1 text-xs text-white/70">{profile.profile_bio}</p>
@@ -112,7 +127,7 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
         {onPass ? (
           <button
             onClick={onPass}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-[var(--txt-soft)] transition hover:bg-ember/10 hover:text-ember"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line)] bg-white/[0.03] text-[var(--txt-soft)] transition-all duration-300 hover:border-ember/60 hover:text-ember active:scale-90"
             aria-label="Passer"
           >
             <FiX className="h-4 w-4" />
@@ -120,16 +135,17 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
         ) : null}
         {onLike ? (
           <button
-            onClick={onLike}
-            className="grid h-11 w-11 place-items-center rounded-full bg-gradient-passion text-white shadow-[0_6px_16px_rgba(235,6,3,0.45)] transition hover:brightness-110"
+            onClick={handleLike}
+            className="relative grid h-11 w-11 place-items-center rounded-full bg-gradient-passion text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 active:scale-90"
             aria-label="Liker"
           >
-            <FiHeart className="h-[18px] w-[18px]" />
+            {liking && <span className="absolute inset-0 rounded-full shadow-[0_0_0_3px_rgba(246,65,53,0.35)] animate-halo" />}
+            <FiHeart className={`relative h-[18px] w-[18px] ${liking ? 'animate-heartbeat' : ''}`} />
           </button>
         ) : null}
         <button
           onClick={handleChat}
-          className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-[var(--txt-soft)] transition hover:bg-white/10 hover:text-white"
+          className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line)] bg-white/[0.03] text-[var(--txt-soft)] transition-all duration-300 hover:border-white/20 hover:text-white active:scale-90"
           aria-label={canChat ? 'Envoyer un message' : 'Fonctionnalité Premium'}
         >
           {canChat ? <FiMessageSquare className="h-4 w-4" /> : <FiLock className="h-4 w-4" />}
@@ -137,7 +153,7 @@ function ProfileCard({ profile, imageBaseURL, distanceKm, compatPct, photoCount 
         {onGift ? (
           <button
             onClick={() => setShowGifts((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-[var(--txt-soft)] transition hover:bg-white/10 hover:text-white"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line)] bg-white/[0.03] text-[var(--txt-soft)] transition-all duration-300 hover:border-white/20 hover:text-white active:scale-90"
             aria-label="Envoyer un cadeau"
           >
             <FiGift className="h-4 w-4" />

@@ -12,6 +12,7 @@ export function MyProvider({ children }) {
 
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const getStoredUser = useCallback(() => {
     if (typeof window === 'undefined') return null;
@@ -59,6 +60,26 @@ export function MyProvider({ children }) {
     }
     setUser(null);
     setToken(null);
+    setUnreadCount(0);
+  }, []);
+
+  const refreshUnreadCount = useCallback(async () => {
+    const storedToken = getStoredToken();
+    if (!storedToken) return;
+    try {
+      const data = await apiGet('notifications/unread-count');
+      if (data.Result === 'true') setUnreadCount(data.count);
+    } catch {
+      // best-effort — badge just won't update this cycle
+    }
+  }, [apiGet, getStoredToken]);
+
+  const bumpUnreadCount = useCallback(() => {
+    setUnreadCount((count) => count + 1);
+  }, []);
+
+  const clearUnreadCount = useCallback(() => {
+    setUnreadCount(0);
   }, []);
 
   return (
@@ -76,6 +97,10 @@ export function MyProvider({ children }) {
         apiGet,
         getStoredUser,
         getStoredToken,
+        unreadCount,
+        refreshUnreadCount,
+        bumpUnreadCount,
+        clearUnreadCount,
       }}
     >
       {children}

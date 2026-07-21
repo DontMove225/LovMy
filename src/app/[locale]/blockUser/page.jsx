@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MyContext } from '@/context/MyProvider';
 import { FiSlash, FiUserX } from 'react-icons/fi';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 export default function BlockUserPage() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function BlockUserPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-rise">
         <div className="mb-6 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Sécurité</span>
           <h1 className="mt-2 font-serif text-3xl text-white">Utilisateurs bloqués</h1>
@@ -60,7 +61,8 @@ export default function BlockUserPage() {
         </div>
 
         {loading ? (
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
+          <div className="flex flex-col items-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-center text-[var(--txt-soft)]">
+            <HeartbeatLoader size={48} />
             Chargement…
           </div>
         ) : blocked.length === 0 ? (

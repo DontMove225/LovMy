@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
 import { FiClock, FiStar } from 'react-icons/fi';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 function formatDate(d) {
   if (!d) return '—';
@@ -48,7 +49,7 @@ export default function HistoryPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-rise">
         <div className="mb-6 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Historique</span>
           <h1 className="mt-2 font-serif text-3xl text-white">Historique des abonnements</h1>
@@ -56,7 +57,8 @@ export default function HistoryPage() {
         </div>
 
         {loading ? (
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
+          <div className="flex flex-col items-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-center text-[var(--txt-soft)]">
+            <HeartbeatLoader size={48} />
             Chargement…
           </div>
         ) : history.length === 0 ? (

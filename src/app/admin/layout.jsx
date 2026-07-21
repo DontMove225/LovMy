@@ -81,8 +81,9 @@ export default function AdminLayout({ children }) {
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-[var(--line)] bg-obsidian transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex h-16 items-center gap-3 border-b border-[var(--line)] px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-passion">
-            <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-passion">
+            <span className="absolute inset-0 rounded-lg bg-gradient-passion opacity-60 animate-halo" />
+            <svg className="relative h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
@@ -158,7 +159,7 @@ export default function AdminLayout({ children }) {
             {navItems.find((n) => pathname.startsWith(n.href))?.label ?? 'Admin'}
           </span>
         </header>
-        <main className="flex-1 p-6 text-[var(--txt)]">{children}</main>
+        <main className="flex-1 animate-rise p-6 text-[var(--txt)]">{children}</main>
       </div>
     </div>
     </Shell>

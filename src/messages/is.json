@@ -124,6 +124,8 @@
   "SocialLogin": {
     "orContinueWith": "Eða halda áfram með",
     "continueWithFacebook": "Halda áfram með Facebook",
+    "continueWithGoogle": "Halda áfram með Google",
+    "notConfiguredYet": "Uppsetning vantar — kemur fljótlega",
     "errorGeneric": "Ekki hægt að skrá inn.",
     "errorNetwork": "Nettengingarvilla. Reyndu aftur síðar."
   },

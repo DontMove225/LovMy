@@ -49,7 +49,7 @@ export default function RegisterPage() {
             'radial-gradient(60% 50% at 78% 8%, rgba(235,6,3,.20), transparent 60%), radial-gradient(50% 40% at 12% 30%, rgba(48,59,99,.22), transparent 60%)',
         }}
       />
-      <div className="relative w-full max-w-md rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 backdrop-blur-xl">
+      <div className="relative w-full max-w-md animate-rise rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 backdrop-blur-xl">
         <h1 className="font-serif text-3xl text-white">{t('title')}</h1>
         <p className="mt-3 text-[var(--txt-soft)]">{t('subtitle')}</p>
 
@@ -88,9 +88,10 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full rounded-2xl bg-gradient-passion px-5 py-3 text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+            className="group relative w-full overflow-hidden rounded-2xl bg-gradient-passion px-5 py-3 text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)]"
           >
-            {t('submit')}
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+            <span className="relative">{t('submit')}</span>
           </button>
         </form>
 

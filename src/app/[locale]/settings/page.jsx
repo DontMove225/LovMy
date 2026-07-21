@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MyContext } from '@/context/MyProvider';
 import { FiCamera } from 'react-icons/fi';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 function ChipGroup({ options, selected, onToggle, multi = true }) {
   const isSelected = (id) => (multi ? selected.includes(id) : selected === id);
@@ -170,7 +171,8 @@ export default function SettingsPage() {
   if (!me || loading) {
     return (
       <main className="min-h-screen bg-obsidian px-4 py-10">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-[var(--txt-soft)]">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-[var(--txt-soft)]">
+          <HeartbeatLoader size={56} />
           Chargement…
         </div>
       </main>
@@ -182,7 +184,7 @@ export default function SettingsPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <form onSubmit={handleSubmit} className="mx-auto max-w-4xl space-y-6">
+      <form onSubmit={handleSubmit} className="mx-auto max-w-4xl space-y-6 animate-rise">
         <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Mon compte</span>
           <h1 className="mt-2 font-serif text-3xl text-white">Paramètres & confidentialité</h1>
@@ -347,9 +349,10 @@ export default function SettingsPage() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full rounded-2xl bg-gradient-passion px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-60"
+          className="group relative w-full overflow-hidden rounded-2xl bg-gradient-passion px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)] disabled:pointer-events-none disabled:opacity-60"
         >
-          {saving ? 'Mise à jour…' : 'Mettre à jour'}
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+          <span className="relative">{saving ? 'Mise à jour…' : 'Mettre à jour'}</span>
         </button>
       </form>
     </main>

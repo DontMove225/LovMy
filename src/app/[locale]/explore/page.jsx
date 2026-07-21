@@ -7,6 +7,7 @@ import { MyContext } from '@/context/MyProvider';
 import { FiSliders, FiHeart } from 'react-icons/fi';
 import ProfileCard from '../components/explore/ProfileCard';
 import FilterPanel from '../components/explore/FilterPanel';
+import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
 const EMPTY_FILTERS = {
   gender: '', min_age: '', max_age: '', max_distance: '',
@@ -231,7 +232,7 @@ export default function ExplorePage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-6xl space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6 animate-rise">
         <section className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">{t('eyebrow')}</span>
           <h1 className="mt-2 font-serif text-3xl text-white">{t('title')}</h1>
@@ -281,7 +282,7 @@ export default function ExplorePage() {
         ) : null}
 
         {toast ? (
-          <div className="rounded-2xl border border-ember/30 bg-ember/10 px-5 py-3 text-center font-serif text-lg text-white">
+          <div className="animate-rise rounded-2xl border border-ember/30 bg-ember/10 px-5 py-3 text-center font-serif text-lg text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)]">
             {toast}
           </div>
         ) : null}
@@ -293,11 +294,13 @@ export default function ExplorePage() {
         ) : null}
 
         {loading ? (
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
+          <div className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-center text-[var(--txt-soft)]">
+            <HeartbeatLoader size={56} />
             {t('loading')}
           </div>
         ) : profiles.length === 0 ? (
-          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8 text-center text-[var(--txt-soft)]">
+          <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-14 text-center text-[var(--txt-soft)]">
+            <FiHeart className="mx-auto mb-3 h-8 w-8 text-[var(--txt-faint)]" />
             {t('noProfiles')}
           </div>
         ) : (

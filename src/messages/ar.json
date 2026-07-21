@@ -124,6 +124,8 @@
   "SocialLogin": {
     "orContinueWith": "أو تابع باستخدام",
     "continueWithFacebook": "المتابعة باستخدام Facebook",
+    "continueWithGoogle": "المتابعة باستخدام Google",
+    "notConfiguredYet": "يتطلب الإعداد — قريبًا",
     "errorGeneric": "تعذّر تسجيل الدخول.",
     "errorNetwork": "خطأ في الشبكة. يرجى المحاولة لاحقًا."
   },

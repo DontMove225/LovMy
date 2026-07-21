@@ -19,7 +19,7 @@ export default function PaymentPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
+      <div className="mx-auto max-w-xl animate-rise rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
         <h1 className="font-serif text-3xl text-white">Paiement</h1>
         <p className="mt-3 text-[var(--txt-soft)]">Choisis PayPal ou Stripe pour payer.</p>
 
@@ -47,9 +47,10 @@ export default function PaymentPage() {
           <button
             type="button"
             onClick={() => handleNavigate('stripe')}
-            className="w-full rounded-2xl bg-gradient-passion px-5 py-3 text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+            className="group relative w-full overflow-hidden rounded-2xl bg-gradient-passion px-5 py-3 text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)]"
           >
-            Payer avec Stripe
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+            <span className="relative">Payer avec Stripe</span>
           </button>
         </div>
       </div>

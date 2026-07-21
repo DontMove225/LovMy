@@ -19,7 +19,7 @@ export default function NotFound() {
         <p className="mt-3 text-[var(--txt-soft)]">{t('description')}</p>
         <Link
           href="/dashboard"
-          className="mt-6 inline-block rounded-2xl bg-gradient-passion px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+          className="mt-6 inline-block rounded-2xl bg-gradient-passion px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)]"
         >
           {t('backHome')}
         </Link>

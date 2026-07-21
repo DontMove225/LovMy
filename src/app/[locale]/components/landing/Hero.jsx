@@ -59,9 +59,10 @@ export default function Hero() {
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Link
               href="/register"
-              className="rounded-full bg-gradient-passion px-8 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(235,6,3,0.35)] transition hover:brightness-110"
+              className="group relative overflow-hidden rounded-full bg-gradient-passion px-8 py-3.5 text-sm font-semibold text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)]"
             >
-              {t('ctaRegister')}
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="relative">{t('ctaRegister')}</span>
             </Link>
             <a
               href="#telecharger"

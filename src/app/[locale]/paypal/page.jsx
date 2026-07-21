@@ -93,7 +93,7 @@ function PaypalContent() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
-      <div className="mx-auto max-w-2xl rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
+      <div className="mx-auto max-w-2xl animate-rise rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
         <h1 className="font-serif text-3xl text-white">PayPal</h1>
         <p className="mt-3 text-[var(--txt-soft)]">Montant : ${amount}</p>
         {message ? <p className="mt-4 text-sm text-ember">{message}</p> : null}

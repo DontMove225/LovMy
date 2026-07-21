@@ -89,9 +89,10 @@ export default function AdminNotifications() {
         <button
           type="submit"
           disabled={sending}
-          className="rounded-xl bg-gradient-passion px-6 py-2.5 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)] transition hover:brightness-110 disabled:opacity-60"
+          className="group relative overflow-hidden rounded-xl bg-gradient-passion px-6 py-2.5 text-sm font-semibold text-white shadow-[0_10px_34px_-10px_rgba(246,65,53,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_-12px_rgba(235,6,3,0.45)] disabled:pointer-events-none disabled:opacity-60"
         >
-          {sending ? 'Envoi…' : uid ? 'Envoyer à cet utilisateur' : 'Envoyer à tous'}
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+          <span className="relative">{sending ? 'Envoi…' : uid ? 'Envoyer à cet utilisateur' : 'Envoyer à tous'}</span>
         </button>
       </form>
     </div>

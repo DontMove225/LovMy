@@ -20,7 +20,7 @@ export default async function FaqPage() {
 
   return (
     <main className="min-h-screen bg-obsidian px-4 py-16">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-rise">
         <div className="mb-10 text-center">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Aide</span>
           <h1 className="mt-2 font-serif text-4xl text-white">Questions fréquentes</h1>

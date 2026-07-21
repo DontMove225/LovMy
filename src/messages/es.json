@@ -124,6 +124,8 @@
   "SocialLogin": {
     "orContinueWith": "O continuar con",
     "continueWithFacebook": "Continuar con Facebook",
+    "continueWithGoogle": "Continuar con Google",
+    "notConfiguredYet": "Configuración pendiente — próximamente",
     "errorGeneric": "No se pudo iniciar sesión.",
     "errorNetwork": "Error de red. Inténtalo de nuevo más tarde."
   },
