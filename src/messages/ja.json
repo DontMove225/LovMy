@@ -1,0 +1,173 @@
+{
+  "Metadata": {
+    "title": "LovMy — Never be lonely",
+    "description": "LovMyは、マッチングの知性と人の温もりをつなぐ次世代の出会い系プラットフォームです。"
+  },
+  "Nav": {
+    "home": "ホーム",
+    "discover": "見つける",
+    "messages": "メッセージ",
+    "notifications": "通知",
+    "wallet": "ウォレット",
+    "premium": "プレミアム",
+    "account": "アカウント",
+    "myProfile": "マイプロフィール",
+    "buyCoins": "コインを購入",
+    "settings": "設定とプライバシー",
+    "editProfile": "プロフィールを編集",
+    "logout": "ログアウト",
+    "defaultUser": "ユーザー",
+    "accountSecurity": "アカウントとセキュリティ",
+    "blockedUsers": "ブロックしたユーザー",
+    "history": "履歴",
+    "support": "サポート",
+    "faq": "よくある質問",
+    "contact": "お問い合わせ",
+    "terms": "利用規約",
+    "privacy": "プライバシー",
+    "safety": "安全性とポリシー",
+    "edit": "編集"
+  },
+  "LandingHeader": {
+    "concept": "コンセプト",
+    "features": "機能",
+    "download": "ダウンロード",
+    "login": "ログイン"
+  },
+  "Hero": {
+    "kicker": "次世代の出会い",
+    "tagline": "Never be lonely",
+    "subtitle": "知性が魅力と出会うとき。",
+    "description": "アルゴリズムの精度と感情の温もりがひとつになる出会い系アプリ。本当にあなたに合う人を見つけよう。",
+    "ctaRegister": "ウェブで登録する",
+    "ctaDownload": "アプリをダウンロード",
+    "publisher": "発行",
+    "publisherName": "Full IT",
+    "security": "セキュリティ",
+    "securityValue": "4段階の本人確認"
+  },
+  "Concept": {
+    "eyebrow": "コンセプトとポジショニング",
+    "title": "ひとつの心、二つの世界",
+    "techLabel": "テクノロジーの側面",
+    "techTitle": "知性",
+    "techText": "シャープなライン、精度、拡張されたマッチング。ロゴの「機械的」な部分は、安全で信頼できるマッチングを体現しています。シグネチャーカラー：ミッドナイトスチール。",
+    "humanLabel": "人間的な側面",
+    "humanTitle": "感情",
+    "humanText": "柔らかな曲線、まなざし、存在感。ロゴの「生きている」部分は、欲望、優しさ、本当の出会いを表しています。シグネチャーカラー：パッションレッド＆テンダーピンク。",
+    "value1Label": "価値観 01",
+    "value1Title": "知的なつながり",
+    "value1Text": "データは絆に仕えるためにあり、その逆ではありません。控えめで、公正で、的確に。",
+    "value2Label": "価値観 02",
+    "value2Title": "本物の感情",
+    "value2Text": "心に語りかける。温もり、誠実さ、抑制された情熱。",
+    "value3Label": "価値観 03",
+    "value3Title": "プレミアムな上質さ",
+    "value3Text": "艶やかな赤、深い黒、余白。上質さを感じる体験。"
+  },
+  "Features": {
+    "eyebrow": "得られるもの",
+    "title": "本当の出会いのために",
+    "matchingTitle": "AIマッチング",
+    "matchingText": "あなたの好みを学習する相性アルゴリズムが、本当に関連性の高いプロフィールを提案します。",
+    "securityTitle": "セキュリティと本人確認",
+    "securityText": "4段階の本人確認（メール、電話、自撮り、身分証明書）と、プロフィール・コンテンツの積極的なモデレーション。",
+    "videoTitle": "ビデオデート",
+    "videoText": "実際に会う前に、会話の中から直接HD音声・ビデオ通話ができます。",
+    "premiumTitle": "プレミアム",
+    "premiumText": "無制限のいいね、非表示モード、プロフィールブースト、リワインド、さらに進むための高度なフィルター。"
+  },
+  "Testimonials": {
+    "eyebrow": "出会えた二人",
+    "title": "Never be lonely、それは本当のこと",
+    "quote1": "火曜の夜にマッチしました。3か月後には一緒に暮らしていました。",
+    "name1": "カミーユ、27歳",
+    "quote2": "実際に会う前のビデオ通話で全てが変わりました。もう嫌な驚きはありません。",
+    "name2": "イドリス、31歳",
+    "quote3": "マッチングの精度に驚きました。ようやく無意味にスワイプするのをやめられました。",
+    "name3": "レア、24歳"
+  },
+  "DownloadCta": {
+    "eyebrow": "どこにいても",
+    "title": "LovMyを持ち歩こう",
+    "text": "モバイルアプリは近日中にiOSとAndroidに登場予定です。それまではウェブで登録してください。",
+    "comingSoon": "近日登場",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "cta": "ウェブで登録する"
+  },
+  "Footer": {
+    "brandDoc": "ブランドドキュメント",
+    "publisher": "発行",
+    "publisherName": "Full IT",
+    "faq": "よくある質問",
+    "contact": "お問い合わせ",
+    "tagline": "Never be lonely",
+    "copyright": "© {year} LovMy — 無断複写・転載を禁じます"
+  },
+  "Login": {
+    "title": "LovMyへようこそ",
+    "subtitle": "続けるにはログインしてください",
+    "emailOrPhone": "メールアドレスまたは電話番号",
+    "emailOrPhonePlaceholder": "メールまたは携帯電話番号",
+    "password": "パスワード",
+    "submit": "ログイン",
+    "submitLoading": "ログイン中…",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "createAccount": "アカウントを作成",
+    "errorRequired": "ユーザー名とパスワードを入力してください。",
+    "errorGeneric": "ログインに失敗しました。認証情報を確認してください。",
+    "errorNetwork": "ネットワークエラーです。しばらくしてから再試行してください。"
+  },
+  "Register": {
+    "title": "アカウントを作成",
+    "subtitle": "LovMyを始めるために登録してください。",
+    "name": "名前",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "submit": "続ける",
+    "errorRequired": "すべての項目が必須です。",
+    "errorGeneric": "メールアドレスを確認できませんでした",
+    "errorNetwork": "ネットワークエラーです。しばらくしてから再試行してください。"
+  },
+  "SocialLogin": {
+    "orContinueWith": "または次で続ける",
+    "continueWithFacebook": "Facebookで続ける",
+    "continueWithGoogle": "Googleで続ける",
+    "notConfiguredYet": "設定が必要です — 近日公開",
+    "errorGeneric": "ログインできませんでした。",
+    "errorNetwork": "ネットワークエラーです。しばらくしてから再試行してください。"
+  },
+  "AdminLogin": {
+    "title": "LovMy管理者",
+    "subtitle": "管理者専用アクセス",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "submit": "ログイン",
+    "submitLoading": "ログイン中…",
+    "errorRequired": "ユーザー名とパスワードを入力してください。",
+    "errorGeneric": "認証情報が無効です。"
+  },
+  "Explore": {
+    "tabDiscover": "見つける",
+    "tabLikedMe": "いいねされた",
+    "tabFavourites": "お気に入り",
+    "tabPassed": "スキップ済み",
+    "eyebrow": "見つける",
+    "title": "あなたのマッチを見つけよう",
+    "subtitle": "LovMyがおすすめするプロフィールを、あなたの好みに合わせて表示します。",
+    "filters": "フィルター",
+    "loading": "読み込み中…",
+    "noProfiles": "現在プロフィールはありません。",
+    "distanceFallback": "指定した範囲内にプロフィールがありません — 最も近い利用可能なプロフィールを表示しています。",
+    "newMatch": "✨ {name}さんと新しくマッチしました！",
+    "giftSent": "{gift}を{name}さんに送りました！",
+    "giftInsufficientCoins": "このギフトを贈るにはコインが不足しています。"
+  },
+  "NotFound": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しないか、移動されました。",
+    "backHome": "ホームに戻る"
+  }
+}

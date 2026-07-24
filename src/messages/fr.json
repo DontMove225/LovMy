@@ -1,0 +1,173 @@
+{
+  "Metadata": {
+    "title": "LovMy — Never be lonely",
+    "description": "LovMy est la plateforme de rencontres nouvelle génération qui connecte l'intelligence du matching et la chaleur de l'humain."
+  },
+  "Nav": {
+    "home": "Accueil",
+    "discover": "Découverte",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "wallet": "Wallet",
+    "premium": "Premium",
+    "account": "Compte",
+    "myProfile": "Mon profil",
+    "buyCoins": "Acheter des coins",
+    "settings": "Paramètres",
+    "editProfile": "Modifier le profil",
+    "logout": "Déconnexion",
+    "defaultUser": "Utilisateur",
+    "accountSecurity": "Compte & sécurité",
+    "blockedUsers": "Utilisateurs bloqués",
+    "history": "Historique",
+    "support": "Support",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Confidentialité",
+    "safety": "Sécurité & Politique",
+    "edit": "Modifier"
+  },
+  "LandingHeader": {
+    "concept": "Concept",
+    "features": "Fonctionnalités",
+    "download": "Télécharger",
+    "login": "Se connecter"
+  },
+  "Hero": {
+    "kicker": "Rencontres nouvelle génération",
+    "tagline": "Never be lonely",
+    "subtitle": "Quand l'intelligence rencontre l'attirance.",
+    "description": "L'application de rencontre où la précision de l'algorithme et la chaleur de l'émotion ne font qu'un. Trouvez quelqu'un qui vous ressemble, vraiment.",
+    "ctaRegister": "S'inscrire sur le web",
+    "ctaDownload": "Télécharger l'app",
+    "publisher": "Édité par",
+    "publisherName": "Full IT",
+    "security": "Sécurité",
+    "securityValue": "Vérification en 4 étapes"
+  },
+  "Concept": {
+    "eyebrow": "Concept & positionnement",
+    "title": "Un cœur, deux mondes",
+    "techLabel": "Le côté technologie",
+    "techTitle": "L'intelligence",
+    "techText": "Lignes nettes, précision, mise en relation augmentée. La part « machine » du logo incarne un matchmaking fiable et sûr. Couleur signature : Acier Minuit.",
+    "humanLabel": "Le côté humain",
+    "humanTitle": "L'émotion",
+    "humanText": "Courbes douces, regard, présence. La part « vivante » du logo porte le désir, la tendresse, la rencontre réelle. Couleurs signature : Rouge Passion & Rose Tendre.",
+    "value1Label": "Valeur 01",
+    "value1Title": "Connexion intelligente",
+    "value1Text": "La donnée au service du lien, jamais l'inverse. Discret, juste, pertinent.",
+    "value2Label": "Valeur 02",
+    "value2Title": "Émotion authentique",
+    "value2Text": "On parle au cœur. Chaleur, sincérité, intensité maîtrisée.",
+    "value3Label": "Valeur 03",
+    "value3Title": "Élégance premium",
+    "value3Text": "Le rouge laqué, le noir profond, l'espace. Une expérience qui se sent haut de gamme."
+  },
+  "Features": {
+    "eyebrow": "Ce que vous obtenez",
+    "title": "Fait pour de vraies rencontres",
+    "matchingTitle": "Matching IA",
+    "matchingText": "Un algorithme de compatibilité qui apprend de vos préférences pour vous proposer des profils vraiment pertinents.",
+    "securityTitle": "Sécurité & vérification",
+    "securityText": "Vérification en 4 étapes (email, téléphone, selfie, pièce d'identité) et modération active des profils et contenus.",
+    "videoTitle": "Video Dating",
+    "videoText": "Appels audio et vidéo HD intégrés, directement depuis vos conversations, avant de se rencontrer en vrai.",
+    "premiumTitle": "Premium",
+    "premiumText": "Likes illimités, mode invisible, boost de profil, rewind et filtres avancés pour aller plus loin."
+  },
+  "Testimonials": {
+    "eyebrow": "Ils se sont trouvés",
+    "title": "Never be lonely, pour de vrai",
+    "quote1": "On a matché un mardi soir. Trois mois plus tard, on emménageait ensemble.",
+    "name1": "Camille, 27 ans",
+    "quote2": "Les appels vidéo avant de se voir en vrai, ça change tout. Plus de mauvaises surprises.",
+    "name2": "Idriss, 31 ans",
+    "quote3": "Le matching est bluffant de pertinence. J'ai enfin arrêté de swiper dans le vide.",
+    "name3": "Léa, 24 ans"
+  },
+  "DownloadCta": {
+    "eyebrow": "Où que vous soyez",
+    "title": "Emportez LovMy avec vous",
+    "text": "L'application mobile arrive bientôt sur iOS et Android. En attendant, inscrivez-vous sur le web.",
+    "comingSoon": "Bientôt sur",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "cta": "S'inscrire sur le web"
+  },
+  "Footer": {
+    "brandDoc": "Document de marque",
+    "publisher": "Édité par",
+    "publisherName": "Full IT",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "tagline": "Never be lonely",
+    "copyright": "© {year} LovMy — Tous droits réservés"
+  },
+  "Login": {
+    "title": "Bienvenue sur LovMy",
+    "subtitle": "Connectez-vous pour continuer",
+    "emailOrPhone": "Email ou numéro de téléphone",
+    "emailOrPhonePlaceholder": "Email ou mobile",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "submitLoading": "Connexion en cours…",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "createAccount": "Créer un compte",
+    "errorRequired": "Veuillez renseigner votre identifiant et mot de passe.",
+    "errorGeneric": "Échec de connexion. Vérifiez vos identifiants.",
+    "errorNetwork": "Erreur réseau. Veuillez réessayer plus tard."
+  },
+  "Register": {
+    "title": "Créer un compte",
+    "subtitle": "Inscris-toi pour commencer sur LovMy.",
+    "name": "Nom",
+    "email": "Email",
+    "password": "Mot de passe",
+    "submit": "Continuer",
+    "errorRequired": "Tous les champs sont requis.",
+    "errorGeneric": "Impossible de vérifier l'email",
+    "errorNetwork": "Erreur réseau, réessayez plus tard."
+  },
+  "SocialLogin": {
+    "orContinueWith": "Ou continuer avec",
+    "continueWithFacebook": "Continuer avec Facebook",
+    "continueWithGoogle": "Continuer avec Google",
+    "notConfiguredYet": "Configuration requise — bientôt disponible",
+    "errorGeneric": "Connexion impossible.",
+    "errorNetwork": "Erreur réseau. Veuillez réessayer plus tard."
+  },
+  "AdminLogin": {
+    "title": "LovMy Admin",
+    "subtitle": "Accès réservé aux administrateurs",
+    "username": "Identifiant",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "submitLoading": "Connexion…",
+    "errorRequired": "Veuillez renseigner identifiant et mot de passe.",
+    "errorGeneric": "Identifiants invalides."
+  },
+  "Explore": {
+    "tabDiscover": "Découverte",
+    "tabLikedMe": "Qui m'a liké",
+    "tabFavourites": "Favoris",
+    "tabPassed": "Passés",
+    "eyebrow": "Découverte",
+    "title": "Trouvez votre match",
+    "subtitle": "Les profils recommandés par LovMy, classés selon vos préférences.",
+    "filters": "Filtres",
+    "loading": "Chargement…",
+    "noProfiles": "Aucun profil pour le moment.",
+    "distanceFallback": "Aucun profil dans le rayon demandé — voici les profils les plus proches disponibles.",
+    "newMatch": "✨ Nouveau match avec {name} !",
+    "giftSent": "{gift} envoyé à {name} !",
+    "giftInsufficientCoins": "Coins insuffisants pour ce cadeau."
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "backHome": "Retour à l'accueil"
+  }
+}

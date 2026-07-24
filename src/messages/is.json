@@ -1,0 +1,173 @@
+{
+  "Metadata": {
+    "title": "LovMy — Never be lonely",
+    "description": "LovMy er stefnumótaveita nýrrar kynslóðar sem tengir greind samsvörunar við hlýju mannlegra tengsla."
+  },
+  "Nav": {
+    "home": "Heim",
+    "discover": "Uppgötva",
+    "messages": "Skilaboð",
+    "notifications": "Tilkynningar",
+    "wallet": "Veski",
+    "premium": "Premium",
+    "account": "Reikningur",
+    "myProfile": "Mín síða",
+    "buyCoins": "Kaupa mynt",
+    "settings": "Stillingar og persónuvernd",
+    "editProfile": "Breyta síðu",
+    "logout": "Skrá út",
+    "defaultUser": "Notandi",
+    "accountSecurity": "Reikningur & öryggi",
+    "blockedUsers": "Lokaðir notendur",
+    "history": "Ferill",
+    "support": "Aðstoð",
+    "faq": "Algengar spurningar",
+    "contact": "Hafa samband",
+    "terms": "Notkunarskilmálar",
+    "privacy": "Persónuvernd",
+    "safety": "Öryggi & stefna",
+    "edit": "Breyta"
+  },
+  "LandingHeader": {
+    "concept": "Hugmynd",
+    "features": "Eiginleikar",
+    "download": "Sækja",
+    "login": "Skrá inn"
+  },
+  "Hero": {
+    "kicker": "Stefnumót nýrrar kynslóðar",
+    "tagline": "Never be lonely",
+    "subtitle": "Þegar greind mætir aðdráttarafli.",
+    "description": "Stefnumótaforritið þar sem nákvæmni reikniritsins og hlýja tilfinninganna verða eitt. Finndu einhvern sem er raunverulega líkur þér.",
+    "ctaRegister": "Skrá sig á vefnum",
+    "ctaDownload": "Sækja forritið",
+    "publisher": "Útgefið af",
+    "publisherName": "Full IT",
+    "security": "Öryggi",
+    "securityValue": "4 þrepa staðfesting"
+  },
+  "Concept": {
+    "eyebrow": "Hugmynd og staðsetning",
+    "title": "Eitt hjarta, tveir heimar",
+    "techLabel": "Tæknihliðin",
+    "techTitle": "Greindin",
+    "techText": "Skýrar línur, nákvæmni, aukin tengingamiðlun. „Vélrænn“ hluti merkisins felur í sér örugga og áreiðanlega samsvörun. Einkennislitur: Miðnæturstál.",
+    "humanLabel": "Mannlega hliðin",
+    "humanTitle": "Tilfinningin",
+    "humanText": "Mjúkar línur, augnaráð, nærvera. „Lifandi“ hluti merkisins ber löngun, blíðu, raunveruleg kynni. Einkennislitir: Ástríðurauður og Blíðbleikur.",
+    "value1Label": "Gildi 01",
+    "value1Title": "Snjöll tenging",
+    "value1Text": "Gögn í þjónustu tengslanna, aldrei öfugt. Nærgætið, sanngjarnt, viðeigandi.",
+    "value2Label": "Gildi 02",
+    "value2Title": "Ósvikin tilfinning",
+    "value2Text": "Við tölum til hjartans. Hlýja, einlægni, stjórnuð ákefð.",
+    "value3Label": "Gildi 03",
+    "value3Title": "Vandaður glæsileiki",
+    "value3Text": "Lökkuð rauð, djúpsvart, rými. Upplifun sem finnst hágæða."
+  },
+  "Features": {
+    "eyebrow": "Það sem þú færð",
+    "title": "Gert fyrir alvöru kynni",
+    "matchingTitle": "Gervigreindarpörun",
+    "matchingText": "Samhæfnireiknirit sem lærir af óskum þínum til að stinga upp á síðum sem eru sannarlega viðeigandi.",
+    "securityTitle": "Öryggi og staðfesting",
+    "securityText": "4 þrepa staðfesting (tölvupóstur, sími, sjálfa, skilríki) og virk yfirferð á síðum og efni.",
+    "videoTitle": "Myndbandsstefnumót",
+    "videoText": "Innbyggð HD hljóð- og myndsímtöl, beint úr samtölum þínum, áður en þið hittist í eigin persónu.",
+    "premiumTitle": "Premium",
+    "premiumText": "Ótakmörkuð læk, huliðsstilling, síðuörvun, afturspólun og ítarlegar síur til að ganga lengra."
+  },
+  "Testimonials": {
+    "eyebrow": "Þau fundu hvort annað",
+    "title": "Never be lonely, í alvöru",
+    "quote1": "Við pöruðumst þriðjudagskvöld eitt. Þremur mánuðum síðar fluttum við saman.",
+    "name1": "Camille, 27 ára",
+    "quote2": "Myndsímtöl áður en fólk hittist í eigin persónu breyta öllu. Engar leiðinlegar óvæntar uppákomur lengur.",
+    "name2": "Idriss, 31 árs",
+    "quote3": "Pörunin er ótrúlega nákvæm. Ég hætti loksins að strjúka út í tómið.",
+    "name3": "Léa, 24 ára"
+  },
+  "DownloadCta": {
+    "eyebrow": "Hvar sem þú ert",
+    "title": "Taktu LovMy með þér",
+    "text": "Farsímaforritið kemur bráðum fyrir iOS og Android. Á meðan, skráðu þig á vefnum.",
+    "comingSoon": "Væntanlegt á",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "cta": "Skrá sig á vefnum"
+  },
+  "Footer": {
+    "brandDoc": "Vörumerkjaskjal",
+    "publisher": "Útgefið af",
+    "publisherName": "Full IT",
+    "faq": "Spurt og svarað",
+    "contact": "Hafa samband",
+    "tagline": "Never be lonely",
+    "copyright": "© {year} LovMy — Allur réttur áskilinn"
+  },
+  "Login": {
+    "title": "Velkomin(n) á LovMy",
+    "subtitle": "Skráðu þig inn til að halda áfram",
+    "emailOrPhone": "Netfang eða símanúmer",
+    "emailOrPhonePlaceholder": "Netfang eða sími",
+    "password": "Lykilorð",
+    "submit": "Skrá inn",
+    "submitLoading": "Skrái inn…",
+    "forgotPassword": "Gleymt lykilorð?",
+    "noAccount": "Ertu ekki með reikning?",
+    "createAccount": "Búa til reikning",
+    "errorRequired": "Vinsamlegast sláðu inn notandanafn og lykilorð.",
+    "errorGeneric": "Innskráning mistókst. Athugaðu innskráningarupplýsingar þínar.",
+    "errorNetwork": "Nettengingarvilla. Reyndu aftur síðar."
+  },
+  "Register": {
+    "title": "Búa til reikning",
+    "subtitle": "Skráðu þig til að byrja á LovMy.",
+    "name": "Nafn",
+    "email": "Netfang",
+    "password": "Lykilorð",
+    "submit": "Halda áfram",
+    "errorRequired": "Öll reitir eru nauðsynlegir.",
+    "errorGeneric": "Ekki tókst að staðfesta netfangið",
+    "errorNetwork": "Nettengingarvilla, reyndu aftur síðar."
+  },
+  "SocialLogin": {
+    "orContinueWith": "Eða halda áfram með",
+    "continueWithFacebook": "Halda áfram með Facebook",
+    "continueWithGoogle": "Halda áfram með Google",
+    "notConfiguredYet": "Uppsetning vantar — kemur fljótlega",
+    "errorGeneric": "Ekki hægt að skrá inn.",
+    "errorNetwork": "Nettengingarvilla. Reyndu aftur síðar."
+  },
+  "AdminLogin": {
+    "title": "LovMy Admin",
+    "subtitle": "Aðgangur eingöngu fyrir stjórnendur",
+    "username": "Notandanafn",
+    "password": "Lykilorð",
+    "submit": "Skrá inn",
+    "submitLoading": "Skrái inn…",
+    "errorRequired": "Vinsamlegast sláðu inn notandanafn og lykilorð.",
+    "errorGeneric": "Rangar innskráningarupplýsingar."
+  },
+  "Explore": {
+    "tabDiscover": "Uppgötva",
+    "tabLikedMe": "Líkaði við mig",
+    "tabFavourites": "Eftirlæti",
+    "tabPassed": "Sleppt",
+    "eyebrow": "Uppgötva",
+    "title": "Finndu samsvörun þína",
+    "subtitle": "Síður sem LovMy mælir með, raðað eftir óskum þínum.",
+    "filters": "Síur",
+    "loading": "Hleð…",
+    "noProfiles": "Engar síður í augnablikinu.",
+    "distanceFallback": "Engar síður innan umbeðins radíuss — hér eru næstu síður sem eru í boði.",
+    "newMatch": "✨ Ný samsvörun með {name}!",
+    "giftSent": "{gift} sent til {name}!",
+    "giftInsufficientCoins": "Ekki nóg mynt fyrir þessa gjöf."
+  },
+  "NotFound": {
+    "title": "Síða fannst ekki",
+    "description": "Síðan sem þú leitar að er ekki til eða hefur verið flutt.",
+    "backHome": "Til baka á forsíðu"
+  }
+}
