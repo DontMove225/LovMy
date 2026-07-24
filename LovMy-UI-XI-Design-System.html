@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LovMy UI XI — Design System (référence développeur Next.js)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --passion:#EB0603; --ember:#F64135; --velvet:#800001; --nightred:#440004;
+  --obsidian:#080714; --steel:#303B63; --blush:#E89EA1; --ivory:#FBF7F6;
+  --paper:#100b1c; --surface:#17111f; --line:rgba(232,158,161,.16);
+  --fg:#EDE7EA; --fg-soft:#B8AEB8; --fg-faint:#7C7388;
+  --serif:"Fraunces",Georgia,serif; --sans:"Manrope",system-ui,sans-serif; --mono:"Space Grotesk",ui-monospace,monospace;
+  --grad-passion:linear-gradient(135deg,#F64135 0%,#EB0603 45%,#800001 100%);
+  --grad:var(--grad-passion); --eh:var(--ease-heart);
+  --ease:cubic-bezier(.22,1,.36,1); --ease-heart:cubic-bezier(.66,0,.34,1);
+  --sh-ember:0 10px 34px -10px rgba(246,65,53,.5); --sh-passion:0 18px 50px -12px rgba(235,6,3,.45);
+  --sh-velvet:0 24px 70px -24px rgba(68,0,4,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--obsidian);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--obsidian)}
+.aurora span{position:absolute;border-radius:50%;filter:blur(70px)}
+.a1{right:-10%;top:-15%;width:60vmax;height:60vmax;background:radial-gradient(circle,rgba(235,6,3,.28),transparent 62%);animation:aurora 18s ease-in-out infinite}
+.a2{left:-12%;top:22%;width:52vmax;height:52vmax;background:radial-gradient(circle,rgba(48,59,99,.30),transparent 60%);animation:aurora 22s ease-in-out infinite reverse}
+.a3{bottom:-25%;left:50%;width:70vmax;height:70vmax;transform:translateX(-50%);background:radial-gradient(circle,rgba(68,0,4,.6),transparent 68%);animation:aurora 26s ease-in-out infinite}
+@keyframes aurora{0%,100%{transform:translate3d(0,0,0) scale(1)}33%{transform:translate3d(4%,-3%,0) scale(1.08)}66%{transform:translate3d(-3%,4%,0) scale(.96)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.16)}28%{transform:scale(1)}42%{transform:scale(1.1)}56%{transform:scale(1)}}
+@keyframes halo{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes shim{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes breathe{0%,100%{box-shadow:0 6px 20px -8px rgba(246,65,53,.5)}50%{box-shadow:0 10px 40px -6px rgba(246,65,53,.9)}}
+@keyframes flicker{0%,19%,21%,55%,57%,100%{opacity:1}20%,56%{opacity:.82}}
+@keyframes ripple{from{transform:translate(-50%,-50%) scale(0);opacity:.55}to{transform:translate(-50%,-50%) scale(42);opacity:0}}
+@keyframes burst{from{transform:translate(-50%,-50%) rotate(var(--a)) translateY(0);opacity:1}to{transform:translate(-50%,-50%) rotate(var(--a)) translateY(calc(var(--d)*-1));opacity:0}}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--ember)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.04;margin:0}
+.glass{background:color-mix(in oklab,var(--paper) 72%,transparent);border:1px solid var(--line);backdrop-filter:blur(18px)}
+.pill{border-radius:999px}
+
+/* hero */
+.hero{padding:96px 0 40px;text-align:center}
+.heartmark{width:88px;height:88px;margin:0 auto 26px;display:grid;place-items:center;position:relative}
+.heartmark .halo{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(246,65,53,.45),transparent 62%);animation:halo 6s ease-in-out infinite}
+.hero h1{font-size:clamp(3rem,8vw,5.4rem);letter-spacing:-.02em}
+.hero h1 em{font-style:italic;color:var(--ember)}
+.slogan{font-family:var(--mono);text-transform:uppercase;letter-spacing:.34em;color:var(--blush);font-size:.85rem;margin-top:20px}
+.hero p.lead{font-family:var(--serif);font-style:italic;color:var(--fg-soft);font-weight:300;font-size:1.15rem;margin:14px auto 0;max-width:52ch}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px}
+.stackbadge{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;color:var(--fg-soft);border:1px solid var(--line);background:rgba(16,11,28,.4);padding:5px 12px;border-radius:999px}
+
+/* section */
+section{padding:54px 0}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+.sec-head .num{font-family:var(--mono);color:var(--fg-faint);font-size:.8rem;letter-spacing:.2em}
+.sec-head h2{font-size:1.9rem}
+.hr{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:0 0 26px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.grid{display:grid;gap:18px}
+.lead{color:var(--fg-soft);max-width:70ch;font-size:.95rem;margin:0 0 22px}
+
+/* dev notes */
+.devnote{border-radius:24px;padding:28px}
+.devnote h3{font-size:1.15rem;color:#fff;margin-bottom:12px}
+.devnote + .devnote{margin-top:18px}
+.code{font-family:var(--mono);font-size:.82rem;line-height:1.6;color:var(--fg-soft);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;overflow-x:auto;white-space:pre}
+.code b, .code strong{color:var(--blush)}
+details.code-wrap{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+details.code-wrap summary{cursor:pointer;padding:12px 18px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);list-style:none}
+details.code-wrap summary::-webkit-details-marker{display:none}
+details.code-wrap[open] summary{border-bottom:1px solid var(--line)}
+details.code-wrap pre{margin:0;border:none;border-radius:0;background:transparent}
+.dtable{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:6px}
+.dtable th,.dtable td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.dtable th{color:var(--fg-faint);font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+.dtable td.num-r, .dtable th.num-r{text-align:right}
+.swpill{display:inline-flex;align-items:center;gap:8px}
+.swdot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.15);flex:none}
+.status-ok{color:#34d399;font-weight:600}
+.status-todo{color:var(--fg-faint)}
+
+/* buttons — showcase original (04) */
+button{font-family:var(--sans);cursor:pointer;border:none}
+.btn-passion{position:relative;overflow:hidden;height:48px;padding:0 28px;color:#fff;font-weight:600;background-image:var(--grad-passion);box-shadow:var(--sh-ember);transition:transform .3s var(--ease),box-shadow .3s}
+.btn-passion:hover{transform:translateY(-2px);box-shadow:var(--sh-passion)}
+.btn-passion .sheen{position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:transform .7s}
+.btn-passion:hover .sheen{transform:translateX(100%)}
+.btn-ghost{height:48px;padding:0 28px;color:var(--fg);font-weight:500;background:rgba(16,11,28,.4);border:1px solid var(--line);backdrop-filter:blur(10px);transition:.3s var(--ease)}
+.btn-ghost:hover{border-color:rgba(246,65,53,.7);color:#fff;box-shadow:0 0 0 1px rgba(246,65,53,.4),0 10px 34px -10px rgba(246,65,53,.55)}
+
+/* buttons — full family grid (01, from buttons-showcase) */
+.btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.cell{border:1px solid var(--line);border-radius:20px;padding:22px 16px;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(16,11,28,.35);backdrop-filter:blur(8px)}
+.name{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint)}
+.passion{position:relative;overflow:hidden;height:46px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);box-shadow:var(--sh-ember);transition:transform .3s var(--ease),box-shadow .3s}
+.passion:hover{transform:translateY(-2px);box-shadow:var(--sh-passion)}
+.passion .sheen{position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:transform .7s}
+.passion:hover .sheen{transform:translateX(100%)}
+.ghost{height:46px;padding:0 24px;color:var(--fg);font-weight:500;background:rgba(16,11,28,.4);border:1px solid var(--line);transition:.3s var(--ease)}
+.ghost:hover{border-color:rgba(246,65,53,.7);color:#fff;box-shadow:0 0 0 1px rgba(246,65,53,.4),var(--sh-ember)}
+.magnetic{height:46px;padding:0 24px;color:#fff;font-weight:600;background:var(--velvet);box-shadow:var(--sh-velvet)}
+.shim{position:relative;overflow:hidden;height:46px;padding:1.5px;display:inline-flex}
+.shim .ring{position:absolute;inset:-120%;background:conic-gradient(from 0deg,transparent,#E89EA1 60deg,#F64135 120deg,transparent 180deg);animation:spin 3.5s linear infinite}
+.shim .in{position:relative;display:inline-flex;align-items:center;padding:0 22px;border-radius:999px;background:#0c0a16;color:var(--fg);font-weight:600}
+.circle{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:rgba(16,11,28,.6);transition:.3s var(--eh)}
+.circle:active{transform:scale(.9)}
+.gborder{position:relative;overflow:hidden;height:46px;padding:1.5px;display:inline-flex}
+.gborder .r{position:absolute;inset:0;background:linear-gradient(90deg,#EB0603,#E89EA1,#F64135,#800001,#EB0603);background-size:300% 100%;animation:shim 3s linear infinite}
+.gborder .in{position:relative;display:inline-flex;align-items:center;padding:0 22px;border-radius:999px;background:#0c0a16;color:var(--fg);font-weight:600}
+.ripple{position:relative;overflow:hidden;height:46px;padding:0 24px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-weight:600}
+.glow{height:46px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);animation:breathe 2.6s ease-in-out infinite}
+.loadb{height:46px;min-width:120px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);box-shadow:var(--sh-ember);display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .7s linear infinite}
+.iconb{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--line);background:rgba(16,11,28,.5);color:var(--fg);transition:.3s}
+.iconb:hover{border-color:rgba(246,65,53,.6);color:#fff}
+.fab{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;color:#fff;background-image:var(--grad);box-shadow:var(--sh-passion);transition:.3s var(--ease)}
+.fab:hover{transform:translateY(-4px)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:999px;font-size:.9rem;font-weight:500;border:1px solid var(--line);background:rgba(16,11,28,.4);color:var(--fg-soft);transition:.2s}
+.chip.on{border-color:rgba(235,6,3,.6);background:rgba(235,6,3,.15);color:#fff}
+.sweep{position:relative;height:46px;padding:0 24px;color:var(--fg);font-weight:500;background:transparent;transition:color .3s}
+.sweep:hover{color:#fff}
+.sweep svg{position:absolute;inset:0;width:100%;height:100%}
+.sweep .draw{stroke:var(--ember);stroke-width:1.5;fill:none;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .5s var(--ease)}
+.sweep:hover .draw{stroke-dashoffset:0}
+.fillup{position:relative;overflow:hidden;height:46px;padding:0 24px;border:1px solid rgba(235,6,3,.5);color:var(--ember);font-weight:600;background:transparent;transition:color .3s}
+.fillup:hover{color:#fff}
+.fillup .f{position:absolute;inset:0;background-image:var(--grad);transform:scaleY(0);transform-origin:bottom;transition:transform .3s var(--ease)}
+.fillup:hover .f{transform:scaleY(1)}
+.textarrow{display:inline-flex;align-items:center;gap:8px;background:none;font-family:var(--mono);font-size:.82rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--fg);transition:color .3s}
+.textarrow:hover{color:var(--ember)}
+.textarrow svg{transition:transform .3s}
+.textarrow:hover svg{transform:translateX(4px)}
+.neon{height:46px;padding:0 24px;border:2px solid var(--ember);background:transparent;color:var(--ember);font-family:var(--mono);font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;text-shadow:0 0 8px rgba(246,65,53,.7);animation:flicker 4s linear infinite;transition:box-shadow .3s}
+.neon:hover{box-shadow:0 0 18px rgba(246,65,53,.6),inset 0 0 12px rgba(246,65,53,.35)}
+.d3{position:relative;height:46px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);box-shadow:0 4px 0 0 #440004,0 10px 20px -6px rgba(68,0,4,.8);transition:transform .1s}
+.d3:active{transform:translateY(3px)}
+.confetti{position:relative;height:46px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);box-shadow:var(--sh-ember)}
+.confetti:active{transform:scale(.96)}
+.confetti .p{position:absolute;left:50%;top:50%;pointer-events:none}
+.hold{position:relative;overflow:hidden;height:46px;padding:0 24px;border:1px solid var(--line);background:rgba(16,11,28,.5);color:var(--fg);font-weight:600}
+.hold .f{position:absolute;inset:0 auto 0 0;background-image:var(--grad);width:0}
+.seg{position:relative;display:inline-flex;border:1px solid var(--line);border-radius:999px;background:rgba(16,11,28,.5);padding:4px}
+.seg .ind{position:absolute;top:4px;bottom:4px;border-radius:999px;background-image:var(--grad);transition:left .3s var(--ease),width .3s var(--ease)}
+.seg button{position:relative;z-index:1;padding:8px 18px;border-radius:999px;background:none;color:var(--fg-soft);font-weight:500;font-size:.85rem;transition:color .3s}
+.seg button.on{color:#fff}
+.social{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 26px;border-radius:999px;border:1px solid var(--line);background:rgba(16,11,28,.5);color:var(--fg);font-weight:500;transition:.3s}
+.social:hover{border-color:rgba(232,158,161,.4);background:rgba(16,11,28,.7)}
+.ghostpill{height:44px;padding:0 22px;background:none;color:var(--fg-soft);font-weight:500;transition:.2s}
+.ghostpill:hover{background:rgba(16,11,28,.5);color:var(--fg)}
+.scaletap{height:46px;padding:0 24px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-weight:600;transition:transform .15s var(--ease)}
+.scaletap:hover{transform:translateY(-2px)}.scaletap:active{transform:scale(.95)}
+.slide{position:relative;overflow:hidden;height:46px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);box-shadow:var(--sh-ember)}
+.slide .stack{position:relative;display:block;height:1.4em;line-height:1.4em;overflow:hidden}
+.slide .stack span{display:block;transition:transform .3s var(--ease)}
+.slide:hover .stack span{transform:translateY(-100%)}
+.morph{height:46px;padding:0 24px;color:#fff;font-weight:600;background-image:var(--grad);box-shadow:var(--sh-ember);display:inline-flex;align-items:center;justify-content:center;transition:all .3s var(--ease)}
+.match{position:relative;overflow:hidden;height:52px;padding:0 30px;color:#fff;font-family:var(--serif);font-size:1.05rem;background-image:var(--grad);box-shadow:var(--sh-passion);display:inline-flex;align-items:center;gap:10px}
+.iconreveal{display:inline-flex;align-items:center;gap:4px;height:46px;padding:0 24px;border:1px solid var(--line);background:rgba(16,11,28,.5);color:var(--fg);font-weight:600;transition:.3s}
+.iconreveal:hover{border-color:rgba(246,65,53,.6);color:#fff}
+.iconreveal .rev{width:0;overflow:hidden;opacity:0;transition:all .3s;display:grid}
+.iconreveal:hover .rev{width:18px;opacity:1}
+
+/* cards */
+.card{border-radius:28px;padding:24px}
+.spotlight{position:relative;overflow:hidden}
+.spotlight .spot{position:absolute;inset:0;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(246,65,53,.22),transparent 65%)}
+.spotlight:hover .spot{opacity:1}
+.grad-text{background:var(--grad-passion);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* profile */
+.profile{position:relative;aspect-ratio:3/4;width:300px;border-radius:28px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--sh-velvet);cursor:pointer;transition:transform .3s var(--ease)}
+.profile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.profile:hover img{transform:scale(1.05)}
+.profile .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,7,20,0) 42%,rgba(68,0,4,.55) 78%,rgba(8,7,20,.92) 100%)}
+.profile .body{position:absolute;inset:auto 0 0 0;padding:20px}
+.profile .body h3{color:#fff;font-size:1.6rem}
+.profile .body .loc{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;color:var(--blush);display:inline-flex;gap:5px;align-items:center;margin-top:6px}
+.tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.tag{font-size:.68rem;color:var(--fg-soft);border:1px solid var(--line);background:rgba(8,7,20,.4);padding:4px 10px;border-radius:999px;backdrop-filter:blur(10px)}
+.badge-v{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--passion);color:#fff;box-shadow:var(--sh-ember)}
+.badge-on{position:absolute;top:14px;left:14px;display:inline-flex;gap:6px;align-items:center;background:rgba(8,7,20,.5);padding:4px 10px;border-radius:999px;font-size:.68rem;backdrop-filter:blur(10px)}
+.dot{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399}
+
+/* chat */
+.chat{max-width:420px;display:flex;flex-direction:column;gap:12px}
+.bubble{max-width:78%;padding:10px 16px;border-radius:20px;font-size:.95rem;line-height:1.35}
+.bubble.them{align-self:flex-start;border-bottom-left-radius:6px}
+.bubble.me{align-self:flex-end;border-bottom-right-radius:6px;color:#fff;background-image:var(--grad-passion);box-shadow:var(--sh-ember)}
+.typing{align-self:flex-start;display:inline-flex;gap:6px;padding:12px 16px;border-radius:20px;border-bottom-left-radius:6px}
+.typing i{width:8px;height:8px;border-radius:50%;background:var(--blush);animation:float 1s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+
+/* premium */
+.pbadge{position:relative;overflow:hidden;display:inline-flex;gap:6px;align-items:center;padding:5px 12px;border-radius:999px;color:#fff;font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background-image:var(--grad-passion)}
+.pbadge .sh{position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);background-size:200% 100%;animation:shimmer 2.4s linear infinite}
+.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;align-items:stretch}
+.plan{border-radius:28px;padding:26px;display:flex;flex-direction:column}
+.plan.feat{border-color:rgba(235,6,3,.5);box-shadow:var(--sh-passion)}
+.plan .price{font-family:var(--serif);font-size:2.4rem;color:#fff}
+.plan ul{list-style:none;padding:0;margin:20px 0;display:flex;flex-direction:column;gap:10px;flex:1}
+.plan li{display:flex;gap:8px;font-size:.9rem;color:var(--fg-soft)}
+.plan li svg{color:var(--ember);flex:none;margin-top:2px}
+.ribbon{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background-image:var(--grad-passion);color:#fff;padding:4px 12px;border-radius:999px;font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
+
+/* loader + swatches */
+.loader{width:64px;height:64px;position:relative;display:grid;place-items:center}
+.loader .h{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(246,65,53,.4),transparent 62%);animation:halo 1.6s ease-in-out infinite}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.sw{border-radius:16px;padding:14px;border:1px solid var(--line);height:96px;display:flex;flex-direction:column;justify-content:flex-end}
+.sw b{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em}
+.sw span{font-size:.62rem;color:var(--fg-soft);font-family:var(--mono)}
+footer{padding:60px 0;text-align:center;color:var(--fg-faint);font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+.muted{color:var(--fg-soft)}
+</style>
+</head>
+<body>
+<div class="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<header class="hero wrap">
+  <div class="heartmark">
+    <span class="halo"></span>
+    <svg viewBox="0 0 24 24" width="72" height="72" fill="var(--passion)" style="filter:drop-shadow(0 14px 30px rgba(235,6,3,.4))">
+      <path d="M12 21s-7.5-4.9-9.6-9.1C.9 8.6 2.5 5.5 5.7 5.1 8 4.8 10 6.2 12 8.6c2-2.4 4-3.8 6.3-3.5 3.2.4 4.8 3.5 3.3 6.8C19.5 16.1 12 21 12 21Z"/>
+    </svg>
+  </div>
+  <h1>Lov<em>My</em> UI XI</h1>
+  <p class="slogan">Never be lonely</p>
+  <p class="lead">Document unique regroupant les deux aperçus HTML (boutons + composants), les tokens Tailwind v4 et l'API du package — référence de travail pour l'intégration Next.js / React.</p>
+  <div class="badge-row">
+    <span class="stackbadge">Next.js 15 · React 19</span>
+    <span class="stackbadge">Tailwind CSS v4</span>
+    <span class="stackbadge">TypeScript</span>
+    <span class="stackbadge">@lovmy/ui v0.1.0</span>
+  </div>
+</header>
+
+<main>
+  <!-- 00. Dev notes -->
+  <section class="wrap">
+    <div class="sec-head"><span class="num">00</span><h2>Notes pour le développeur</h2></div>
+    <div class="hr"></div>
+    <p class="lead">Ce fichier est une référence visuelle statique (HTML/CSS/JS vanilla) qui sert de spécification pixel-perfect pour reconstruire chaque composant en React/Next.js. La charte (tokens, gradients, ombres, animations) est déjà formalisée dans <code>lovmy.css</code> pour Tailwind v4 — importez-la telle quelle plutôt que de redéfinir les couleurs.</p>
+
+    <div class="glass devnote">
+      <h3>Installation</h3>
+      <div class="code">pnpm add @lovmy/ui clsx tailwind-merge</div>
+      <p class="muted" style="font-size:.85rem;margin:14px 0 8px">Importer les tokens une seule fois à la racine (ex. <code>app/globals.css</code> ou <code>app/layout.tsx</code>) :</p>
+      <div class="code">import "@lovmy/ui/styles";</div>
+      <p class="muted" style="font-size:.85rem;margin:14px 0 8px">Polices Google Fonts à charger dans <code>layout.tsx</code> : <b>Fraunces</b> (serif display), <b>Manrope</b> (sans body), <b>Space Grotesk</b> (mono labels).</p>
+    </div>
+
+    <div class="glass devnote">
+      <h3>Exemple d'usage</h3>
+      <div class="code">import { AuroraPassion, ProfileCard, PassionButton, LikeButton } from "@lovmy/ui";
+
+export default function Discover() {
+  return (
+    &lt;main className="min-h-screen"&gt;
+      &lt;AuroraPassion /&gt;
+      &lt;ProfileCard
+        name="Aïcha"
+        age={27}
+        location="Abidjan"
+        photo="/aicha.jpg"
+        verified
+        online
+        tags={["Voyage", "Afrobeats", "Cuisine"]}
+      /&gt;
+      &lt;div className="mt-6 flex gap-4"&gt;
+        &lt;LikeButton /&gt;
+        &lt;PassionButton&gt;Envoyer un message&lt;/PassionButton&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  );
+}</div>
+    </div>
+
+    <div class="glass devnote">
+      <h3>Tokens de la charte graphique</h3>
+      <table class="dtable">
+        <thead><tr><th>Token</th><th>Variable Tailwind</th><th>Hex</th><th>Rôle</th></tr></thead>
+        <tbody>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#EB0603"></span>Rouge Passion</span></td><td>--color-passion</td><td>#EB0603</td><td>Primaire</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#F64135"></span>Braise</span></td><td>--color-ember</td><td>#F64135</td><td>Hover / accent</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#800001"></span>Velours</span></td><td>--color-velvet</td><td>#800001</td><td>Profondeur</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#440004"></span>Rouge Nuit</span></td><td>--color-nightred</td><td>#440004</td><td>Rouge le plus sombre</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#080714"></span>Obsidienne</span></td><td>--color-obsidian</td><td>#080714</td><td>Canvas</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#303B63"></span>Acier Minuit</span></td><td>--color-steel</td><td>#303B63</td><td>Accent froid</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#E89EA1"></span>Rose Tendre</span></td><td>--color-blush</td><td>#E89EA1</td><td>Accent doux</td></tr>
+          <tr><td><span class="swpill"><span class="swdot" style="background:#FBF7F6"></span>Ivoire</span></td><td>--color-ivory</td><td>#FBF7F6</td><td>Surfaces claires</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="glass devnote">
+      <h3>Roadmap — 205 composants cibles</h3>
+      <table class="dtable">
+        <thead><tr><th>Famille</th><th class="num-r">Cible</th><th class="num-r">Livré</th></tr></thead>
+        <tbody>
+          <tr><td>Boutons animés <span class="status-ok">✓</span></td><td class="num-r">30</td><td class="num-r status-ok">31</td></tr>
+          <tr><td>Cartes premium</td><td class="num-r">25</td><td class="num-r">3</td></tr>
+          <tr><td>Composants UI premium</td><td class="num-r">25</td><td class="num-r">3</td></tr>
+          <tr><td>Composants de chat</td><td class="num-r">20</td><td class="num-r">2</td></tr>
+          <tr><td>Animations réutilisables</td><td class="num-r">20</td><td class="num-r">1</td></tr>
+          <tr><td>Composants profil</td><td class="num-r">15</td><td class="num-r">1</td></tr>
+          <tr><td>Hooks React</td><td class="num-r">15</td><td class="num-r">5</td></tr>
+          <tr><td>Système de matching</td><td class="num-r">15</td><td class="num-r">1</td></tr>
+          <tr><td>Transitions de page</td><td class="num-r">12</td><td class="num-r status-todo">0</td></tr>
+          <tr><td>Abonnements Premium</td><td class="num-r">10</td><td class="num-r">2</td></tr>
+          <tr><td>Effets de fond</td><td class="num-r">10</td><td class="num-r">1</td></tr>
+          <tr><td>Loaders</td><td class="num-r">8</td><td class="num-r">1</td></tr>
+          <tr style="font-weight:600;color:#fff"><td>Total</td><td class="num-r">205</td><td class="num-r">51</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="glass devnote">
+      <h3>Fichiers sources regroupés ici</h3>
+      <details class="code-wrap">
+        <summary>lovmy.css — tokens Tailwind v4 (@theme complet)</summary>
+        <pre class="code">@import "tailwindcss";
+
+/* Dark mode is the LovMy default. Toggle by adding `class="light"`
+   on &lt;html&gt; (or use the `.dark` variant explicitly). */
+@custom-variant dark (&amp;:where(.dark, .dark *));
+@custom-variant light (&amp;:where(.light, .light *));
+
+@theme {
+  /* ---- Brand palette -------------------------------------- */
+  --color-passion: #eb0603;   /* Rouge Passion — primary        */
+  --color-ember: #f64135;     /* Braise — hover / highlight     */
+  --color-velvet: #800001;    /* Velours — depth                */
+  --color-nightred: #440004;  /* Rouge Nuit — deepest red       */
+  --color-obsidian: #080714;  /* Obsidienne — canvas            */
+  --color-steel: #303b63;     /* Acier Minuit — cool accent     */
+  --color-blush: #e89ea1;     /* Rose Tendre — soft accent      */
+  --color-ivory: #fbf7f6;     /* Ivoire — light surfaces        */
+
+  /* ---- Surfaces &amp; text (dark default) --------------------- */
+  --color-ink: #0c0a16;
+  --color-paper: #100b1c;
+  --color-surface: #17111f;
+  --color-line: rgb(232 158 161 / 0.16);
+  --color-fg: #ede7ea;
+  --color-fg-soft: #b8aeb8;
+  --color-fg-faint: #7c7388;
+
+  /* ---- Typography ----------------------------------------- */
+  --font-serif: "Fraunces", Georgia, serif;         /* display */
+  --font-sans: "Manrope", system-ui, sans-serif;    /* body    */
+  --font-mono: "Space Grotesk", ui-monospace, monospace; /* labels */
+
+  /* ---- Radii ---------------------------------------------- */
+  --radius-lovmy: 1.25rem;
+  --radius-lovmy-lg: 1.75rem;
+  --radius-lovmy-pill: 999px;
+
+  /* ---- Signature shadows ---------------------------------- */
+  --shadow-passion: 0 18px 50px -12px rgb(235 6 3 / 0.45);
+  --shadow-ember: 0 10px 34px -10px rgb(246 65 53 / 0.5);
+  --shadow-velvet: 0 24px 70px -24px rgb(68 0 4 / 0.7);
+
+  /* ---- Motion --------------------------------------------- */
+  --ease-lovmy: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-heart: cubic-bezier(0.66, 0, 0.34, 1);
+
+  /* ---- Signature gradients (as vars for reuse) ------------ */
+  --gradient-passion: linear-gradient(135deg, #f64135 0%, #eb0603 45%, #800001 100%);
+  --gradient-nuit: linear-gradient(160deg, #440004 0%, #080714 70%);
+  --gradient-blush: linear-gradient(135deg, #e89ea1 0%, #eb0603 100%);
+
+  /* ---- Keyframes ------------------------------------------ */
+  --animate-heartbeat: heartbeat 1.4s var(--ease-heart) infinite;
+  --animate-pulse-halo: pulse-halo 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-rise: rise 0.7s var(--ease-lovmy) both;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.16); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  56% { transform: scale(1); }
+}
+@keyframes pulse-halo {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes aurora {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(4%, -3%, 0) scale(1.08); }
+  66% { transform: translate3d(-3%, 4%, 0) scale(0.96); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@layer base {
+  :root { color-scheme: dark; }
+  body {
+    background: var(--color-obsidian);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .light body {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .lovmy-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-ember);
+  }
+  .lovmy-glass {
+    background: color-mix(in oklab, var(--color-paper) 72%, transparent);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  }
+  .lovmy-gradient-text {
+    background: var(--gradient-passion);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}</pre>
+      </details>
+      <div style="height:10px"></div>
+      <details class="code-wrap">
+        <summary>index.ts — API publique du package</summary>
+        <pre class="code">// utils
+export { cn } from "./lib/cn";
+
+// hooks
+export { useMounted } from "./lib/hooks/use-mounted";
+export { useMediaQuery } from "./lib/hooks/use-media-query";
+export { useMagnetic } from "./lib/hooks/use-magnetic";
+export { useInView } from "./lib/hooks/use-in-view";
+export { useScrollProgress } from "./lib/hooks/use-scroll-progress";
+
+// buttons (30+)
+export { PassionButton } from "./components/buttons/passion-button";
+export { EmberGlowButton } from "./components/buttons/ember-glow-button";
+export { MagneticButton } from "./components/buttons/magnetic-button";
+export { ShimmerButton } from "./components/buttons/shimmer-button";
+export { LikeButton } from "./components/buttons/like-button";
+export { PassButton } from "./components/buttons/pass-button";
+export { SuperLikeButton } from "./components/buttons/super-like-button";
+export { RewindButton } from "./components/buttons/rewind-button";
+export { BoostButton } from "./components/buttons/boost-button";
+export { GradientBorderButton } from "./components/buttons/gradient-border-button";
+export { RippleButton } from "./components/buttons/ripple-button";
+export { GlowPulseButton } from "./components/buttons/glow-pulse-button";
+export { LoadingButton } from "./components/buttons/loading-button";
+export { IconButton } from "./components/buttons/icon-button";
+export { FloatingActionButton } from "./components/buttons/floating-action-button";
+export { ChipButton } from "./components/buttons/chip-button";
+export { OutlineSweepButton } from "./components/buttons/outline-sweep-button";
+export { FillUpButton } from "./components/buttons/fill-up-button";
+export { TextArrowButton } from "./components/buttons/text-arrow-button";
+export { NeonButton } from "./components/buttons/neon-button";
+export { ThreeDButton } from "./components/buttons/three-d-button";
+export { ConfettiButton } from "./components/buttons/confetti-button";
+export { HoldButton } from "./components/buttons/hold-button";
+export { SegmentedToggle } from "./components/buttons/segmented-toggle";
+export { SocialButton } from "./components/buttons/social-button";
+export { GhostPillButton } from "./components/buttons/ghost-pill-button";
+export { ScaleTapButton } from "./components/buttons/scale-tap-button";
+export { SlideLabelButton } from "./components/buttons/slide-label-button";
+export { MorphButton } from "./components/buttons/morph-button";
+export { MatchButton } from "./components/buttons/match-button";
+export { IconRevealButton } from "./components/buttons/icon-reveal-button";
+
+// cards
+export { GlassCard } from "./components/cards/glass-card";
+export { SpotlightCard } from "./components/cards/spotlight-card";
+
+// profile
+export { ProfileCard } from "./components/profile/profile-card";
+
+// match
+export { SwipeCard } from "./components/match/swipe-card";
+
+// chat
+export { ChatBubble } from "./components/chat/chat-bubble";
+export { TypingIndicator } from "./components/chat/typing-indicator";
+
+// premium
+export { PremiumBadge } from "./components/premium/premium-badge";
+export { PricingCard } from "./components/premium/pricing-card";
+
+// loaders
+export { HeartbeatLoader } from "./components/loaders/heartbeat-loader";
+
+// backgrounds
+export { AuroraPassion } from "./components/backgrounds/aurora-passion";
+
+// animations
+export { Reveal } from "./components/animations/reveal";</pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 01. Buttons full family -->
+  <section class="wrap">
+    <div class="sec-head"><span class="num">01</span><h2>Boutons animés</h2></div>
+    <div class="hr"></div>
+    <p class="lead">31 composants — chaque bouton dérive des tokens de la charte (gradient passion, braise, velours, halo, battement). Survolez, cliquez, maintenez : tout est interactif dans cette référence.</p>
+    <div class="btn-grid">
+      <div class="cell"><button class="passion pill"><span class="sheen"></span>PassionButton</button><span class="name">PassionButton</span></div>
+      <div class="cell"><button class="ghost pill">EmberGlow</button><span class="name">EmberGlowButton</span></div>
+      <div class="cell"><button class="magnetic pill" data-mag>Magnetic</button><span class="name">MagneticButton</span></div>
+      <div class="cell"><button class="shim pill"><span class="ring"></span><span class="in">Shimmer ✦</span></button><span class="name">ShimmerButton</span></div>
+      <div class="cell"><button class="circle" data-like><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--fg-soft)" stroke-width="1.8"><path d="M12 21s-7.5-4.9-9.6-9.1C.9 8.6 2.5 5.5 5.7 5.1 8 4.8 10 6.2 12 8.6c2-2.4 4-3.8 6.3-3.5 3.2.4 4.8 3.5 3.3 6.8C19.5 16.1 12 21 12 21Z"/></svg></button><span class="name">LikeButton</span></div>
+      <div class="cell"><button class="circle" style="color:var(--fg-soft)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button><span class="name">PassButton</span></div>
+      <div class="cell"><button class="circle" data-super><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--fg-soft)" stroke-width="1.6"><path d="M12 2l2.9 6.3L22 9.2l-5 4.7 1.3 6.9L12 17.8 5.7 20.8 7 13.9l-5-4.7 7.1-.9L12 2z"/></svg></button><span class="name">SuperLikeButton</span></div>
+      <div class="cell"><button class="circle" style="color:var(--blush)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10a6 6 0 110 12H7"/><path d="M3 8l4-4M3 8l4 4"/></svg></button><span class="name">RewindButton</span></div>
+      <div class="cell"><button class="circle" style="color:#fff;background-image:var(--grad);border:none;box-shadow:var(--sh-ember);position:relative"><span style="position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 3px rgba(246,65,53,.35);animation:halo 1.8s ease-in-out infinite"></span><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></button><span class="name">BoostButton</span></div>
+      <div class="cell"><button class="gborder pill"><span class="r"></span><span class="in">Gradient Border</span></button><span class="name">GradientBorderButton</span></div>
+      <div class="cell"><button class="ripple pill" data-ripple>Ripple</button><span class="name">RippleButton</span></div>
+      <div class="cell"><button class="glow pill">GlowPulse</button><span class="name">GlowPulseButton</span></div>
+      <div class="cell"><button class="loadb pill" data-load><span class="spin"></span>Chargement</button><span class="name">LoadingButton</span></div>
+      <div class="cell"><button class="iconb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg></button><span class="name">IconButton</span></div>
+      <div class="cell"><button class="fab"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 21s-7.5-4.9-9.6-9.1C.9 8.6 2.5 5.5 5.7 5.1 8 4.8 10 6.2 12 8.6c2-2.4 4-3.8 6.3-3.5 3.2.4 4.8 3.5 3.3 6.8C19.5 16.1 12 21 12 21Z"/></svg></button><span class="name">FloatingActionButton</span></div>
+      <div class="cell"><button class="chip" data-chip>Voyage</button><span class="name">ChipButton</span></div>
+      <div class="cell"><button class="sweep pill">Outline Sweep<svg preserveAspectRatio="none" viewBox="0 0 100 46"><rect x="1" y="1" width="98" height="44" rx="22" fill="none" stroke="var(--line)"/><rect class="draw" x="1" y="1" width="98" height="44" rx="22" pathLength="1"/></svg></button><span class="name">OutlineSweepButton</span></div>
+      <div class="cell"><button class="fillup pill"><span class="f"></span><span style="position:relative">Fill Up</span></button><span class="name">FillUpButton</span></div>
+      <div class="cell"><button class="textarrow">Voir plus<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><span class="name">TextArrowButton</span></div>
+      <div class="cell"><button class="neon pill">Neon</button><span class="name">NeonButton</span></div>
+      <div class="cell"><button class="d3 pill">3D Press</button><span class="name">ThreeDButton</span></div>
+      <div class="cell"><button class="confetti pill" data-confetti><span style="position:relative">Confetti 💘</span></button><span class="name">ConfettiButton</span></div>
+      <div class="cell"><button class="hold pill" data-hold><span class="f"></span><span style="position:relative">Maintenir</span></button><span class="name">HoldButton</span></div>
+      <div class="cell"><div class="seg" data-seg><span class="ind"></span><button class="on">Femme</button><button>Homme</button><button>Tous</button></div><span class="name">SegmentedToggle</span></div>
+      <div class="cell"><button class="social pill"><span style="width:18px;height:18px;border-radius:50%;background:var(--blush);display:inline-block"></span>Continuer avec…</button><span class="name">SocialButton</span></div>
+      <div class="cell"><button class="ghostpill pill">Plus tard</button><span class="name">GhostPillButton</span></div>
+      <div class="cell"><button class="scaletap pill">Scale Tap</button><span class="name">ScaleTapButton</span></div>
+      <div class="cell"><button class="slide pill"><span class="stack"><span>Envoyer</span><span>C'est parti →</span></span></button><span class="name">SlideLabelButton</span></div>
+      <div class="cell"><button class="morph pill" data-morph style="width:auto;padding:0 24px">Enregistrer</button><span class="name">MorphButton</span></div>
+      <div class="cell"><button class="iconreveal pill">Découvrir<span class="rev"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button><span class="name">IconRevealButton</span></div>
+      <div class="cell" style="grid-column:1/-1"><button class="match pill" style="width:100%;max-width:420px"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="animation:heartbeat 1.4s var(--eh) infinite"><path d="M12 21s-7.5-4.9-9.6-9.1C.9 8.6 2.5 5.5 5.7 5.1 8 4.8 10 6.2 12 8.6c2-2.4 4-3.8 6.3-3.5 3.2.4 4.8 3.5 3.3 6.8C19.5 16.1 12 21 12 21Z"/></svg>C'est un match</button><span class="name">MatchButton</span></div>
+    </div>
+  </section>
+
+  <!-- Cards + profile -->
+  <section class="wrap">
+    <div class="sec-head"><span class="num">02</span><h2>Cartes & profil</h2></div>
+    <div class="hr"></div>
+    <div class="row" style="align-items:stretch">
+      <div class="glass card spotlight" style="flex:1;min-width:260px" id="spot">
+        <span class="spot"></span>
+        <p class="eyebrow">Spotlight</p>
+        <h3 style="font-size:1.5rem;margin-top:10px" class="grad-text">Une carte qui suit le curseur</h3>
+        <p class="muted" style="margin-top:10px;font-size:.95rem">Surface givrée, halo passion radial. Survolez pour révéler le spotlight.</p>
+      </div>
+      <div class="profile" id="profile">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=640&q=80&auto=format&fit=crop" alt="Profil">
+        <div class="scrim"></div>
+        <div class="badge-on"><span class="dot"></span>En ligne</div>
+        <div class="badge-v"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fff" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div>
+        <div class="body">
+          <h3>Aïcha <span style="font-family:var(--sans);font-weight:300;color:var(--fg-soft)">· 27</span></h3>
+          <span class="loc"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-6-5.2-6-10a6 6 0 1112 0c0 4.8-6 10-6 10Z"/><circle cx="12" cy="11" r="2"/></svg>Abidjan</span>
+          <div class="tags"><span class="tag">Voyage</span><span class="tag">Afrobeats</span><span class="tag">Cuisine</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:12px;font-size:.85rem">Astuce : bougez le curseur sur la photo — léger tilt 3D.</p>
+  </section>
+
+  <!-- Chat -->
+  <section class="wrap">
+    <div class="sec-head"><span class="num">03</span><h2>Chat</h2></div>
+    <div class="hr"></div>
+    <div class="chat">
+      <div class="bubble them glass">Salut ! J'ai vu qu'on aime tous les deux les concerts 🎶</div>
+      <div class="bubble me">Carrément 😄 Tu vas au festival ce week-end ?</div>
+      <div class="bubble them glass">Oui ! On s'y retrouve ?</div>
+      <div class="typing glass"><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <!-- Premium -->
+  <section class="wrap">
+    <div class="sec-head"><span class="num">04</span><h2>Premium <span class="pbadge" style="margin-left:8px"><span class="sh"></span>✦ Premium</span></h2></div>
+    <div class="hr"></div>
+    <div class="pricing">
+      <div class="glass plan"><p class="eyebrow">Free</p><div class="price">0€</div><ul>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Profil & découverte</li>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>10 likes / jour</li></ul>
+        <button class="btn-passion pill" style="opacity:.95"><span class="sheen"></span>Choisir</button></div>
+      <div class="glass plan feat" style="position:relative"><span class="ribbon">Populaire</span><p class="eyebrow">Gold</p><div class="price">9,99€</div><ul>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Likes illimités</li>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Voir qui vous a aimé</li>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Boost hebdomadaire</li></ul>
+        <button class="btn-passion pill"><span class="sheen"></span>Choisir</button></div>
+      <div class="glass plan"><p class="eyebrow">Platinum</p><div class="price">19,99€</div><ul>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Tout Gold</li>
+        <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Messages prioritaires</li></ul>
+        <button class="btn-passion pill" style="opacity:.95"><span class="sheen"></span>Choisir</button></div>
+    </div>
+  </section>
+
+  <!-- Loader + palette -->
+  <section class="wrap">
+    <div class="sec-head"><span class="num">05</span><h2>Loader & palette</h2></div>
+    <div class="hr"></div>
+    <div class="row" style="gap:30px">
+      <div class="loader"><span class="h"></span><svg viewBox="0 0 24 24" width="34" height="34" fill="var(--passion)" style="animation:heartbeat 1.4s var(--ease-heart) infinite"><path d="M12 21s-7.5-4.9-9.6-9.1C.9 8.6 2.5 5.5 5.7 5.1 8 4.8 10 6.2 12 8.6c2-2.4 4-3.8 6.3-3.5 3.2.4 4.8 3.5 3.3 6.8C19.5 16.1 12 21 12 21Z"/></svg></div>
+      <div class="swatches" style="flex:1">
+        <div class="sw" style="background:#EB0603"><b style="color:#fff">Passion</b><span style="color:#fff">#EB0603</span></div>
+        <div class="sw" style="background:#F64135"><b style="color:#fff">Braise</b><span style="color:#fff">#F64135</span></div>
+        <div class="sw" style="background:#800001"><b style="color:#fff">Velours</b><span style="color:#fff">#800001</span></div>
+        <div class="sw" style="background:#440004"><b style="color:#fff">Rouge Nuit</b><span style="color:#fff">#440004</span></div>
+        <div class="sw" style="background:#303B63"><b style="color:#fff">Acier Minuit</b><span style="color:#fff">#303B63</span></div>
+        <div class="sw" style="background:#E89EA1"><b style="color:#440004">Rose Tendre</b><span style="color:#440004">#E89EA1</span></div>
+        <div class="sw" style="background:#FBF7F6"><b style="color:#080714">Ivoire</b><span style="color:#080714">#FBF7F6</span></div>
+        <div class="sw" style="background:#080714"><b style="color:#fff">Obsidienne</b><span style="color:#fff">#080714</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">@lovmy/ui · v0.1.0 · Étape 1 — 51 composants livrés / 205 cibles · Document regroupé pour Full IT · Team Don'tMove</footer>
+
+<script>
+// spotlight (section 02)
+const spot=document.getElementById('spot');
+spot.addEventListener('mousemove',e=>{const r=spot.getBoundingClientRect();spot.style.setProperty('--mx',(e.clientX-r.left)+'px');spot.style.setProperty('--my',(e.clientY-r.top)+'px');});
+// profile tilt (section 02)
+const pr=document.getElementById('profile');
+pr.addEventListener('mousemove',e=>{const r=pr.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;pr.style.transform=`perspective(900px) rotateY(${px*6}deg) rotateX(${-py*6}deg)`;});
+pr.addEventListener('mouseleave',()=>pr.style.transform='perspective(900px) rotateY(0) rotateX(0)');
+
+// ---- buttons grid (section 01) ----
+// magnetic
+document.querySelectorAll('[data-mag]').forEach(b=>{
+  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transition='transform .1s';b.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*.3}px,${(e.clientY-(r.top+r.height/2))*.3}px)`;});
+  b.addEventListener('mouseleave',()=>{b.style.transition='transform .4s var(--ease)';b.style.transform='translate(0,0)';});
+});
+// like / super toggles
+function heartToggle(sel,fillOn,strokeOn){document.querySelectorAll(sel).forEach(b=>b.addEventListener('click',()=>{const s=b.querySelector('svg');const on=b.classList.toggle('on');s.setAttribute('fill',on?fillOn:'none');s.setAttribute('stroke',on?strokeOn:'var(--fg-soft)');if(on){s.style.animation='heartbeat 1.4s var(--eh) 1';setTimeout(()=>s.style.animation='',700);b.style.borderColor=fillOn;b.style.boxShadow=var_sh(fillOn);}else{b.style.borderColor='';b.style.boxShadow='';}}));}
+function var_sh(c){return c==='var(--passion)'?'var(--sh-ember)':'0 10px 34px -10px rgba(48,59,99,.8)';}
+heartToggle('[data-like]','var(--passion)','var(--passion)');
+heartToggle('[data-super]','var(--steel)','var(--blush)');
+// chip
+document.querySelectorAll('[data-chip]').forEach(b=>b.addEventListener('click',()=>{const on=b.classList.toggle('on');b.innerHTML=(on?'<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="var(--ember)" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg>':'')+'Voyage';}));
+// ripple
+document.querySelectorAll('[data-ripple]').forEach(b=>b.addEventListener('click',e=>{const r=b.getBoundingClientRect();const s=document.createElement('span');s.style.cssText=`position:absolute;left:${e.clientX-r.left}px;top:${e.clientY-r.top}px;width:8px;height:8px;border-radius:50%;background:rgba(246,65,53,.45);animation:ripple .6s var(--ease) forwards;pointer-events:none`;b.appendChild(s);setTimeout(()=>s.remove(),600);}));
+// loading
+document.querySelectorAll('[data-load]').forEach(b=>{let busy=true;b.addEventListener('click',()=>{if(busy)return;busy=true;b.innerHTML='<span class="spin"></span>Chargement';setTimeout(()=>{busy=false;b.innerHTML='Terminé ✓';},1400);});setTimeout(()=>{busy=false;b.innerHTML='Cliquer';},1200);});
+// confetti
+document.querySelectorAll('[data-confetti]').forEach(b=>b.addEventListener('click',()=>{for(let i=0;i<10;i++){const p=document.createElement('span');p.className='p';p.style.setProperty('--a',(360/10*i)+'deg');p.style.setProperty('--d',(40+Math.random()*30)+'px');p.style.animation='burst .7s var(--ease) forwards';p.innerHTML='<svg viewBox="0 0 24 24" width="12" height="12" fill="#F64135"><path d="M12 21s-7.5-4.9-9.6-9.1C.9 8.6 2.5 5.5 5.7 5.1 8 4.8 10 6.2 12 8.6c2-2.4 4-3.8 6.3-3.5 3.2.4 4.8 3.5 3.3 6.8C19.5 16.1 12 21 12 21Z"/></svg>';b.appendChild(p);setTimeout(()=>p.remove(),700);}}));
+// hold
+document.querySelectorAll('[data-hold]').forEach(b=>{const f=b.querySelector('.f');let raf,start,done;const run=t=>{if(!start)start=t;const p=Math.min((t-start)/1000,1);f.style.width=(p*100)+'%';if(p<1)raf=requestAnimationFrame(run);else if(!done){done=true;f.style.background='linear-gradient(135deg,#34d399,#059669)';}};b.addEventListener('pointerdown',()=>{done=false;start=0;f.style.background='';raf=requestAnimationFrame(run);});const cancel=()=>{cancelAnimationFrame(raf);start=0;if(!done)f.style.width='0';};b.addEventListener('pointerup',cancel);b.addEventListener('pointerleave',cancel);});
+// segmented
+document.querySelectorAll('[data-seg]').forEach(seg=>{const btns=[...seg.querySelectorAll('button')];const ind=seg.querySelector('.ind');const move=i=>{ind.style.width=`calc(${100/btns.length}% - 8px)`;ind.style.left=`calc(${(100/btns.length)*i}% + 4px)`;btns.forEach((b,j)=>b.classList.toggle('on',j===i));};requestAnimationFrame(()=>move(0));btns.forEach((b,i)=>b.addEventListener('click',()=>move(i)));});
+// morph
+document.querySelectorAll('[data-morph]').forEach(b=>{b.addEventListener('click',()=>{b.style.width='46px';b.style.padding='0';b.innerHTML='<span class="spin"></span>';setTimeout(()=>{b.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>';},1200);setTimeout(()=>{b.style.width='auto';b.style.padding='0 24px';b.textContent='Enregistrer';},2600);});});
+</script>
+</body>
+</html>
