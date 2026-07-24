@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\PlanPurchaseHistory;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\WalletReport;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
@@ -40,9 +41,9 @@ class StripePaymentService
     /**
      * @return array{client_secret: string, publishable_key: string}
      */
-    public function createIntent(User $user, string $type, int $referenceId): array
+    public function createIntent(User $user, string $type, int $referenceId, ?float $rawAmount = null): array
     {
-        $amount = $this->resolveAmount($type, $referenceId);
+        $amount = $type === 'wallet' ? $rawAmount : $this->resolveAmount($type, $referenceId);
         $currency = $this->currencyCode();
 
         $intent = $this->client()->paymentIntents->create([
@@ -101,6 +102,8 @@ class StripePaymentService
 
         if ($type === 'plan') {
             $this->creditPlan($user, Plan::find($referenceId), $amount, $paymentIntentId);
+        } elseif ($type === 'wallet') {
+            $this->creditWallet($user, $amount);
         } else {
             $this->creditPackage($user, Package::find($referenceId));
         }
@@ -154,6 +157,23 @@ class StripePaymentService
             'direct_chat'     => $plan->direct_chat,
             'direct_audio'    => $plan->audio_video,
             'direct_video'    => $plan->audio_video,
+        ]);
+    }
+
+    private function creditWallet(User $user, float $amount): void
+    {
+        $setting = Setting::current();
+        $coins = $amount / max($setting->coin_amt ?? 0.01, 0.01);
+
+        $user->increment('wallet', $amount);
+        $user->increment('coin', $coins);
+
+        WalletReport::create([
+            'uid'     => $user->id,
+            'message' => 'Wallet top-up',
+            'status'  => 'Credit',
+            'amt'     => $amount,
+            'tdate'   => now()->toDateString(),
         ]);
     }
 

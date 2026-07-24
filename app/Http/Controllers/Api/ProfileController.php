@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -26,7 +27,7 @@ class ProfileController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Profile Info',
-            'UserData'     => $user,
+            'UserData'     => $user->load('plan:id,title'),
         ]);
     }
 
@@ -86,6 +87,35 @@ class ProfileController extends Controller
             'ResponseMsg'  => 'Photo uploaded!',
             'ImagePath'    => $url,
             'AllPhotos'    => $otherPics,
+        ]);
+    }
+
+    public function deletePhoto(Request $request)
+    {
+        $request->validate([
+            'type'  => 'required|in:profile,other',
+            'image' => 'required_if:type,other|string',
+        ]);
+
+        $user = $request->user();
+
+        if ($request->type === 'profile') {
+            if ($user->profile_pic) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $user->profile_pic));
+            }
+            $user->update(['profile_pic' => null]);
+        } else {
+            $otherPics = json_decode($user->other_pic ?? '[]', true) ?: [];
+            $otherPics = array_values(array_filter($otherPics, fn ($p) => $p !== $request->image));
+            Storage::disk('public')->delete(str_replace('storage/', '', $request->image));
+            $user->update(['other_pic' => json_encode($otherPics)]);
+        }
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Photo removed!',
+            'UserData'     => $user->fresh(),
         ]);
     }
 

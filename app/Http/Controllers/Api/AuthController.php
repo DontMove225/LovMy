@@ -44,7 +44,7 @@ class AuthController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Login successfully!',
-            'UserLogin'    => $user,
+            'UserLogin'    => $user->load('plan:id,title'),
             'token'        => $token,
         ]);
     }
@@ -175,7 +175,7 @@ class AuthController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Compte vérifié avec succès !',
-            'UserLogin'    => $user,
+            'UserLogin'    => $user->load('plan:id,title'),
             'token'        => $token,
         ]);
     }
@@ -210,6 +210,32 @@ class AuthController extends Controller
         ]);
     }
 
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password'      => 'required|string|min:8',
+        ]);
+
+        $user = $request->user();
+
+        if (! Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'Mot de passe actuel incorrect.',
+            ]);
+        }
+
+        $user->update(['password' => Hash::make($request->new_password)]);
+
+        return response()->json([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+            'ResponseMsg'  => 'Mot de passe modifié avec succès.',
+        ]);
+    }
+
     public function updateFcmToken(Request $request)
     {
         $request->validate(['fcm_token' => 'required|string']);
@@ -228,7 +254,7 @@ class AuthController extends Controller
         return response()->json([
             'ResponseCode' => '200',
             'Result'       => 'true',
-            'UserData'     => $request->user(),
+            'UserData'     => $request->user()->load('plan:id,title'),
         ]);
     }
 
@@ -403,7 +429,7 @@ class AuthController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Login successfully!',
-            'UserLogin'    => $user,
+            'UserLogin'    => $user->load('plan:id,title'),
             'token'        => $token,
         ]);
     }

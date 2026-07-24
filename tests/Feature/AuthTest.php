@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -32,5 +35,57 @@ class AuthTest extends TestCase
                 'maintainance_Enabled',
                 'Social_login_enabled',
             ]);
+    }
+
+    public function test_change_password_rejects_wrong_current_password(): void
+    {
+        $user = User::create([
+            'name'     => 'Password Test',
+            'email'    => 'password-test@example.com',
+            'password' => Hash::make('correct-password'),
+            'status'   => 1,
+            'gender'   => 'MALE',
+            'rdate'    => now(),
+        ]);
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson('/api/auth/change-password', [
+            'current_password' => 'wrong-password',
+            'new_password'     => 'new-password-123',
+        ]);
+
+        $response->assertOk()->assertJson([
+            'ResponseCode' => '401',
+            'Result'       => 'false',
+        ]);
+        $this->assertTrue(Hash::check('correct-password', $user->fresh()->password));
+
+        $user->delete();
+    }
+
+    public function test_change_password_updates_password_when_current_is_correct(): void
+    {
+        $user = User::create([
+            'name'     => 'Password Test 2',
+            'email'    => 'password-test-2@example.com',
+            'password' => Hash::make('correct-password'),
+            'status'   => 1,
+            'gender'   => 'MALE',
+            'rdate'    => now(),
+        ]);
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson('/api/auth/change-password', [
+            'current_password' => 'correct-password',
+            'new_password'     => 'new-password-123',
+        ]);
+
+        $response->assertOk()->assertJson([
+            'ResponseCode' => '200',
+            'Result'       => 'true',
+        ]);
+        $this->assertTrue(Hash::check('new-password-123', $user->fresh()->password));
+
+        $user->delete();
     }
 }

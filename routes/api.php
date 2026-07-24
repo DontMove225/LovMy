@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdController;
 use App\Http\Controllers\Api\AdminContentController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AdminTechnicalSettingsController;
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me',      [AuthController::class, 'me']);
     Route::post('/auth/fcm-token', [AuthController::class, 'updateFcmToken']);
+    Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
 
     // Profile
     Route::post('/profile_info.php',  [ProfileController::class, 'info']);
@@ -65,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/edit_profile.php',  [ProfileController::class, 'edit']);
     Route::post('/pro_image.php',     [ProfileController::class, 'uploadPhoto']);
     Route::post('/other_image.php',   [ProfileController::class, 'uploadOtherPhoto']);
+    Route::post('/delete_image.php',  [ProfileController::class, 'deletePhoto']);
     Route::post('/identity_doc.php',  [ProfileController::class, 'uploadIdentity']);
     Route::post('/profile_view.php',  [ProfileController::class, 'view']);
     Route::post('/acc_delete.php',    [ProfileController::class, 'delete']);
@@ -73,6 +76,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/home_data.php', [HomeController::class, 'homeData']);
     Route::post('/filter.php',    [HomeController::class, 'filter']);
     Route::post('/map_info.php',  [HomeController::class, 'mapInfo']);
+
+    // Ads (app-facing)
+    Route::post('/ads_active.php', [AdController::class, 'active']);
+    Route::post('/ads_click.php',  [AdController::class, 'click']);
 
     // Matching
     Route::post('/like_dislike.php', [MatchController::class, 'likeDislike']);
@@ -201,5 +208,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/pages',                       [AdminContentController::class, 'pageStore']);
         Route::put('/pages/{id}',                   [AdminContentController::class, 'pageUpdate']);
         Route::delete('/pages/{id}',                [AdminContentController::class, 'pageDestroy']);
+
+        // Ads (Marketing) — update uses POST (not PUT) so multipart image uploads parse correctly
+        Route::get('/ads',                          [AdController::class, 'adminIndex']);
+        Route::post('/ads',                         [AdController::class, 'adminStore']);
+        Route::post('/ads/{id}',                    [AdController::class, 'adminUpdate']);
+        Route::delete('/ads/{id}',                  [AdController::class, 'adminDestroy']);
     });
 });

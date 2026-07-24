@@ -94,7 +94,7 @@ class PlanController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Plan purchased successfully!',
-            'UserData'     => $user->fresh(),
+            'UserData'     => $user->fresh()->load('plan:id,title'),
         ]);
     }
 
@@ -150,15 +150,18 @@ class PlanController extends Controller
     public function createStripeIntent(Request $request, StripePaymentService $stripe)
     {
         $request->validate([
-            'type'       => 'required|in:plan,package',
+            'type'       => 'required|in:plan,package,wallet',
             'plan_id'    => 'required_if:type,plan|integer',
             'package_id' => 'required_if:type,package|integer',
+            'amount'     => 'required_if:type,wallet|numeric|min:0.01',
         ]);
 
         $referenceId = $request->type === 'plan' ? $request->plan_id : $request->package_id;
 
         try {
-            $result = $stripe->createIntent($request->user(), $request->type, (int) $referenceId);
+            $result = $request->type === 'wallet'
+                ? $stripe->createIntent($request->user(), 'wallet', 0, (float) $request->amount)
+                : $stripe->createIntent($request->user(), $request->type, (int) $referenceId);
         } catch (ApiErrorException $e) {
             return response()->json([
                 'ResponseCode' => '500',
@@ -200,7 +203,7 @@ class PlanController extends Controller
             'ResponseCode' => '200',
             'Result'       => 'true',
             'ResponseMsg'  => 'Paiement confirmé, compte mis à jour !',
-            'UserData'     => $request->user()->fresh(),
+            'UserData'     => $request->user()->fresh()->load('plan:id,title'),
         ]);
     }
 

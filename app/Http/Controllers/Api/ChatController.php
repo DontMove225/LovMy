@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -102,14 +103,60 @@ class ChatController extends Controller
     public function send(Request $request)
     {
         $request->validate([
-            'sender_id'   => 'required|integer',
-            'receiver_id' => 'required|integer|different:sender_id',
+            'receiver_id' => 'required|integer',
             'message'     => 'required|string',
         ]);
 
+        $sender = $request->user();
+        $receiverId = (int) $request->receiver_id;
+
+        if ($receiverId === $sender->id) {
+            return response()->json([
+                'ResponseCode' => '401',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'You cannot message yourself',
+            ]);
+        }
+
+        $receiver = User::find($receiverId);
+        if (! $receiver) {
+            return response()->json([
+                'ResponseCode' => '404',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'User not found',
+            ]);
+        }
+
+        $blocked = Action::where('action', 'BLOCK')
+            ->where(function ($q) use ($sender, $receiver) {
+                $q->where(['uid' => $sender->id, 'profile_id' => $receiver->id])
+                    ->orWhere(['uid' => $receiver->id, 'profile_id' => $sender->id]);
+            })->exists();
+
+        if ($blocked) {
+            return response()->json([
+                'ResponseCode' => '403',
+                'Result'       => 'false',
+                'ResponseMsg'  => 'You cannot message this user',
+            ]);
+        }
+
+        if (! $sender->direct_chat) {
+            $isMatch = Action::where(['uid' => $sender->id, 'profile_id' => $receiver->id, 'action' => 'LIKE'])->exists()
+                && Action::where(['uid' => $receiver->id, 'profile_id' => $sender->id, 'action' => 'LIKE'])->exists();
+
+            if (! $isMatch) {
+                return response()->json([
+                    'ResponseCode' => '402',
+                    'Result'       => 'false',
+                    'ResponseMsg'  => 'Upgrade to Premium to message profiles you have not matched with.',
+                ]);
+            }
+        }
+
         $message = Message::create([
-            'sender_id'   => $request->sender_id,
-            'receiver_id' => $request->receiver_id,
+            'sender_id'   => $sender->id,
+            'receiver_id' => $receiver->id,
             'message'     => $request->message,
             'datetime'    => now(),
             'is_read'     => 0,
