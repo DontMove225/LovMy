@@ -16,7 +16,17 @@
     "settings": "الإعدادات والخصوصية",
     "editProfile": "تعديل الملف الشخصي",
     "logout": "تسجيل الخروج",
-    "defaultUser": "مستخدم"
+    "defaultUser": "مستخدم",
+    "accountSecurity": "الحساب والأمان",
+    "blockedUsers": "المستخدمون المحظورون",
+    "history": "السجل",
+    "support": "الدعم",
+    "faq": "الأسئلة الشائعة",
+    "contact": "اتصل بنا",
+    "terms": "شروط الاستخدام",
+    "privacy": "الخصوصية",
+    "safety": "السلامة والسياسة",
+    "edit": "تعديل"
   },
   "LandingHeader": {
     "concept": "المفهوم",

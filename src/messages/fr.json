@@ -13,10 +13,20 @@
     "account": "Compte",
     "myProfile": "Mon profil",
     "buyCoins": "Acheter des coins",
-    "settings": "Paramètres & confidentialité",
+    "settings": "Paramètres",
     "editProfile": "Modifier le profil",
     "logout": "Déconnexion",
-    "defaultUser": "Utilisateur"
+    "defaultUser": "Utilisateur",
+    "accountSecurity": "Compte & sécurité",
+    "blockedUsers": "Utilisateurs bloqués",
+    "history": "Historique",
+    "support": "Support",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Confidentialité",
+    "safety": "Sécurité & Politique",
+    "edit": "Modifier"
   },
   "LandingHeader": {
     "concept": "Concept",

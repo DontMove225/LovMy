@@ -16,7 +16,17 @@
     "settings": "Stillingar og persónuvernd",
     "editProfile": "Breyta síðu",
     "logout": "Skrá út",
-    "defaultUser": "Notandi"
+    "defaultUser": "Notandi",
+    "accountSecurity": "Reikningur & öryggi",
+    "blockedUsers": "Lokaðir notendur",
+    "history": "Ferill",
+    "support": "Aðstoð",
+    "faq": "Algengar spurningar",
+    "contact": "Hafa samband",
+    "terms": "Notkunarskilmálar",
+    "privacy": "Persónuvernd",
+    "safety": "Öryggi & stefna",
+    "edit": "Breyta"
   },
   "LandingHeader": {
     "concept": "Hugmynd",

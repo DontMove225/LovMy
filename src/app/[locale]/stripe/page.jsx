@@ -6,7 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { MyContext } from '@/context/MyProvider';
 
-function StripeForm({ type, planId, packageId }) {
+function StripeForm({ type, planId, packageId, amount }) {
   const { apiPost } = useContext(MyContext);
   const stripe = useStripe();
   const elements = useElements();
@@ -30,6 +30,7 @@ function StripeForm({ type, planId, packageId }) {
         type,
         plan_id: type === 'plan' ? planId : undefined,
         package_id: type === 'package' ? packageId : undefined,
+        amount: type === 'wallet' ? amount : undefined,
       });
 
       if (intentResult.Result !== 'true') {
@@ -137,7 +138,7 @@ function StripeContent() {
         <p className="mt-3 text-[var(--txt-soft)]">Montant estimé : ${amount}</p>
         {stripePromise ? (
           <Elements stripe={stripePromise}>
-            <StripeForm type={type} planId={planId} packageId={packageId} />
+            <StripeForm type={type} planId={planId} packageId={packageId} amount={amount} />
           </Elements>
         ) : (
           <p className="mt-6 text-sm text-[var(--txt-soft)]">Chargement du module de paiement…</p>

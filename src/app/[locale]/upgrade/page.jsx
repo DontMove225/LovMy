@@ -3,7 +3,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MyContext } from '@/context/MyProvider';
-import { FiCheck, FiX, FiStar } from 'react-icons/fi';
+import { FiCheck, FiX, FiStar, FiInfo } from 'react-icons/fi';
 import PremiumBadge from '@/components/ui/PremiumBadge';
 import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
 
@@ -93,12 +93,30 @@ export default function UpgradePage() {
               <div
                 key={plan.id}
                 className={`relative flex flex-col rounded-3xl border p-7 transition-transform duration-300 hover:-translate-y-1 ${
-                  isFeatured ? 'border-ember bg-gradient-to-b from-[#2a0f14] to-white/[0.03] shadow-[0_24px_70px_-24px_rgba(68,0,4,0.7)]' : 'border-[var(--line)] bg-white/[0.03]'
+                  isCurrent
+                    ? 'border-ember bg-gradient-to-b from-ember/10 to-white/[0.03] shadow-[0_24px_70px_-24px_rgba(235,6,3,0.55)]'
+                    : isFeatured
+                    ? 'border-ember bg-gradient-to-b from-[#2a0f14] to-white/[0.03] shadow-[0_24px_70px_-24px_rgba(68,0,4,0.7)]'
+                    : 'border-[var(--line)] bg-white/[0.03]'
                 }`}
               >
-                {isFeatured ? (
+                {isFeatured && !isCurrent ? (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-passion px-4 py-1 font-mono text-[10px] uppercase tracking-wide text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)]">
                     Meilleure offre
+                  </span>
+                ) : null}
+
+                {isCurrent ? (
+                  <span className="group/badge absolute -top-3 right-5 z-10 flex items-center gap-1 rounded-full bg-gradient-passion px-3 py-1 font-mono text-[10px] uppercase tracking-wide text-white shadow-[0_6px_18px_rgba(235,6,3,0.35)]">
+                    Actif
+                    <span className="relative flex items-center">
+                      <FiInfo className="h-3 w-3" />
+                      <span className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-[var(--line)] bg-obsidian px-3 py-2 text-center text-[10px] normal-case tracking-normal text-white opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover/badge:opacity-100">
+                        {me.plan_end_date
+                          ? `Actif jusqu'au ${new Date(me.plan_end_date).toLocaleDateString('fr-FR')}`
+                          : 'C\'est votre plan actuel'}
+                      </span>
+                    </span>
                   </span>
                 ) : null}
 

@@ -16,7 +16,17 @@
     "settings": "Impostazioni e privacy",
     "editProfile": "Modifica profilo",
     "logout": "Disconnetti",
-    "defaultUser": "Utente"
+    "defaultUser": "Utente",
+    "accountSecurity": "Account e sicurezza",
+    "blockedUsers": "Utenti bloccati",
+    "history": "Cronologia",
+    "support": "Supporto",
+    "faq": "FAQ",
+    "contact": "Contatti",
+    "terms": "Termini di utilizzo",
+    "privacy": "Privacy",
+    "safety": "Sicurezza e norme",
+    "edit": "Modifica"
   },
   "LandingHeader": {
     "concept": "Concetto",

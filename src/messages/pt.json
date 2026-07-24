@@ -16,7 +16,17 @@
     "settings": "Configurações e privacidade",
     "editProfile": "Editar perfil",
     "logout": "Sair",
-    "defaultUser": "Utilizador"
+    "defaultUser": "Utilizador",
+    "accountSecurity": "Conta e segurança",
+    "blockedUsers": "Utilizadores bloqueados",
+    "history": "Histórico",
+    "support": "Suporte",
+    "faq": "Perguntas frequentes",
+    "contact": "Contacto",
+    "terms": "Termos de utilização",
+    "privacy": "Privacidade",
+    "safety": "Segurança e política",
+    "edit": "Editar"
   },
   "LandingHeader": {
     "concept": "Conceito",

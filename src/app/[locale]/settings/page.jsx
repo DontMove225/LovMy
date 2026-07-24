@@ -4,8 +4,10 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MyContext } from '@/context/MyProvider';
-import { FiCamera } from 'react-icons/fi';
+import { FiPlus, FiX, FiLock, FiChevronRight } from 'react-icons/fi';
 import HeartbeatLoader from '@/components/ui/HeartbeatLoader';
+
+const MAX_PHOTOS = 6;
 
 function ChipGroup({ options, selected, onToggle, multi = true }) {
   const isSelected = (id) => (multi ? selected.includes(id) : selected === id);
@@ -36,8 +38,11 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
+  const [photoBusy, setPhotoBusy] = useState(false);
 
   const [lists, setLists] = useState({ interests: [], languages: [], religions: [], goals: [] });
+  const [profilePic, setProfilePic] = useState(null);
+  const [otherPics, setOtherPics] = useState([]);
 
   const [form, setForm] = useState({
     name: '', profile_bio: '', birth_date: '', gender: 'FEMALE',
@@ -75,6 +80,10 @@ export default function SettingsPage() {
     }
   }, [apiGet]);
 
+  const syncStoredUser = (patch) => {
+    localStorage.setItem('Register_User', JSON.stringify({ ...getStoredUser(), ...patch }));
+  };
+
   const loadProfile = useCallback(async (uid) => {
     setLoading(true);
     try {
@@ -94,6 +103,12 @@ export default function SettingsPage() {
           interest: JSON.parse(u.interest || '[]'),
           language: JSON.parse(u.language || '[]'),
         });
+        setProfilePic(u.profile_pic || null);
+        try {
+          setOtherPics(JSON.parse(u.other_pic || '[]'));
+        } catch {
+          setOtherPics([]);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -116,21 +131,61 @@ export default function SettingsPage() {
     }));
   };
 
-  const handlePhotoUpload = async (event) => {
+  const handleAddPhoto = async (event) => {
     const file = event.target.files?.[0];
+    event.target.value = '';
     if (!file) return;
+    setPhotoBusy(true);
+    setMsg('');
     const data = new FormData();
     data.append('image', file);
     try {
-      const result = await apiPost('pro_image.php', data);
-      if (result.Result === 'true') {
-        const updatedUser = { ...getStoredUser(), profile_pic: result.ImagePath };
-        localStorage.setItem('Register_User', JSON.stringify(updatedUser));
-        setMsg('Photo de profil mise à jour.');
+      if (!profilePic) {
+        const result = await apiPost('pro_image.php', data);
+        if (result.Result === 'true') {
+          setProfilePic(result.ImagePath);
+          syncStoredUser({ profile_pic: result.ImagePath });
+        }
+      } else {
+        const result = await apiPost('other_image.php', data);
+        if (result.Result === 'true') {
+          const all = result.AllPhotos || [];
+          setOtherPics(all);
+          syncStoredUser({ other_pic: JSON.stringify(all) });
+        }
       }
     } catch (error) {
       console.error(error);
       setMsg('Erreur lors de l\'upload de la photo.');
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
+
+  const handleRemovePhoto = async (slot) => {
+    setPhotoBusy(true);
+    setMsg('');
+    try {
+      if (slot.type === 'profile') {
+        const result = await apiPost('delete_image.php', { type: 'profile' });
+        if (result.Result === 'true') {
+          setProfilePic(null);
+          syncStoredUser({ profile_pic: null });
+        }
+      } else {
+        const result = await apiPost('delete_image.php', { type: 'other', image: slot.url });
+        if (result.Result === 'true') {
+          let all = [];
+          try { all = JSON.parse(result.UserData?.other_pic || '[]'); } catch { all = []; }
+          setOtherPics(all);
+          syncStoredUser({ other_pic: result.UserData?.other_pic ?? '[]' });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setMsg('Erreur lors de la suppression de la photo.');
+    } finally {
+      setPhotoBusy(false);
     }
   };
 
@@ -182,84 +237,111 @@ export default function SettingsPage() {
   const inputClass = "w-full rounded-2xl border border-[var(--line)] bg-white/5 px-4 py-3 text-sm text-white outline-none transition focus:border-ember";
   const labelClass = "mb-1.5 block text-sm font-medium text-[var(--txt-soft)]";
 
+  const photoSlots = [
+    ...(profilePic ? [{ type: 'profile', url: profilePic }] : []),
+    ...otherPics.map((url) => ({ type: 'other', url })),
+  ];
+
   return (
     <main className="min-h-screen bg-obsidian px-4 py-10">
       <form onSubmit={handleSubmit} className="mx-auto max-w-4xl space-y-6 animate-rise">
         <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
           <span className="font-mono text-xs uppercase tracking-[0.32em] text-ember">Mon compte</span>
-          <h1 className="mt-2 font-serif text-3xl text-white">Paramètres & confidentialité</h1>
+          <h1 className="mt-2 font-serif text-3xl text-white">Paramètres</h1>
         </div>
 
-        {/* Photo */}
+        {/* Photos */}
         <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Photo de profil</h2>
-          <div className="mt-4 flex items-center gap-5">
-            <div className="relative h-24 w-24 overflow-hidden rounded-full border border-[var(--line)] bg-gradient-passion">
-              {me.profile_pic ? (
+          <p className="text-sm text-[var(--txt-soft)]">Mettez à jour vos photos personnelles ici.</p>
+
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {photoSlots.map((slot) => (
+              <div key={slot.url} className="group relative aspect-square overflow-hidden rounded-2xl border border-[var(--line)]">
                 <Image
-                  src={`${imageBaseURL}${me.profile_pic}`}
-                  alt={me.name}
+                  src={`${imageBaseURL}${slot.url}`}
+                  alt="Photo de profil"
                   fill
-                  sizes="96px"
+                  sizes="200px"
                   className="object-cover"
                 />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center font-serif text-3xl text-white">
-                  {me.name?.[0]?.toUpperCase() ?? '?'}
-                </div>
-              )}
-            </div>
-            <label className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--line)] px-4 py-2 text-sm text-[var(--txt-soft)] transition hover:border-ember/40 hover:text-white">
-              <FiCamera className="h-4 w-4" />
-              Changer la photo
-              <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
-            </label>
+                <button
+                  type="button"
+                  onClick={() => handleRemovePhoto(slot)}
+                  disabled={photoBusy}
+                  className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-ember text-white shadow-[0_4px_14px_rgba(0,0,0,0.4)] transition hover:brightness-110 disabled:opacity-50"
+                  aria-label="Supprimer la photo"
+                >
+                  <FiX className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+
+            {photoSlots.length < MAX_PHOTOS ? (
+              <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--line)] text-[var(--txt-faint)] transition hover:border-ember/40 hover:text-white">
+                <FiPlus className="h-6 w-6" />
+                <input type="file" accept="image/*" className="hidden" onChange={handleAddPhoto} disabled={photoBusy} />
+              </label>
+            ) : null}
           </div>
         </div>
 
-        {/* Infos de base */}
+        {/* Infos */}
         <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Informations de base</h2>
-          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
             <div>
-              <label className={labelClass}>Nom</label>
+              <label className={labelClass}>Pseudo</label>
               <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className={inputClass} />
             </div>
             <div>
               <label className={labelClass}>Email</label>
               <input value={me.email || ''} disabled className={`${inputClass} cursor-not-allowed opacity-60`} />
             </div>
+
             <div>
-              <label className={labelClass}>Mobile</label>
+              <label className={labelClass}>Numéro de mobile</label>
               <input value={me.mobile || ''} disabled className={`${inputClass} cursor-not-allowed opacity-60`} />
+            </div>
+            <div>
+              <label className={labelClass}>Mot de passe</label>
+              <button
+                type="button"
+                onClick={() => router.push('/account-security')}
+                className={`${inputClass} flex items-center justify-between text-left text-[var(--txt-soft)] transition hover:border-ember/40 hover:text-white`}
+              >
+                <span className="flex items-center gap-2"><FiLock className="h-4 w-4" /> ••••••••</span>
+                <FiChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div>
+              <div className="mb-1.5 flex items-center justify-between">
+                <span className="text-sm font-medium text-[var(--txt-soft)]">Distance de recherche</span>
+                <span className="font-mono text-sm text-ember">{Number(form.radius_search).toFixed(1)} km</span>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="500"
+                value={form.radius_search}
+                onChange={(e) => setForm((f) => ({ ...f, radius_search: e.target.value }))}
+                className="mt-3 w-full accent-ember"
+              />
             </div>
             <div>
               <label className={labelClass}>Date de naissance</label>
               <input type="date" value={form.birth_date} onChange={(e) => setForm((f) => ({ ...f, birth_date: e.target.value }))} className={inputClass} />
             </div>
+
             <div>
-              <label className={labelClass}>Taille (cm)</label>
-              <input type="number" value={form.height} onChange={(e) => setForm((f) => ({ ...f, height: e.target.value }))} className={inputClass} />
+              <label className={labelClass}>Bio</label>
+              <textarea
+                rows={3}
+                value={form.profile_bio}
+                onChange={(e) => setForm((f) => ({ ...f, profile_bio: e.target.value }))}
+                placeholder="Parlez un peu de vous..."
+                className={`${inputClass} resize-none`}
+              />
             </div>
-          </div>
-        </div>
-
-        {/* Bio */}
-        <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Bio</h2>
-          <textarea
-            rows={3}
-            value={form.profile_bio}
-            onChange={(e) => setForm((f) => ({ ...f, profile_bio: e.target.value }))}
-            placeholder="Parlez un peu de vous..."
-            className={`${inputClass} mt-4 resize-none`}
-          />
-        </div>
-
-        {/* Genre & préférences */}
-        <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Genre & préférences</h2>
-          <div className="mt-5 space-y-5">
             <div>
               <label className={labelClass}>Genre</label>
               <ChipGroup
@@ -268,6 +350,28 @@ export default function SettingsPage() {
                 multi={false}
                 onToggle={(id) => setForm((f) => ({ ...f, gender: id }))}
               />
+            </div>
+
+            <div>
+              <label className={labelClass}>Centres d&apos;intérêt</label>
+              <ChipGroup
+                options={lists.interests.map((i) => ({ id: i.title, title: i.title }))}
+                selected={form.interest}
+                onToggle={(id) => toggleMulti('interest', id)}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Langues parlées</label>
+              <ChipGroup
+                options={lists.languages.map((l) => ({ id: l.title, title: l.title }))}
+                selected={form.language}
+                onToggle={(id) => toggleMulti('language', id)}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Taille (cm)</label>
+              <input type="number" value={form.height} onChange={(e) => setForm((f) => ({ ...f, height: e.target.value }))} className={inputClass} />
             </div>
             <div>
               <label className={labelClass}>Je recherche</label>
@@ -278,67 +382,25 @@ export default function SettingsPage() {
                 onToggle={(id) => setForm((f) => ({ ...f, search_preference: id }))}
               />
             </div>
+
             <div>
-              <label className={labelClass}>Distance de recherche — {form.radius_search} km</label>
-              <input
-                type="range"
-                min="5"
-                max="500"
-                value={form.radius_search}
-                onChange={(e) => setForm((f) => ({ ...f, radius_search: e.target.value }))}
-                className="w-full accent-ember"
+              <label className={labelClass}>Religion</label>
+              <ChipGroup
+                options={lists.religions}
+                selected={form.religion}
+                multi={false}
+                onToggle={(id) => setForm((f) => ({ ...f, religion: id }))}
               />
             </div>
-          </div>
-        </div>
-
-        {/* Centres d'intérêt */}
-        <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Centres d&apos;intérêt</h2>
-          <div className="mt-4">
-            <ChipGroup
-              options={lists.interests.map((i) => ({ id: i.title, title: i.title }))}
-              selected={form.interest}
-              onToggle={(id) => toggleMulti('interest', id)}
-            />
-          </div>
-        </div>
-
-        {/* Langues */}
-        <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Langues parlées</h2>
-          <div className="mt-4">
-            <ChipGroup
-              options={lists.languages.map((l) => ({ id: l.title, title: l.title }))}
-              selected={form.language}
-              onToggle={(id) => toggleMulti('language', id)}
-            />
-          </div>
-        </div>
-
-        {/* Religion */}
-        <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Religion</h2>
-          <div className="mt-4">
-            <ChipGroup
-              options={lists.religions}
-              selected={form.religion}
-              multi={false}
-              onToggle={(id) => setForm((f) => ({ ...f, religion: id }))}
-            />
-          </div>
-        </div>
-
-        {/* Objectif relationnel */}
-        <div className="rounded-3xl border border-[var(--line)] bg-white/[0.03] p-8">
-          <h2 className="font-serif text-lg text-white">Objectif relationnel</h2>
-          <div className="mt-4">
-            <ChipGroup
-              options={lists.goals}
-              selected={form.relation_goal}
-              multi={false}
-              onToggle={(id) => setForm((f) => ({ ...f, relation_goal: id }))}
-            />
+            <div>
+              <label className={labelClass}>Objectif relationnel</label>
+              <ChipGroup
+                options={lists.goals}
+                selected={form.relation_goal}
+                multi={false}
+                onToggle={(id) => setForm((f) => ({ ...f, relation_goal: id }))}
+              />
+            </div>
           </div>
         </div>
 

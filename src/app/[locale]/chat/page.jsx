@@ -27,6 +27,7 @@ function ChatContent() {
   const [draft, setDraft] = useState('');
   const [loadingList, setLoadingList] = useState(true);
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -106,17 +107,22 @@ function ChatContent() {
     event.preventDefault();
     if (!draft.trim() || !active || !me) return;
     setSending(true);
+    setSendError('');
     try {
-      await apiPost('send_message.php', {
-        sender_id: me.id,
+      const result = await apiPost('send_message.php', {
         receiver_id: active.partner_id,
         message: draft.trim(),
       });
-      setDraft('');
-      await fetchMessages(me.id, active.partner_id);
-      await fetchConversations(me.id);
+      if (result.Result === 'true') {
+        setDraft('');
+        await fetchMessages(me.id, active.partner_id);
+        await fetchConversations(me.id);
+      } else {
+        setSendError(result.ResponseMsg || 'Impossible d\'envoyer ce message.');
+      }
     } catch (error) {
       console.error(error);
+      setSendError('Erreur réseau, réessayez plus tard.');
     } finally {
       setSending(false);
     }
@@ -154,7 +160,7 @@ function ChatContent() {
               filtered.map((c) => (
                 <button
                   key={c.partner_id}
-                  onClick={() => setActive(c)}
+                  onClick={() => { setActive(c); setSendError(''); }}
                   className={`flex w-full items-center gap-3 border-b border-[var(--line)] px-4 py-3 text-left transition ${
                     active?.partner_id === c.partner_id ? 'bg-white/5' : 'hover:bg-white/[0.03]'
                   }`}
@@ -236,6 +242,19 @@ function ChatContent() {
             )}
             <div ref={bottomRef} />
           </div>
+
+          {sendError ? (
+            <div className="mx-6 mb-3 flex items-center justify-between gap-3 rounded-2xl border border-ember/30 bg-ember/10 px-4 py-2.5 text-sm text-white">
+              <span>{sendError}</span>
+              <button
+                type="button"
+                onClick={() => router.push('/upgrade')}
+                className="shrink-0 rounded-full bg-gradient-passion px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white"
+              >
+                Passer Premium
+              </button>
+            </div>
+          ) : null}
 
           {active ? (
             <form onSubmit={handleSend} className="flex items-center gap-3 border-t border-[var(--line)] px-6 py-4">

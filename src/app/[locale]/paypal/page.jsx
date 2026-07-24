@@ -43,6 +43,13 @@ function PaypalContent() {
         trans_id: transId,
       });
       if (result.UserData) localStorage.setItem('Register_User', JSON.stringify(result.UserData));
+    } else if (type === 'wallet') {
+      const result = await apiPost('wallet_up.php', {
+        uid: me.id,
+        amt: amount,
+        trans_id: transId,
+      });
+      if (result.UserData) localStorage.setItem('Register_User', JSON.stringify(result.UserData));
     }
   };
 

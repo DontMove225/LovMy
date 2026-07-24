@@ -16,7 +16,17 @@
     "settings": "设置与隐私",
     "editProfile": "编辑资料",
     "logout": "退出登录",
-    "defaultUser": "用户"
+    "defaultUser": "用户",
+    "accountSecurity": "账户与安全",
+    "blockedUsers": "已屏蔽用户",
+    "history": "历史记录",
+    "support": "支持",
+    "faq": "常见问题",
+    "contact": "联系我们",
+    "terms": "使用条款",
+    "privacy": "隐私",
+    "safety": "安全与政策",
+    "edit": "编辑"
   },
   "LandingHeader": {
     "concept": "理念",

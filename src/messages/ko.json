@@ -16,7 +16,17 @@
     "settings": "설정 및 개인정보",
     "editProfile": "프로필 수정",
     "logout": "로그아웃",
-    "defaultUser": "사용자"
+    "defaultUser": "사용자",
+    "accountSecurity": "계정 및 보안",
+    "blockedUsers": "차단된 사용자",
+    "history": "기록",
+    "support": "지원",
+    "faq": "자주 묻는 질문",
+    "contact": "문의하기",
+    "terms": "이용약관",
+    "privacy": "개인정보 보호",
+    "safety": "안전 및 정책",
+    "edit": "수정"
   },
   "LandingHeader": {
     "concept": "컨셉",

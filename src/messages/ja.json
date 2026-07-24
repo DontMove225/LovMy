@@ -16,7 +16,17 @@
     "settings": "設定とプライバシー",
     "editProfile": "プロフィールを編集",
     "logout": "ログアウト",
-    "defaultUser": "ユーザー"
+    "defaultUser": "ユーザー",
+    "accountSecurity": "アカウントとセキュリティ",
+    "blockedUsers": "ブロックしたユーザー",
+    "history": "履歴",
+    "support": "サポート",
+    "faq": "よくある質問",
+    "contact": "お問い合わせ",
+    "terms": "利用規約",
+    "privacy": "プライバシー",
+    "safety": "安全性とポリシー",
+    "edit": "編集"
   },
   "LandingHeader": {
     "concept": "コンセプト",
