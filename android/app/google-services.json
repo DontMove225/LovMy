@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1060351033290",
+    "project_id": "lovmy-225",
+    "storage_bucket": "lovmy-225.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060351033290:android:e62dc4a92a569d52b45933",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPM2Z7HLKQIyDE6pm4nqKkm60JONC5HR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,22 +1,16 @@
-# LovMy Platform
+# dating
 
-This repository contains the LovMy platform source: backend, mobile app, web app, documentation, and database assets.
+A new Flutter project.
 
-## Repository structure
-- `backend/` — legacy backend (reference implementation)
-- `backend_v2/` — new Laravel backend (target architecture)
-- `mobile/` — mobile application
-- `web/` — frontend web project
-- `docs/` — documentation
-- `db_lovmy.sql` — database SQL dump
+## Getting Started
 
-## Development workflow
-- Use `main` for production-ready code.
-- Use `develop` for integration.
-- Create feature branches for each improvement.
+This project is a starting point for a Flutter application.
 
-## Backend setup
-Please refer to [backend_v2/README.md](backend_v2/README.md) for Laravel setup instructions.
+A few resources to get you started if this is your first Flutter project:
 
-## Security note
-Passwords must be stored securely. The admin account should be migrated to a hashed format during deployment.
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
