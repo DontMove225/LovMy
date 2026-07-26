@@ -3,12 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LovMy — Never be lonely</title>
-<meta name="description" content="LovMy : l'application de rencontre qui allie la précision de l'intelligence artificielle à la qualité d'une vraie connexion humaine. Disponible dans 15 langues, en France, en Afrique francophone et à l'international.">
-<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<title>LovMy — Appli de Rencontre en France et en Côte d'Ivoire</title>
+<meta name="description" content="LovMy, l'appli de rencontre qui allie IA et vraie alchimie humaine. Rencontres sérieuses en France, à Abidjan et en Afrique francophone. Téléchargez gratuitement.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://lovmy.fr/">
+<meta name="theme-color" content="#080714">
+
+<!-- ciblage géographique (France + Côte d'Ivoire) -->
+<meta name="geo.region" content="FR">
+<meta name="geo.placename" content="France, Abidjan, Côte d'Ivoire">
+<link rel="alternate" href="https://lovmy.fr/" hreflang="fr-FR">
+<link rel="alternate" href="https://lovmy.fr/" hreflang="fr-CI">
+<link rel="alternate" href="https://lovmy.fr/" hreflang="fr">
+<link rel="alternate" href="https://lovmy.fr/" hreflang="x-default">
+
+<!-- Open Graph / réseaux sociaux -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LovMy">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://lovmy.fr/">
+<meta property="og:title" content="LovMy — Appli de Rencontre en France et en Côte d'Ivoire">
+<meta property="og:description" content="L'appli de rencontre qui allie IA et vraie alchimie humaine. Rencontres sérieuses en France, à Abidjan et en Afrique francophone.">
+<meta property="og:image" content="https://lovmy.fr/assets/hero-couple.webp">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="398">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LovMy — Appli de Rencontre en France et en Côte d'Ivoire">
+<meta name="twitter:description" content="L'appli de rencontre qui allie IA et vraie alchimie humaine. Rencontres sérieuses en France, à Abidjan et en Afrique francophone.">
+<meta name="twitter:image" content="https://lovmy.fr/assets/hero-couple.webp">
+
+<link rel="icon" href="assets/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hero-couple.webp" fetchpriority="high">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "LovMy",
+  "applicationCategory": "SocialNetworkingApplication",
+  "operatingSystem": "iOS, Android",
+  "url": "https://lovmy.fr/",
+  "description": "LovMy est une application de rencontre qui combine intelligence artificielle et modération humaine pour créer de vraies connexions, en France, en Côte d'Ivoire et dans toute l'Afrique francophone.",
+  "inLanguage": ["fr", "en", "es", "pt", "de", "it", "nl", "ru", "uk", "pl", "tr", "ar", "zh", "ja", "ko"],
+  "areaServed": [
+    {"@type": "Country", "name": "France"},
+    {"@type": "Country", "name": "Côte d'Ivoire"}
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "category": "Free"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "LovMy",
+    "url": "https://lovmy.fr/",
+    "logo": "https://lovmy.fr/assets/logo.png"
+  }
+}
+</script>
 <style>
 :root{
   --passion:#EB0603;
@@ -173,12 +234,13 @@ nav.links a:hover{color:var(--txt)}
 /* ---------- hero ---------- */
 .hero{position:relative;padding:172px 0 108px;overflow:hidden}
 .hero-media{position:absolute;inset:0;z-index:0}
-.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 28%;
-  opacity:.8}
+.hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;
+  opacity:0;transition:opacity 1.8s ease}
+.hero-slide.is-active{opacity:.9}
 .hero-media::after{content:"";position:absolute;inset:0;
   background:
-    linear-gradient(180deg, rgba(8,7,20,.35) 0%, rgba(8,7,20,.72) 55%, var(--obsidian) 100%),
-    linear-gradient(100deg, rgba(8,7,20,.92) 0%, rgba(8,7,20,.55) 42%, rgba(8,7,20,.2) 68%);
+    linear-gradient(180deg, rgba(8,7,20,.45) 0%, rgba(8,7,20,.8) 55%, var(--obsidian) 100%),
+    linear-gradient(100deg, rgba(8,7,20,.96) 0%, rgba(8,7,20,.72) 42%, rgba(8,7,20,.32) 68%);
 }
 .hero-grid{position:relative;z-index:1;max-width:720px}
 .hero h1{font-size:clamp(2.6rem,5.6vw,4.3rem);line-height:1.05}
@@ -320,7 +382,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="#top">
-      <span class="mark"><img src="assets/logo.svg" alt="LovMy" width="36" height="36"></span>
+      <span class="mark"><img src="assets/logo.png" alt="LovMy" width="36" height="36"></span>
       <span class="word">Lov<em>My</em></span>
     </a>
     <nav class="links">
@@ -360,8 +422,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-media">
-      <img src="assets/hero-couple.jpg" alt="Un couple enlacé et souriant">
+    <div class="hero-media" id="heroSlides">
+      <img class="hero-slide is-active" src="assets/hero-couple.webp" alt="Couple souriant et enlacé utilisant l'application de rencontre LovMy" width="600" height="398" fetchpriority="high">
+      <img class="hero-slide" src="assets/hero-slide-2.jpg" alt="Couple tendre partageant un moment complice grâce à LovMy" aria-hidden="true" loading="lazy">
+      <img class="hero-slide" src="assets/hero-slide-3.jpg" alt="Couple s'embrassant après une rencontre sur LovMy" aria-hidden="true" loading="lazy">
+      <img class="hero-slide" src="assets/hero-slide-4.jpg" alt="Couple proche et amoureux, rencontre réussie via LovMy" aria-hidden="true" loading="lazy">
     </div>
     <div class="wrap">
       <div class="hero-grid">
@@ -447,14 +512,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
 
       <div class="stories-grid rv">
         <div class="story-card">
-          <div class="story-photo"><img src="assets/story-1.jpg" alt="Un couple heureux dans sa cuisine, un matin"></div>
+          <div class="story-photo"><img src="assets/story-1.webp" alt="Couple heureux formé sur LovMy à Abidjan, un matin dans sa cuisine" width="600" height="400" loading="lazy" decoding="async"></div>
           <div class="story-body">
             <blockquote data-i18n="testimonial_quote">« LovMy est la première application où je n'ai pas eu besoin de trier 40 profils avant d'avoir une vraie conversation. »</blockquote>
             <cite data-i18n="testimonial_author">Fatou, 29 ans — Abidjan</cite>
           </div>
         </div>
         <div class="story-card">
-          <div class="story-photo"><img src="assets/story-2.jpg" alt="Un couple tendre au réveil"></div>
+          <div class="story-photo"><img src="assets/story-2.webp" alt="Couple tendre formé sur LovMy à Paris, au réveil" width="600" height="400" loading="lazy" decoding="async"></div>
           <div class="story-body">
             <blockquote data-i18n="testimonial2_quote">« On m'a toujours dit que les applications ne comprenaient pas les couples comme le nôtre. LovMy a changé ça dès la première semaine. »</blockquote>
             <cite data-i18n="testimonial2_author">Aïcha &amp; Nadia, ensemble depuis 2023 — Paris</cite>
@@ -583,7 +648,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     <div class="foot-grid">
       <div>
         <a class="brand" href="#top">
-          <span class="mark"><img src="assets/logo.svg" alt="LovMy" width="36" height="36"></span>
+          <span class="mark"><img src="assets/logo.png" alt="LovMy" width="36" height="36"></span>
           <span class="word">Lov<em>My</em></span>
         </a>
         <p class="faint" style="max-width:32ch;margin-top:16px;font-size:.88rem" data-i18n="footer_tagline">L'application de rencontre qui combine intelligence discrète et vraies connexions humaines.</p>
@@ -648,7 +713,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   var LINKS = {
     ios:       "#",                          // Lien App Store
     android:   "#",                          // Lien Google Play
-    download:  "https://lovmy.app/download",  // Lien générique utilisé pour générer le QR code
+    download:  "https://lovmy.fr/download",  // Lien générique utilisé pour générer le QR code
     facebook:  "#",
     instagram: "#",
     tiktok:    "#",
@@ -679,7 +744,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Comment ça marche", nav_trust:"Confiance", nav_pricing:"Tarifs", nav_download:"Télécharger",
       hero_eyebrow:"Rencontres augmentées, cœur garanti",
       hero_title:"L'amour, calculé avec le cœur.",
-      hero_lede:"LovMy affine vos rencontres grâce à une intelligence discrète qui comprend vos priorités réelles — disponible en France, en Afrique francophone et partout ailleurs.",
+      hero_lede:"LovMy vous connecte à des célibataires vérifiés près de chez vous — ou à l'autre bout du monde. Une intelligence discrète qui affine vos rencontres selon ce qui compte vraiment pour vous.",
+      hero_lede_ci:"LovMy affine vos rencontres grâce à une intelligence discrète qui comprend vos priorités réelles — la référence des rencontres sérieuses à Abidjan et dans toute la Côte d'Ivoire.",
       hero_cta_primary:"Télécharger gratuitement", hero_cta_secondary:"Voir comment ça marche",
       stat1_num:"15", stat1_label:"langues disponibles",
       stat2_num:"92%", stat2_label:"profils vérifiés par selfie",
@@ -690,7 +756,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Laissez l'IA affiner vos matchs", step2_desc:"Un score de compatibilité recalculé à chaque échange, jamais figé sur une photo.",
       step3_title:"Rencontrez, en toute confiance", step3_desc:"Appel vidéo intégré, partage de position sécurisé et check-in après le rendez-vous.",
       trust_eyebrow:"Sécurité & crédibilité", trust_title:"La confiance, avant la romance.",
-      trust_intro:"Mêmes standards de sécurité, mêmes garanties, en France comme sur chaque marché africain.",
+      trust_intro:"Mêmes standards de sécurité, mêmes garanties, où que vous soyez dans le monde.",
+      trust_intro_ci:"Mêmes standards de sécurité, mêmes garanties, à Abidjan comme dans tout le pays.",
       card1_title:"Profils vérifiés", card1_desc:"Vérification par selfie et détection continue des faux comptes.",
       card2_title:"Modération 24/7", card2_desc:"Une équipe francophone répond en moins d'une heure, jour et nuit.",
       card3_title:"Données chiffrées", card3_desc:"Conforme RGPD, hébergement européen, aucune revente de données.",
@@ -727,7 +794,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"How it works", nav_trust:"Trust", nav_pricing:"Pricing", nav_download:"Download",
       hero_eyebrow:"Augmented dating, human at heart",
       hero_title:"Love, calculated with heart.",
-      hero_lede:"LovMy refines your matches with a discreet intelligence that understands what you really value — available in France, Francophone Africa, and beyond.",
+      hero_lede:"LovMy connects you with verified singles near you — or on the other side of the world. A discreet intelligence that refines your matches around what truly matters to you.",
       hero_cta_primary:"Download for free", hero_cta_secondary:"See how it works",
       stat1_num:"15", stat1_label:"languages available",
       stat2_num:"92%", stat2_label:"profiles verified by selfie",
@@ -738,7 +805,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Let AI refine your matches", step2_desc:"A compatibility score recalculated with every conversation, never frozen on a photo.",
       step3_title:"Meet, with full confidence", step3_desc:"Built-in video calls, secure location sharing, and a check-in after the date.",
       trust_eyebrow:"Safety & credibility", trust_title:"Trust, before romance.",
-      trust_intro:"The same safety standards and the same guarantees, in France as in every African market.",
+      trust_intro:"The same safety standards, the same guarantees, wherever you are in the world.",
       card1_title:"Verified profiles", card1_desc:"Selfie verification and continuous fake-account detection.",
       card2_title:"24/7 moderation", card2_desc:"A French-speaking team replies within the hour, day and night.",
       card3_title:"Encrypted data", card3_desc:"GDPR-compliant, European hosting, your data is never resold.",
@@ -775,7 +842,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Cómo funciona", nav_trust:"Confianza", nav_pricing:"Precios", nav_download:"Descargar",
       hero_eyebrow:"Citas aumentadas, corazón garantizado",
       hero_title:"El amor, calculado con el corazón.",
-      hero_lede:"LovMy afina tus encuentros con una inteligencia discreta que entiende lo que realmente valoras — disponible en Francia, África francófona y más allá.",
+      hero_lede:"LovMy te conecta con solteros verificados cerca de ti — o al otro lado del mundo. Una inteligencia discreta que afina tus encuentros según lo que de verdad te importa.",
       hero_cta_primary:"Descargar gratis", hero_cta_secondary:"Ver cómo funciona",
       stat1_num:"15", stat1_label:"idiomas disponibles",
       stat2_num:"92%", stat2_label:"perfiles verificados por selfie",
@@ -786,7 +853,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Deja que la IA afine tus matches", step2_desc:"Una puntuación de compatibilidad recalculada en cada conversación, nunca fija en una foto.",
       step3_title:"Conoce a alguien con toda confianza", step3_desc:"Videollamada integrada, ubicación compartida de forma segura y check-in tras la cita.",
       trust_eyebrow:"Seguridad y credibilidad", trust_title:"La confianza, antes que el romance.",
-      trust_intro:"Los mismos estándares de seguridad y las mismas garantías, en Francia y en cada mercado africano.",
+      trust_intro:"Los mismos estándares de seguridad, las mismas garantías, estés donde estés en el mundo.",
       card1_title:"Perfiles verificados", card1_desc:"Verificación por selfie y detección continua de cuentas falsas.",
       card2_title:"Moderación 24/7", card2_desc:"Un equipo francófono responde en menos de una hora, día y noche.",
       card3_title:"Datos cifrados", card3_desc:"Conforme al RGPD, alojamiento europeo, tus datos nunca se revenden.",
@@ -823,7 +890,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Como funciona", nav_trust:"Confiança", nav_pricing:"Preços", nav_download:"Transferir",
       hero_eyebrow:"Encontros aumentados, coração garantido",
       hero_title:"O amor, calculado com o coração.",
-      hero_lede:"O LovMy aperfeiçoa os seus encontros com uma inteligência discreta que entende o que realmente valoriza — disponível em França, na África francófona e muito mais além.",
+      hero_lede:"O LovMy conecta-te a solteiros verificados perto de ti — ou do outro lado do mundo. Uma inteligência discreta que aperfeiçoa os teus encontros com base no que realmente importa.",
       hero_cta_primary:"Transferir gratuitamente", hero_cta_secondary:"Ver como funciona",
       stat1_num:"15", stat1_label:"idiomas disponíveis",
       stat2_num:"92%", stat2_label:"perfis verificados por selfie",
@@ -834,7 +901,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Deixe a IA aperfeiçoar os seus matches", step2_desc:"Uma pontuação de compatibilidade recalculada a cada conversa, nunca fixada numa foto.",
       step3_title:"Conheça-se, com total confiança", step3_desc:"Chamada de vídeo integrada, partilha segura de localização e check-in após o encontro.",
       trust_eyebrow:"Segurança e credibilidade", trust_title:"A confiança, antes do romance.",
-      trust_intro:"Os mesmos padrões de segurança e as mesmas garantias, em França como em cada mercado africano.",
+      trust_intro:"Os mesmos padrões de segurança, as mesmas garantias, onde quer que estejas no mundo.",
       card1_title:"Perfis verificados", card1_desc:"Verificação por selfie e deteção contínua de contas falsas.",
       card2_title:"Moderação 24/7", card2_desc:"Uma equipa francófona responde em menos de uma hora, de dia e de noite.",
       card3_title:"Dados encriptados", card3_desc:"Conforme o RGPD, alojamento europeu, os seus dados nunca são revendidos.",
@@ -871,7 +938,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"So funktioniert's", nav_trust:"Vertrauen", nav_pricing:"Preise", nav_download:"Herunterladen",
       hero_eyebrow:"Erweiterte Partnersuche, mit Herz",
       hero_title:"Liebe, mit Herz berechnet.",
-      hero_lede:"LovMy verfeinert deine Matches mit einer diskreten Intelligenz, die versteht, was dir wirklich wichtig ist — verfügbar in Frankreich, im frankophonen Afrika und darüber hinaus.",
+      hero_lede:"LovMy verbindet dich mit verifizierten Singles in deiner Nähe — oder am anderen Ende der Welt. Eine diskrete Intelligenz, die deine Matches nach dem verfeinert, was dir wirklich wichtig ist.",
       hero_cta_primary:"Kostenlos herunterladen", hero_cta_secondary:"So funktioniert's",
       stat1_num:"15", stat1_label:"verfügbare Sprachen",
       stat2_num:"92%", stat2_label:"per Selfie verifizierte Profile",
@@ -882,7 +949,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Lass die KI deine Matches verfeinern", step2_desc:"Ein Kompatibilitätswert, der bei jedem Gespräch neu berechnet wird — nie an ein Foto gebunden.",
       step3_title:"Triff dich, mit vollem Vertrauen", step3_desc:"Integrierter Videoanruf, sicheres Teilen des Standorts und ein Check-in nach dem Date.",
       trust_eyebrow:"Sicherheit & Glaubwürdigkeit", trust_title:"Vertrauen, vor der Romantik.",
-      trust_intro:"Die gleichen Sicherheitsstandards und die gleichen Garantien, in Frankreich wie in jedem afrikanischen Markt.",
+      trust_intro:"Die gleichen Sicherheitsstandards, die gleichen Garantien — ganz gleich, wo auf der Welt du bist.",
       card1_title:"Verifizierte Profile", card1_desc:"Selfie-Verifizierung und laufende Erkennung von Fake-Konten.",
       card2_title:"24/7-Moderation", card2_desc:"Ein französischsprachiges Team antwortet Tag und Nacht innerhalb einer Stunde.",
       card3_title:"Verschlüsselte Daten", card3_desc:"DSGVO-konform, europäisches Hosting, deine Daten werden nie weiterverkauft.",
@@ -919,7 +986,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Come funziona", nav_trust:"Fiducia", nav_pricing:"Prezzi", nav_download:"Scarica",
       hero_eyebrow:"Incontri aumentati, cuore garantito",
       hero_title:"L'amore, calcolato con il cuore.",
-      hero_lede:"LovMy affina i tuoi incontri con un'intelligenza discreta che capisce ciò che conta davvero per te — disponibile in Francia, nell'Africa francofona e non solo.",
+      hero_lede:"LovMy ti mette in contatto con single verificati vicino a te — o dall'altra parte del mondo. Un'intelligenza discreta che affina i tuoi incontri in base a ciò che conta davvero per te.",
       hero_cta_primary:"Scarica gratis", hero_cta_secondary:"Scopri come funziona",
       stat1_num:"15", stat1_label:"lingue disponibili",
       stat2_num:"92%", stat2_label:"profili verificati con selfie",
@@ -930,7 +997,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Lascia che l'IA affini i tuoi match", step2_desc:"Un punteggio di compatibilità ricalcolato a ogni conversazione, mai fissato su una foto.",
       step3_title:"Incontratevi, in totale fiducia", step3_desc:"Videochiamata integrata, condivisione sicura della posizione e check-in dopo l'appuntamento.",
       trust_eyebrow:"Sicurezza e credibilità", trust_title:"La fiducia, prima del romanticismo.",
-      trust_intro:"Gli stessi standard di sicurezza e le stesse garanzie, in Francia come in ogni mercato africano.",
+      trust_intro:"Gli stessi standard di sicurezza, le stesse garanzie, ovunque tu sia nel mondo.",
       card1_title:"Profili verificati", card1_desc:"Verifica tramite selfie e rilevamento continuo degli account falsi.",
       card2_title:"Moderazione 24/7", card2_desc:"Un team francofono risponde entro un'ora, giorno e notte.",
       card3_title:"Dati criptati", card3_desc:"Conforme al GDPR, hosting europeo, i tuoi dati non vengono mai rivenduti.",
@@ -967,7 +1034,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Hoe het werkt", nav_trust:"Vertrouwen", nav_pricing:"Prijzen", nav_download:"Downloaden",
       hero_eyebrow:"Daten met AI, hart gegarandeerd",
       hero_title:"Liefde, berekend met hart.",
-      hero_lede:"LovMy verfijnt je matches met een discrete intelligentie die begrijpt wat je echt belangrijk vindt — beschikbaar in Frankrijk, Franstalig Afrika en daarbuiten.",
+      hero_lede:"LovMy verbindt je met geverifieerde singles in jouw buurt — of aan de andere kant van de wereld. Een discrete intelligentie die je matches verfijnt op basis van wat écht belangrijk voor je is.",
       hero_cta_primary:"Gratis downloaden", hero_cta_secondary:"Bekijk hoe het werkt",
       stat1_num:"15", stat1_label:"beschikbare talen",
       stat2_num:"92%", stat2_label:"profielen geverifieerd met selfie",
@@ -978,7 +1045,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Laat AI je matches verfijnen", step2_desc:"Een compatibiliteitsscore die bij elk gesprek opnieuw wordt berekend, nooit vastgezet op een foto.",
       step3_title:"Ontmoet elkaar, met volledig vertrouwen", step3_desc:"Ingebouwde videogesprekken, veilig locatie delen en een check-in na de date.",
       trust_eyebrow:"Veiligheid & geloofwaardigheid", trust_title:"Vertrouwen, vóór romantiek.",
-      trust_intro:"Dezelfde veiligheidsstandaarden en dezelfde garanties, in Frankrijk en op elke Afrikaanse markt.",
+      trust_intro:"Dezelfde veiligheidsstandaarden, dezelfde garanties, waar je ook ter wereld bent.",
       card1_title:"Geverifieerde profielen", card1_desc:"Selfie-verificatie en doorlopende opsporing van nepaccounts.",
       card2_title:"24/7-moderatie", card2_desc:"Een Franstalig team reageert binnen een uur, dag en nacht.",
       card3_title:"Versleutelde gegevens", card3_desc:"AVG-conform, Europese hosting, je gegevens worden nooit doorverkocht.",
@@ -1015,7 +1082,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Как это работает", nav_trust:"Доверие", nav_pricing:"Тарифы", nav_download:"Скачать",
       hero_eyebrow:"Знакомства нового уровня, сердце гарантировано",
       hero_title:"Любовь, просчитанная сердцем.",
-      hero_lede:"LovMy улучшает ваши совпадения благодаря деликатному интеллекту, который понимает, что для вас действительно важно — доступно во Франции, франкоязычной Африке и не только.",
+      hero_lede:"LovMy знакомит вас с проверенными одинокими людьми рядом с вами — или на другом конце света. Деликатный интеллект, который подбирает совпадения по-настоящему важному для вас.",
       hero_cta_primary:"Скачать бесплатно", hero_cta_secondary:"Посмотреть, как это работает",
       stat1_num:"15", stat1_label:"доступных языков",
       stat2_num:"92%", stat2_label:"анкет проверено по селфи",
@@ -1026,7 +1093,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Доверьте ИИ уточнение совпадений", step2_desc:"Оценка совместимости пересчитывается при каждом диалоге, а не застывает на одной фотографии.",
       step3_title:"Встречайтесь с полной уверенностью", step3_desc:"Встроенный видеозвонок, безопасная передача геолокации и проверка после встречи.",
       trust_eyebrow:"Безопасность и доверие", trust_title:"Доверие — прежде романтики.",
-      trust_intro:"Одни и те же стандарты безопасности и одни и те же гарантии — во Франции и на каждом африканском рынке.",
+      trust_intro:"Одни и те же стандарты безопасности, одни и те же гарантии — где бы вы ни находились в мире.",
       card1_title:"Проверенные анкеты", card1_desc:"Верификация по селфи и постоянное выявление фальшивых аккаунтов.",
       card2_title:"Модерация 24/7", card2_desc:"Франкоязычная команда отвечает менее чем за час, днём и ночью.",
       card3_title:"Шифрование данных", card3_desc:"Соответствие GDPR, европейский хостинг, ваши данные никогда не перепродаются.",
@@ -1063,7 +1130,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Як це працює", nav_trust:"Довіра", nav_pricing:"Тарифи", nav_download:"Завантажити",
       hero_eyebrow:"Знайомства нового рівня, серце гарантоване",
       hero_title:"Кохання, обчислене серцем.",
-      hero_lede:"LovMy покращує ваші збіги завдяки делікатному інтелекту, який розуміє, що для вас справді важливо — доступно у Франції, франкомовній Африці та за їхніми межами.",
+      hero_lede:"LovMy знайомить вас із перевіреними самотніми людьми поруч із вами — або на іншому кінці світу. Делікатний інтелект, який добирає збіги за тим, що справді важливо для вас.",
       hero_cta_primary:"Завантажити безкоштовно", hero_cta_secondary:"Подивитися, як це працює",
       stat1_num:"15", stat1_label:"доступних мов",
       stat2_num:"92%", stat2_label:"анкет перевірено за селфі",
@@ -1074,7 +1141,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Довірте ШІ уточнення збігів", step2_desc:"Оцінка сумісності перераховується при кожному діалозі, а не застигає на одній фотографії.",
       step3_title:"Зустрічайтеся з повною впевненістю", step3_desc:"Вбудований відеодзвінок, безпечна передача геолокації та перевірка після зустрічі.",
       trust_eyebrow:"Безпека та довіра", trust_title:"Довіра — перед романтикою.",
-      trust_intro:"Ті самі стандарти безпеки й ті самі гарантії — у Франції та на кожному африканському ринку.",
+      trust_intro:"Ті самі стандарти безпеки, ті самі гарантії — де б ви не були у світі.",
       card1_title:"Перевірені анкети", card1_desc:"Верифікація за селфі та постійне виявлення фейкових акаунтів.",
       card2_title:"Модерація 24/7", card2_desc:"Франкомовна команда відповідає менш ніж за годину, вдень і вночі.",
       card3_title:"Шифрування даних", card3_desc:"Відповідність GDPR, європейський хостинг, ваші дані ніколи не перепродаються.",
@@ -1111,7 +1178,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Jak to działa", nav_trust:"Zaufanie", nav_pricing:"Cennik", nav_download:"Pobierz",
       hero_eyebrow:"Randkowanie wspomagane, z sercem",
       hero_title:"Miłość, obliczona sercem.",
-      hero_lede:"LovMy dopracowuje Twoje dopasowania dzięki dyskretnej inteligencji, która rozumie, co naprawdę się dla Ciebie liczy — dostępne we Francji, w Afryce frankofońskiej i poza nią.",
+      hero_lede:"LovMy łączy Cię ze zweryfikowanymi singlami w Twojej okolicy — albo po drugiej stronie świata. Dyskretna inteligencja, która dopasowuje Twoje matche do tego, co naprawdę się liczy.",
       hero_cta_primary:"Pobierz za darmo", hero_cta_secondary:"Zobacz, jak to działa",
       stat1_num:"15", stat1_label:"dostępnych języków",
       stat2_num:"92%", stat2_label:"profili zweryfikowanych selfie",
@@ -1122,7 +1189,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Pozwól AI dopracować Twoje dopasowania", step2_desc:"Wynik kompatybilności przeliczany przy każdej rozmowie, nigdy zamrożony na jednym zdjęciu.",
       step3_title:"Spotykajcie się z pełnym zaufaniem", step3_desc:"Wbudowana rozmowa wideo, bezpieczne udostępnianie lokalizacji i check-in po randce.",
       trust_eyebrow:"Bezpieczeństwo i wiarygodność", trust_title:"Zaufanie przed romansem.",
-      trust_intro:"Te same standardy bezpieczeństwa i te same gwarancje — we Francji i na każdym rynku afrykańskim.",
+      trust_intro:"Te same standardy bezpieczeństwa, te same gwarancje — gdziekolwiek jesteś na świecie.",
       card1_title:"Zweryfikowane profile", card1_desc:"Weryfikacja selfie i ciągłe wykrywanie fałszywych kont.",
       card2_title:"Moderacja 24/7", card2_desc:"Francuskojęzyczny zespół odpowiada w mniej niż godzinę, dniem i nocą.",
       card3_title:"Szyfrowane dane", card3_desc:"Zgodność z RODO, hosting europejski, Twoje dane nigdy nie są odsprzedawane.",
@@ -1159,7 +1226,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"Nasıl çalışır", nav_trust:"Güven", nav_pricing:"Fiyatlandırma", nav_download:"İndir",
       hero_eyebrow:"Yapay zekâ destekli tanışma, kalpten",
       hero_title:"Aşk, kalple hesaplanır.",
-      hero_lede:"LovMy, sizin için gerçekten önemli olanı anlayan sağduyulu bir zekâ ile eşleşmelerinizi iyileştirir — Fransa'da, Frankofon Afrika'da ve ötesinde kullanılabilir.",
+      hero_lede:"LovMy, sizi yakınınızdaki ya da dünyanın öbür ucundaki doğrulanmış bekarlarla buluşturur. Sizin için gerçekten önemli olanı anlayan sağduyulu bir zekâ ile eşleşmelerinizi inceltir.",
       hero_cta_primary:"Ücretsiz indir", hero_cta_secondary:"Nasıl çalıştığını gör",
       stat1_num:"15", stat1_label:"kullanılabilir dil",
       stat2_num:"92%", stat2_label:"selfie ile doğrulanmış profil",
@@ -1170,7 +1237,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"Eşleşmelerinizi yapay zekâya iyileştirtin", step2_desc:"Her sohbette yeniden hesaplanan, tek bir fotoğrafa asla takılıp kalmayan bir uyumluluk puanı.",
       step3_title:"Tam bir güvenle tanışın", step3_desc:"Uygulama içi görüntülü arama, güvenli konum paylaşımı ve buluşma sonrası kontrol.",
       trust_eyebrow:"Güvenlik ve güvenilirlik", trust_title:"Romantizmden önce güven.",
-      trust_intro:"Fransa'da olduğu kadar her Afrika pazarında da aynı güvenlik standartları, aynı garantiler.",
+      trust_intro:"Dünyanın neresinde olursanız olun aynı güvenlik standartları, aynı garantiler.",
       card1_title:"Doğrulanmış profiller", card1_desc:"Selfie doğrulaması ve sahte hesapların sürekli tespiti.",
       card2_title:"7/24 moderasyon", card2_desc:"Fransızca konuşan bir ekip, gece gündüz bir saatten kısa sürede yanıt verir.",
       card3_title:"Şifreli veriler", card3_desc:"GDPR uyumlu, Avrupa'da barındırma, verileriniz asla yeniden satılmaz.",
@@ -1207,7 +1274,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"كيف يعمل", nav_trust:"الثقة", nav_pricing:"الأسعار", nav_download:"تحميل",
       hero_eyebrow:"مواعدة معزّزة، بقلب مضمون",
       hero_title:"الحب، محسوب بالقلب.",
-      hero_lede:"يعمل LovMy على تحسين تطابقاتك بفضل ذكاء اصطناعي دقيق يفهم ما يهمك حقًا — متاح في فرنسا وأفريقيا الفرنكوفونية وخارجها.",
+      hero_lede:"يربطك LovMy بأشخاص عازبين موثّقين بالقرب منك — أو في الطرف الآخر من العالم. ذكاء اصطناعي دقيق يُحسّن تطابقاتك بناءً على ما يهمك فعلاً.",
       hero_cta_primary:"تحميل مجانًا", hero_cta_secondary:"شاهد كيف يعمل",
       stat1_num:"15", stat1_label:"لغة متاحة",
       stat2_num:"92%", stat2_label:"من الملفات موثّقة بالسيلفي",
@@ -1218,7 +1285,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"دع الذكاء الاصطناعي يحسّن تطابقاتك", step2_desc:"درجة توافق يُعاد حسابها مع كل محادثة، ولا تبقى أبدًا ثابتة عند صورة واحدة.",
       step3_title:"التقيا بكل ثقة", step3_desc:"مكالمة فيديو مدمجة، ومشاركة آمنة للموقع، ومتابعة بعد الموعد.",
       trust_eyebrow:"الأمان والمصداقية", trust_title:"الثقة، قبل الرومانسية.",
-      trust_intro:"نفس معايير الأمان ونفس الضمانات، في فرنسا كما في كل سوق أفريقي.",
+      trust_intro:"نفس معايير الأمان، ونفس الضمانات، أينما كنت في العالم.",
       card1_title:"ملفات موثّقة", card1_desc:"توثيق بالسيلفي وكشف مستمر للحسابات المزيفة.",
       card2_title:"إشراف على مدار الساعة", card2_desc:"فريق ناطق بالفرنسية يرد في أقل من ساعة، ليلاً ونهارًا.",
       card3_title:"بيانات مشفّرة", card3_desc:"متوافق مع اللائحة الأوروبية لحماية البيانات، استضافة أوروبية، بياناتك لا تُباع أبدًا.",
@@ -1255,7 +1322,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"如何使用", nav_trust:"信任与安全", nav_pricing:"价格", nav_download:"下载",
       hero_eyebrow:"智能加持的约会，用心保证",
       hero_title:"用心计算的爱情。",
-      hero_lede:"LovMy 借助一种懂得您真正在意什么的低调智能，优化您的匹配——服务范围覆盖法国、法语非洲地区及更远的地方。",
+      hero_lede:"LovMy 让您与身边或世界另一端经过验证的单身人士相遇——凭借懂得您真正在意之事的低调智能，优化每一次匹配。",
       hero_cta_primary:"免费下载", hero_cta_secondary:"了解运作方式",
       stat1_num:"15", stat1_label:"种可用语言",
       stat2_num:"92%", stat2_label:"资料经自拍验证",
@@ -1266,7 +1333,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"让 AI 优化您的匹配", step2_desc:"兼容度评分会随每次对话重新计算，绝不固定在一张照片上。",
       step3_title:"安心见面", step3_desc:"内置视频通话、安全的位置共享，以及约会后的安全确认。",
       trust_eyebrow:"安全与可信度", trust_title:"先有信任，才有浪漫。",
-      trust_intro:"无论在法国还是在每一个非洲市场，安全标准与保障始终如一。",
+      trust_intro:"无论您身在世界何处，安全标准与保障始终如一。",
       card1_title:"经过验证的资料", card1_desc:"自拍验证，持续检测虚假账号。",
       card2_title:"全天候审核", card2_desc:"法语团队全天候在一小时内回复。",
       card3_title:"数据加密", card3_desc:"符合 GDPR，欧洲托管，您的数据绝不转售。",
@@ -1303,7 +1370,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"使い方", nav_trust:"信頼と安全", nav_pricing:"料金", nav_download:"ダウンロード",
       hero_eyebrow:"知性が支える出会い、心は本物",
       hero_title:"心で計算する、恋。",
-      hero_lede:"LovMyは、あなたが本当に大切にしていることを理解する控えめな知性で、マッチングを精緻化します — フランス、フランス語圏アフリカ、そしてその先でご利用いただけます。",
+      hero_lede:"LovMyは、あなたのそばにいる、あるいは地球の裏側にいる、身元確認済みの独身者とあなたをつなげます。本当に大切にしていることを理解する控えめな知性が、マッチングを精緻化します。",
       hero_cta_primary:"無料でダウンロード", hero_cta_secondary:"使い方を見る",
       stat1_num:"15", stat1_label:"対応言語",
       stat2_num:"92%", stat2_label:"セルフィーで本人確認済みプロフィール",
@@ -1314,7 +1381,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"AIにマッチングを精緻化してもらう", step2_desc:"会話のたびに再計算される相性スコアは、一枚の写真に固定されません。",
       step3_title:"安心して出会う", step3_desc:"アプリ内ビデオ通話、安全な位置情報共有、デート後のチェックイン。",
       trust_eyebrow:"安全と信頼性", trust_title:"ロマンスの前に、信頼を。",
-      trust_intro:"フランスでもアフリカの各市場でも、同じ安全基準、同じ保証を。",
+      trust_intro:"世界のどこにいても、同じ安全基準、同じ保証を。",
       card1_title:"認証済みプロフィール", card1_desc:"セルフィー認証と偽アカウントの継続的な検出。",
       card2_title:"24時間365日のモデレーション", card2_desc:"フランス語対応チームが昼夜を問わず1時間以内に対応。",
       card3_title:"データの暗号化", card3_desc:"GDPR準拠、欧州でのホスティング、データが転売されることは決してありません。",
@@ -1351,7 +1418,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       nav_how:"이용 방법", nav_trust:"신뢰와 안전", nav_pricing:"요금제", nav_download:"다운로드",
       hero_eyebrow:"지능이 더한 만남, 진심은 그대로",
       hero_title:"마음으로 계산하는 사랑.",
-      hero_lede:"LovMy는 당신이 진정으로 중요하게 여기는 것을 이해하는 섬세한 지능으로 매칭을 정교하게 다듬습니다 — 프랑스, 프랑스어권 아프리카 및 그 너머에서 이용 가능합니다.",
+      hero_lede:"LovMy는 당신 근처에 있든, 지구 반대편에 있든 신원이 확인된 싱글과 당신을 연결합니다. 진정으로 중요한 것을 이해하는 섬세한 지능이 매칭을 정교하게 다듬습니다.",
       hero_cta_primary:"무료로 다운로드", hero_cta_secondary:"이용 방법 보기",
       stat1_num:"15", stat1_label:"지원 언어",
       stat2_num:"92%", stat2_label:"셀피로 인증된 프로필",
@@ -1362,7 +1429,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step2_title:"AI가 매칭을 다듬도록 하기", step2_desc:"대화가 오갈 때마다 다시 계산되는 궁합 점수, 사진 한 장에 고정되지 않습니다.",
       step3_title:"안심하고 만나기", step3_desc:"내장 영상통화, 안전한 위치 공유, 데이트 후 체크인까지.",
       trust_eyebrow:"안전과 신뢰성", trust_title:"로맨스보다 먼저, 신뢰.",
-      trust_intro:"프랑스에서도, 아프리카의 모든 시장에서도 동일한 안전 기준과 보장을 제공합니다.",
+      trust_intro:"세계 어디에 있든 동일한 안전 기준과 보장을 제공합니다.",
       card1_title:"인증된 프로필", card1_desc:"셀피 인증과 지속적인 가짜 계정 탐지.",
       card2_title:"24시간 모니터링", card2_desc:"프랑스어 지원팀이 밤낮없이 한 시간 이내에 응답합니다.",
       card3_title:"암호화된 데이터", card3_desc:"GDPR 준수, 유럽 호스팅, 당신의 데이터는 절대 재판매되지 않습니다.",
@@ -1419,6 +1486,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   });
 
   var currentLang = 'fr';
+  var isCI = false; // ajusté par detectCountry() — affine le narratif pour la Côte d'Ivoire
   function setLang(code){
     var dict = T[code]; if(!dict) return;
     currentLang = code;
@@ -1430,7 +1498,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
 
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       var key = el.getAttribute('data-i18n');
-      if(dict[key] !== undefined){ el.textContent = dict[key]; }
+      var val = (isCI && dict[key + '_ci'] !== undefined) ? dict[key + '_ci'] : dict[key];
+      if(val !== undefined){ el.textContent = val; }
     });
 
     document.querySelectorAll('.lang-menu button').forEach(function(b){
@@ -1438,6 +1507,26 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     });
   }
   setLang('fr');
+
+  /* ---- narratif géolocalisé : Côte d'Ivoire vs reste du monde ---- */
+  (function detectCountry(){
+    var timedOut = false;
+    var timer = setTimeout(function(){ timedOut = true; }, 4000);
+    fetch('https://get.geojs.io/v1/ip/country.json')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        clearTimeout(timer);
+        if(timedOut || !data) return;
+        if(data.country === 'CI'){
+          isCI = true;
+          setLang(currentLang);
+        }
+      })
+      .catch(function(){
+        clearTimeout(timer);
+        /* échec ou bloqué par un bloqueur de pub : on garde le narratif international par défaut */
+      });
+  })();
 
   /* ================= currency switch (dropdown, same pattern as language) ================= */
   var CURRENCIES = [
@@ -1547,6 +1636,26 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   document.getElementById('qrImg').src =
     'https://api.qrserver.com/v1/create-qr-code/?size=208x208&margin=0&color=080714&bgcolor=ffffff&data='
     + encodeURIComponent(LINKS.download);
+
+  /* ---- hero background slideshow ---- */
+  var heroSlides = Array.prototype.slice.call(document.querySelectorAll('#heroSlides .hero-slide'));
+  heroSlides.forEach(function(img){
+    img.addEventListener('error', function(){ img.dataset.broken = 'true'; img.classList.remove('is-active'); });
+  });
+  if(heroSlides.length > 1 && (!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches)){
+    var heroIdx = 0;
+    setInterval(function(){
+      var usable = heroSlides.filter(function(img){ return img.dataset.broken !== 'true'; });
+      if(usable.length < 2) return;
+      heroIdx = heroIdx % usable.length;
+      var current = usable[heroIdx];
+      heroIdx = (heroIdx + 1) % usable.length;
+      var next = usable[heroIdx];
+      if(next.complete && next.naturalWidth === 0){ next.dataset.broken = 'true'; return; }
+      current.classList.remove('is-active');
+      next.classList.add('is-active');
+    }, 6000);
+  }
 
   /* ---- scroll reveal ---- */
   if(!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches){
