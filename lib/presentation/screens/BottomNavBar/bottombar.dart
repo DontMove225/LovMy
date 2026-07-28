@@ -8,6 +8,7 @@ import 'package:lovmy/presentation/screens/BottomNavBar/home_screen.dart';
 import 'package:lovmy/presentation/screens/BottomNavBar/mapscreen.dart';
 import 'package:lovmy/presentation/screens/other/premium/premium.dart';
 import 'package:lovmy/presentation/screens/other/profileScreen/profile_page.dart';
+import 'package:lovmy/presentation/widgets/other_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -162,7 +163,7 @@ class _BottomBarState extends State<BottomBar> {
 /// Icône de la barre du bas avec transition de fond animée sur sélection
 /// et léger effet d'appui — purement visuel, la logique de sélection/tap
 /// reste dans le callback [onTap] fourni par l'appelant.
-class _NavIcon extends StatefulWidget {
+class _NavIcon extends StatelessWidget {
   final bool selected;
   final String iconPath;
   final String iconPathFilled;
@@ -176,41 +177,23 @@ class _NavIcon extends StatefulWidget {
   });
 
   @override
-  State<_NavIcon> createState() => _NavIconState();
-}
-
-class _NavIconState extends State<_NavIcon> {
-  bool _pressed = false;
-
-  void _setPressed(bool value) {
-    if (_pressed != value) setState(() => _pressed = value);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => _setPressed(true),
-      onTapCancel: () => _setPressed(false),
-      onTapUp: (_) => _setPressed(false),
-      onTap: widget.onTap,
-      child: AnimatedScale(
-        scale: _pressed ? 0.88 : 1.0,
-        duration: const Duration(milliseconds: 120),
+    return PressScale(
+      scaleDown: 0.88,
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOut,
-          padding: EdgeInsets.all(13),
-          decoration: BoxDecoration(
-            color: widget.selected ? AppColors.white : Colors.transparent,
-            shape: BoxShape.circle,
-          ),
-          child: SvgPicture.asset(
-            widget.selected ? widget.iconPathFilled : widget.iconPath,
-            width: 25,
-            height: 25,
-            color: widget.selected ? AppColors.appColor : AppColors.white,
-          ),
+        padding: EdgeInsets.all(13),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.white : Colors.transparent,
+          shape: BoxShape.circle,
+        ),
+        child: SvgPicture.asset(
+          selected ? iconPathFilled : iconPath,
+          width: 25,
+          height: 25,
+          color: selected ? AppColors.appColor : AppColors.white,
         ),
       ),
     );

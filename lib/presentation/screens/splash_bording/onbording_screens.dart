@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Logic/cubits/onBording_cubit/onbording_cubit.dart';
 import '../../../core/notifications.dart';
 import '../../../language/localization/app_localization.dart';
+import '../../widgets/other_widget.dart';
 import '../BottomNavBar/home_screen.dart';
 import '../Splash_Bording/auth_screen.dart';
 import 'onBordingProvider/onbording_provider.dart';
@@ -95,12 +96,32 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  Text(onBordingProvider.onBordingData[onBordingProvider.onboradingCurrent]["title"],style: Theme.of(context).textTheme.headlineSmall,textAlign: TextAlign.center,maxLines: 2),
+                  ClipRect(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 320),
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeIn,
+                      transitionBuilder: (child, animation) => FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero).animate(animation),
+                          child: child,
+                        ),
+                      ),
+                      child: Text(
+                        onBordingProvider.onBordingData[onBordingProvider.onboradingCurrent]["title"],
+                        key: ValueKey(onBordingProvider.onboradingCurrent),
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20,),
                    onBordingProvider.onboradingCurrent == onBordingProvider.onBordingData.length-1 ? Row(
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
-                       Expanded(child: InkWell(
+                       Expanded(child: PressScale(
                            onTap: () async {
                              SharedPreferences prefs = await SharedPreferences.getInstance();
                              prefs.setString("maintainanceenabled", onbordingCubit.smaTypeApiModel?.maintainanceEnabled ?? "No");
@@ -118,7 +139,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                      ],
                    ) :Row(
                        children: [
-                    Expanded(child: InkWell(
+                    Expanded(child: PressScale(
                         onTap: () async {
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           prefs.setString("maintainanceenabled", onbordingCubit.smaTypeApiModel?.maintainanceEnabled ?? "No");

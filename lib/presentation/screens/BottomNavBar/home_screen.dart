@@ -1302,8 +1302,10 @@ class Indicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(2),
-      child: Container(
-        height: isActive ?  6 : 6,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+        height: 6,
         width: isActive  ? 15 : 6,
         decoration: BoxDecoration(
           color: isActive ? AppColors.appColor : AppColors.borderColor,

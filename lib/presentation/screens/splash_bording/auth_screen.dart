@@ -30,6 +30,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   late OnBordingProvider onBordingProvider;
+  late final AnimationController _entranceController;
 
   @override
   void initState() {
@@ -37,7 +38,30 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
 
     setOnbordingFalse();
     BlocProvider.of<OnbordingCubit>(context).smstypeapi(context);
+    _entranceController = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
+    _entranceController.forward();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _entranceController.dispose();
+    super.dispose();
+  }
+
+  /// Entrée fade+slide-up échelonnée (chaque élément part un peu après le
+  /// précédent) pour la colonne de boutons, pilotée par [_entranceController].
+  Widget _staggeredEntry(int index, Widget child) {
+    final start = (0.12 * index).clamp(0.0, 1.0);
+    final end = (start + 0.6).clamp(0.0, 1.0);
+    final curved = CurvedAnimation(parent: _entranceController, curve: Interval(start, end, curve: Curves.easeOut));
+    return FadeTransition(
+      opacity: curved,
+      child: SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 0.15), end: Offset.zero).animate(curved),
+        child: child,
+      ),
+    );
   }
 
   late OnbordingCubit onbordingCubit;
@@ -109,13 +133,13 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                         Text(AppLocalizations.of(context)?.translate("Let's dive in into your account!") ?? "Let's dive in into your account!",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),),
 
                         const SizedBox(height: 10,),
-                        LoginWithButton(
+                        _staggeredEntry(0, LoginWithButton(
                             bgColor: Colors.white,
                             title: AppLocalizations.of(context)?.translate("Connect with Google") ?? "Connect with Google",
                             iconpath: "assets/icons/google.svg",
                             onTap: () {
                               BlocProvider.of<AuthCubit>(context).signInWithGoogle(context);
-                            }),
+                            })),
                         const SizBoxH(size: 0.018),
                         // onbordingCubit.smaTypeApiModel?.socialLoginEnabled == "No" ? const SizedBox() : LoginWithButton(
                         //   bgColor: Colors.white,
@@ -137,18 +161,18 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
 
 
                         const SizBoxH(size: 0.018),
-                        Row(
+                        _staggeredEntry(1, Row(
                           children: [
                           Expanded(child: MainButton(title: AppLocalizations.of(context)?.translate("Continue with Email/Mobile Number") ?? "Continue with Email/Mobile Number",onTap: () {
                             onBordingProvider.updatestepsCount(0);
                             Navigator.pushNamed(context, CreatSteps.creatStepsRoute);
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => CreatSteps(),));
                           },)),
-                        ],),
+                        ],)),
                         // onbordingCubit.smaTypeApiModel?.socialLoginEnabled == "No" ?
                         SizedBox(height: 20,),
                             // :  const Spacer(),
-                        InkWell(
+                        _staggeredEntry(2, InkWell(
                           onTap: () async {
                             print("done");
                           },
@@ -169,7 +193,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                                   },
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.white,fontWeight: FontWeight.bold)),
                           ])),
-                        ),
+                        )),
 
                         const SizedBox(height: 10,),
 
@@ -251,12 +275,23 @@ class ImageSliderState extends State<ImageSlider> {
     return AnimatedSwitcher(
       duration: const Duration(seconds: 5),
 
-      child: Image.asset(
-        widget.imageUrls[_currentPage],
+      // Effet Ken Burns : léger zoom lent sur chaque image pendant tout le
+      // cycle d'affichage, en plus du fondu enchaîné existant.
+      child: TweenAnimationBuilder<double>(
         key: ValueKey<int>(_currentPage),
-        fit: BoxFit.cover,
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        tween: Tween<double>(begin: 1.0, end: 1.06),
+        duration: const Duration(seconds: 5),
+        curve: Curves.easeOut,
+        builder: (context, scale, child) => Transform.scale(
+          scale: scale,
+          child: child,
+        ),
+        child: Image.asset(
+          widget.imageUrls[_currentPage],
+          fit: BoxFit.cover,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
       ),
 
       transitionBuilder: (child, animation) {
