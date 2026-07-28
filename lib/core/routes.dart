@@ -15,63 +15,64 @@ import 'package:lovmy/presentation/screens/auth/login_screen.dart';
 import 'package:lovmy/presentation/screens/splash_bording/onbording_screens.dart';
 import 'package:lovmy/presentation/screens/splash_bording/recover_email.dart';
 import 'package:lovmy/presentation/screens/splash_bording/splash_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../presentation/screens/BottomNavBar/home_screen.dart';
+import 'page_transitions.dart';
 
 
 class Routes {
   static Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case SplashScreen.splashScreenRoute:
-        return CupertinoPageRoute(builder: (context) => const SplashScreen());
+        return LovMyPageRoute(builder: (context) => const SplashScreen());
         case OnBoardingScreen.onBoardingScreenRoute:
-        return CupertinoPageRoute(builder: (context) => const OnBoardingScreen());
+        return LovMyPageRoute(builder: (context) => const OnBoardingScreen());
 
       case AuthScreen.authScreenRoute:
-        return CupertinoPageRoute(builder: (context) => const AuthScreen());
+        return LovMyPageRoute(builder: (context) => const AuthScreen());
 
       case RecoverEmail.recoverEmailRoute:
-        return CupertinoPageRoute(builder: (context) => const RecoverEmail());
+        return LovMyPageRoute(builder: (context) => const RecoverEmail());
 
       case CreatSteps.creatStepsRoute:
-        return CupertinoPageRoute(builder: (context) => const CreatSteps());
+        return LovMyPageRoute(builder: (context) => const CreatSteps());
 
       case BottomBar.bottomBarRoute:
-        return CupertinoPageRoute(builder: (context) => const BottomBar());
+        return LovMyPageRoute(builder: (context) => const BottomBar());
 
       case HomeScreen.homeScrennRoute:
-        return CupertinoPageRoute(builder: (context) => const HomeScreen());
+        return LovMyPageRoute(builder: (context) => const HomeScreen());
 
       case BrowesPage.browsPageRoute:
-        return CupertinoPageRoute(builder: (context) => const BrowesPage());
+        return LovMyPageRoute(builder: (context) => const BrowesPage());
 
       case MapScreen.mapScreenRoute:
-        return CupertinoPageRoute(builder: (context) => const MapScreen());
+        return LovMyPageRoute(builder: (context) => const MapScreen());
 
       case ProfilePage.profilePageRoute:
-        return CupertinoPageRoute(builder: (context) => const ProfilePage());
+        return LovMyPageRoute(builder: (context) => const ProfilePage());
 
       case PremiumScreen.premiumScreenRoute:
-        return CupertinoPageRoute(builder: (context) => const PremiumScreen());
+        return LovMyPageRoute(builder: (context) => const PremiumScreen());
 
       case EditProfile.editProfileRoute:
-        return CupertinoPageRoute(builder: (context) => const EditProfile());
+        return LovMyPageRoute(builder: (context) => const EditProfile());
 
       case DetailScreen.detailScreenRoute:
-        return CupertinoPageRoute(builder: (context) => const DetailScreen());
+        return LovMyPageRoute(builder: (context) => const DetailScreen());
 
       case LoginScreen.loginRoute:
-        return CupertinoPageRoute(builder: (context) => const LoginScreen());
+        return LovMyPageRoute(builder: (context) => const LoginScreen());
 
         case NotificationPage.notificationRoute:
-        return CupertinoPageRoute(builder: (context) => const NotificationPage());
+        return LovMyPageRoute(builder: (context) => const NotificationPage());
 
         case LikeMatchScreen.likeMatchScreenRoute:
-          return CupertinoPageRoute(builder: (context) => const LikeMatchScreen());
+          return LovMyPageRoute(builder: (context) => const LikeMatchScreen());
           case FaqPage.faqRoute:
-          return CupertinoPageRoute(builder: (context) => const FaqPage());
+          return LovMyPageRoute(builder: (context) => const FaqPage());
           case PlanDetils.planRoutes:
-          return CupertinoPageRoute(builder: (context) => const PlanDetils());
+          return LovMyPageRoute(builder: (context) => const PlanDetils());
 
       default:
         return null;

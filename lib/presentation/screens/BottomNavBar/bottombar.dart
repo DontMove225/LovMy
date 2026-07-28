@@ -89,7 +89,10 @@ class _BottomBarState extends State<BottomBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         for(int index = 0; index < bottomItemsIcons.length; index++)...[
-                          InkWell(
+                          _NavIcon(
+                            selected: homeProvider.selectPageIndex == index,
+                            iconPath: bottomItemsIcons[index],
+                            iconPathFilled: bottomItemsIconsfill[index],
                             onTap: () {
                               homeProvider.setSelectPage(index);
                               if(homeProvider.selectPageIndex == 2 && state.homeData.likeMenu == "0") {
@@ -100,21 +103,6 @@ class _BottomBarState extends State<BottomBar> {
                                 Navigator.pushNamed(context, PremiumScreen.premiumScreenRoute);
                               }
                             },
-                            child: Container(
-                            padding: EdgeInsets.all(13),
-                             decoration: BoxDecoration(
-                              color: homeProvider.selectPageIndex == index ? AppColors.white : Colors.transparent,
-                              shape: BoxShape.circle,
-                             ),
-                              child: SvgPicture.asset(
-                                homeProvider.selectPageIndex == index ? bottomItemsIconsfill[index] : bottomItemsIcons[index],
-                                width: 25,
-                                height: 25,
-                                color: homeProvider.selectPageIndex == index
-                                    ? AppColors.appColor
-                                    : AppColors.white,
-                              ),
-                            ),
                           ),
                         ],
                       ],
@@ -124,7 +112,9 @@ class _BottomBarState extends State<BottomBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         for(int index = 0; index < bottomItemsIcons.length; index++)...[
-                          Container(
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeOut,
                             padding: EdgeInsets.all(13),
                             decoration: BoxDecoration(
                               color: homeProvider.selectPageIndex == index ? AppColors.white : Colors.transparent,
@@ -147,9 +137,82 @@ class _BottomBarState extends State<BottomBar> {
               ),
             ),
           ),
-          body: pages[homeProvider.selectPageIndex],
+          body: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 220),
+            switchInCurve: Curves.easeOut,
+            switchOutCurve: Curves.easeIn,
+            transitionBuilder: (child, animation) => FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(
+                scale: Tween<double>(begin: 0.98, end: 1.0).animate(animation),
+                child: child,
+              ),
+            ),
+            child: KeyedSubtree(
+              key: ValueKey(homeProvider.selectPageIndex),
+              child: pages[homeProvider.selectPageIndex],
+            ),
+          ),
         );
       },
+    );
+  }
+}
+
+/// Icône de la barre du bas avec transition de fond animée sur sélection
+/// et léger effet d'appui — purement visuel, la logique de sélection/tap
+/// reste dans le callback [onTap] fourni par l'appelant.
+class _NavIcon extends StatefulWidget {
+  final bool selected;
+  final String iconPath;
+  final String iconPathFilled;
+  final VoidCallback onTap;
+
+  const _NavIcon({
+    required this.selected,
+    required this.iconPath,
+    required this.iconPathFilled,
+    required this.onTap,
+  });
+
+  @override
+  State<_NavIcon> createState() => _NavIconState();
+}
+
+class _NavIconState extends State<_NavIcon> {
+  bool _pressed = false;
+
+  void _setPressed(bool value) {
+    if (_pressed != value) setState(() => _pressed = value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => _setPressed(true),
+      onTapCancel: () => _setPressed(false),
+      onTapUp: (_) => _setPressed(false),
+      onTap: widget.onTap,
+      child: AnimatedScale(
+        scale: _pressed ? 0.88 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOut,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          padding: EdgeInsets.all(13),
+          decoration: BoxDecoration(
+            color: widget.selected ? AppColors.white : Colors.transparent,
+            shape: BoxShape.circle,
+          ),
+          child: SvgPicture.asset(
+            widget.selected ? widget.iconPathFilled : widget.iconPath,
+            width: 25,
+            height: 25,
+            color: widget.selected ? AppColors.appColor : AppColors.white,
+          ),
+        ),
+      ),
     );
   }
 }
