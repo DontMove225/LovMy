@@ -283,7 +283,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     itemBuilder: (context, index) {
                       int nextIndex = homeProvider.currentIndex == state.homeData.profilelist!.length - 1 ? 0 : homeProvider.currentIndex + 1;
                       return index == state.homeData.profilelist!.length - 1 ? const SizedBox() :
-                      SingleChildScrollView(
+                      // Léger scale-in quand cette carte devient la carte active.
+                      TweenAnimationBuilder<double>(
+                        key: ValueKey(homeProvider.currentIndex),
+                        tween: Tween<double>(begin: 0.94, end: 1.0),
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                        builder: (context, scale, child) => Transform.scale(scale: scale, child: child),
+                        child: SingleChildScrollView(
                         physics: const NeverScrollableScrollPhysics(),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -338,33 +345,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
 
-                                                state.homeData.profilelist![nextIndex].profileName!.length >= 7 ?
-                                                Expanded(
+                                                Flexible(
                                                   child: Text(
                                                     "${state.homeData.profilelist![nextIndex].profileName}",
                                                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
                                                     overflow: TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                   ),
-                                                ):
-                                                Text(
-                                                  "${state.homeData.profilelist![nextIndex].profileName}",
-                                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
                                                 ),
 
-                                                Expanded(
-                                                  child: Text(
-                                                    ",${state.homeData.profilelist![nextIndex].profileAge}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineSmall!
-                                                        .copyWith(
-                                                        color: Colors.white),
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                  ),
+                                                Text(
+                                                  ",${state.homeData.profilelist![nextIndex].profileAge}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineSmall!
+                                                      .copyWith(
+                                                      color: Colors.white),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
                                                 ),
 
 
@@ -480,6 +478,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
+                        ),
                       );
                     },
                   ),
@@ -541,7 +540,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               if (state.homeData.profilelist!.isEmpty) {
                                 return const SizedBox();
                               } else {
-                                return SlideTransition(
+                                // Inclinaison fixe pendant l'animation de sortie existante
+                                // (like/pass), sans nouvelle gestion de geste live.
+                                return RotationTransition(
+                                  turns: Tween<double>(
+                                    begin: 0,
+                                    end: homeProvider.activeSwipeFeedback == SwipeFeedback.like
+                                        ? 0.04
+                                        : homeProvider.activeSwipeFeedback == SwipeFeedback.pass
+                                            ? -0.04
+                                            : 0,
+                                  ).animate(homeProvider.controller),
+                                  child: SlideTransition(
                                   position: homeProvider.animation,
                                   child: SingleChildScrollView(
                                     physics: const NeverScrollableScrollPhysics(),
@@ -714,6 +724,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ),
                                                   ),
 
+                                                Positioned(
+                                                  top: 24,
+                                                  right: 24,
+                                                  child: _SwipeStampBadge(
+                                                    label: "LIKE",
+                                                    visible: homeProvider.activeSwipeFeedback == SwipeFeedback.like,
+                                                    gradient: AppColors.gradientPrimary,
+                                                    rotation: -0.3,
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  top: 24,
+                                                  left: 24,
+                                                  child: _SwipeStampBadge(
+                                                    label: "NOPE",
+                                                    visible: homeProvider.activeSwipeFeedback == SwipeFeedback.pass,
+                                                    gradient: AppColors.gradientDuality,
+                                                    rotation: 0.3,
+                                                  ),
+                                                ),
+
                                                 Stack(
                                                   alignment: Alignment.bottomCenter,
                                                   children: [
@@ -748,31 +779,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             crossAxisAlignment: CrossAxisAlignment.end,
                                                             children: [
 
-                                                              state.homeData.profilelist![homeProvider.currentIndex].profileName!.length >= 7 ?
-                                                              Expanded(
+                                                              Flexible(
                                                                 child: Text(
                                                                   "${state.homeData.profilelist![homeProvider.currentIndex].profileName}",
-                                                                  // "123456789",
                                                                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
                                                                   overflow: TextOverflow.ellipsis,
                                                                   maxLines: 1,
                                                                 ),
-                                                              ) :
+                                                              ),
+
                                                               Text(
-                                                                "${state.homeData.profilelist![homeProvider.currentIndex].profileName}",
-                                                                // "123456789",
+                                                                ",${state.homeData.profilelist![homeProvider.currentIndex].profileAge}",
                                                                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
                                                                 overflow: TextOverflow.ellipsis,
                                                                 maxLines: 1,
-                                                              ),
-
-                                                              Expanded(
-                                                                child: Text(
-                                                                  ",${state.homeData.profilelist![homeProvider.currentIndex].profileAge}",
-                                                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                  maxLines: 1,
-                                                                ),
                                                               ),
 
                                                               Expanded(
@@ -904,6 +924,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ),
                                       ),
                                     ),
+                                  ),
                                   ),
                                 );
                               }
@@ -1310,6 +1331,55 @@ class Indicator extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive ? AppColors.appColor : AppColors.borderColor,
           borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
+  }
+}
+
+/// Badge "LIKE"/"NOPE" façon Tinder, affiché en complément du Lottie déjà
+/// existant, piloté par la même valeur [homeProvider.activeSwipeFeedback] —
+/// aucune nouvelle logique de swipe, juste un habillage visuel additionnel.
+class _SwipeStampBadge extends StatelessWidget {
+  final String label;
+  final bool visible;
+  final Gradient gradient;
+  final double rotation;
+
+  const _SwipeStampBadge({
+    required this.label,
+    required this.visible,
+    required this.gradient,
+    required this.rotation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 150),
+      opacity: visible ? 1 : 0,
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOut,
+        scale: visible ? 1 : 0.6,
+        child: Transform.rotate(
+          angle: rotation,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+            decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white, width: 2.5),
+            ),
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 2,
+                  ),
+            ),
+          ),
         ),
       ),
     );
