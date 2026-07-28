@@ -24,6 +24,7 @@ class AppLocalizationSetup{
     Locale('vi'),
     Locale('ru'),
     Locale('tr'),
+    Locale('pl'),
   ];
 
   static  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [

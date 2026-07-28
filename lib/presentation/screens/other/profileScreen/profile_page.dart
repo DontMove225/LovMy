@@ -157,6 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
     "🇻🇳",
     "🇷🇺",
     "🇹🇷",
+    "🇵🇱",
   ];
 
   List languagetext = [
@@ -178,6 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
     'Vietnamese',
     'Russian',
     'Turkish',
+    'Polish',
   ];
 
 
@@ -985,7 +987,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     shrinkWrap: true,
                                                     scrollDirection: Axis.vertical,
                                                     physics: const NeverScrollableScrollPhysics(),
-                                                    itemCount: 18,
+                                                    itemCount: 19,
                                                     itemBuilder: (context, index) {
                                                       return GestureDetector(
                                                         onTap: () async{
@@ -1070,6 +1072,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               break;
                                                             case 17:
                                                               BlocProvider.of<LanguageCubit>(context).toTurkish();
+                                                              Navigator.pop(context);
+                                                              break;
+                                                            case 18:
+                                                              BlocProvider.of<LanguageCubit>(context).toPolish();
                                                               Navigator.pop(context);
                                                               break;
                                                           }
@@ -1258,7 +1264,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       shrinkWrap: true,
                                                       scrollDirection: Axis.vertical,
                                                       physics: const NeverScrollableScrollPhysics(),
-                                                      itemCount: 18,
+                                                      itemCount: 19,
                                                       itemBuilder: (context, index) {
                                                         return GestureDetector(
                                                           onTap: () async{
@@ -1343,6 +1349,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 break;
                                                               case 17:
                                                                 BlocProvider.of<LanguageCubit>(context).toTurkish();
+                                                                Navigator.pop(context);
+                                                                break;
+                                                              case 18:
+                                                                BlocProvider.of<LanguageCubit>(context).toPolish();
                                                                 Navigator.pop(context);
                                                                 break;
                                                             }
@@ -1623,7 +1633,11 @@ class _ProfilePageState extends State<ProfilePage> {
               case 17:
                 BlocProvider.of<LanguageCubit>(context).toTurkish();
                 Navigator.pop(context);
-
+                break;
+              case 18:
+                BlocProvider.of<LanguageCubit>(context).toPolish();
+                Navigator.pop(context);
+                break;
             }
 
           });

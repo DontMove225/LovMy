@@ -5,7 +5,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations>{
  const AppLocalizationDelegate();
   @override
   bool isSupported(Locale locale){
-  return ['fr','en','ar','af','be','gu','hi','id','es'].contains(locale.languageCode);
+  return ['fr','en','ar','af','be','gu','hi','id','es','it','pt','de','nl','zh','ja','vi','ru','tr','pl'].contains(locale.languageCode);
   }
 
   @override

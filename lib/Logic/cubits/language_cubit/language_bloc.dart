@@ -40,4 +40,6 @@ class LanguageCubit extends Cubit<LanguageState>{
   void toRussian() =>  emit(const SelectedLanguage(Locale('ru')));
 
   void toTurkish() =>  emit(const SelectedLanguage(Locale('tr')));
+
+  void toPolish() =>  emit(const SelectedLanguage(Locale('pl')));
 }
