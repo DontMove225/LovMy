@@ -24,8 +24,9 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMixin<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMixin<ChatScreen>, SingleTickerProviderStateMixin {
   late ChattingProvider chattingProvider;
+  late final AnimationController _entranceController;
 
   @override
   void initState() {
@@ -34,6 +35,8 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
     chattingProvider.getblockklisttApi(context);
     chattingProvider.searchController.clear();
     chattingProvider.isSearch = false;
+    _entranceController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _entranceController.forward();
   }
 
   bool get wantKeepAlive => true;
@@ -42,7 +45,24 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
   @override
   void dispose() {
     _scrollController.dispose();
+    _entranceController.dispose();
     super.dispose();
+  }
+
+  /// Entrée fade+slide-up échelonnée pour les lignes de conversation,
+  /// plafonnée aux 8 premières pour ne pas sur-chorégraphier une longue liste.
+  Widget _listEntrance(int index, Widget child) {
+    final cappedIndex = index.clamp(0, 7);
+    final start = (0.08 * cappedIndex).clamp(0.0, 1.0);
+    final end = (start + 0.5).clamp(0.0, 1.0);
+    final curved = CurvedAnimation(parent: _entranceController, curve: Interval(start, end, curve: Curves.easeOut));
+    return FadeTransition(
+      opacity: curved,
+      child: SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(curved),
+        child: child,
+      ),
+    );
   }
 
   @override
@@ -71,7 +91,10 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    chattingProvider.isSearch
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOut,
+                      child: chattingProvider.isSearch
                         ? TextField(
                             style: Theme.of(context).textTheme.bodySmall!,
                             controller: chattingProvider.searchController,
@@ -137,6 +160,7 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
                               chattingProvider.searchIteam(s);
                             })
                         : const SizedBox(),
+                    ),
                     chattingProvider.searchController.text.isEmpty
                         ? Expanded(child: _buildUserList())
                         : chattingProvider.searchIndexList.isEmpty
@@ -445,20 +469,26 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
             future: Future.wait(userWithTimestamps),
             builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> userSnapshot) {
               if (!userSnapshot.hasData) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 5),
-                  leading: commonSimmer(height: 50, width: 50, radius: 50),
-                  title: Row(
-                    children: [
-                      commonSimmer(height: 10, width: 50, radius: 10),
-                    ],
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: KeyedSubtree(
+                    key: const ValueKey('chats-loading'),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                      leading: commonSimmer(height: 50, width: 50, radius: 50),
+                      title: Row(
+                        children: [
+                          commonSimmer(height: 10, width: 50, radius: 10),
+                        ],
+                      ),
+                      subtitle: Row(
+                        children: [
+                          commonSimmer(height: 10, width: 30, radius: 10),
+                        ],
+                      ),
+                      trailing: commonSimmer(height: 10, width: 30, radius: 10),
+                    ),
                   ),
-                  subtitle: Row(
-                    children: [
-                      commonSimmer(height: 10, width: 30, radius: 10),
-                    ],
-                  ),
-                  trailing: commonSimmer(height: 10, width: 30, radius: 10),
                 );
               }
 
@@ -468,16 +498,22 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
                 return b["latestTimestamp"].compareTo(a["latestTimestamp"]);
               });
 
-              return SingleChildScrollView(
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: sortedUsers.length,
-                  itemBuilder: (context, index) {
-                    final userDoc = sortedUsers[index]["userDoc"];
-                    final latestMessage = sortedUsers[index]["latestMessage"];
-                    return _buildUserListItem(userDoc, userDocs.length);
-                  },
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: KeyedSubtree(
+                  key: const ValueKey('chats-loaded'),
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: sortedUsers.length,
+                      itemBuilder: (context, index) {
+                        final userDoc = sortedUsers[index]["userDoc"];
+                        final latestMessage = sortedUsers[index]["latestMessage"];
+                        return _buildUserListItem(userDoc, userDocs.length, index);
+                      },
+                    ),
+                  ),
                 ),
               );
             },
@@ -490,7 +526,7 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
   }
 
 
-  Widget _buildMessageItem(document, String email, String uid, String proPic, int legnth, var snapshot) {
+  Widget _buildMessageItem(document, String email, String uid, String proPic, int legnth, var snapshot, int index) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
     List apilist = [];
@@ -511,7 +547,7 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
     }
     return apilist.contains(uid)
         ? const SizedBox()
-        : ListTile(
+        : _listEntrance(index, ListTile(
         dense: true,
         onTap: () {
           Navigator.push(
@@ -554,12 +590,12 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
                 .toString(),
             style: const TextStyle(
               fontSize: 10,
-            )));
+            ))));
   }
 
   ChatServices chatServices = ChatServices();
 
-  Widget _buildUserListItem(DocumentSnapshot document, int legth) {
+  Widget _buildUserListItem(DocumentSnapshot document, int legth, int index) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
     var uid = Provider.of<HomeProvider>(context, listen: false).uid;
     List ids = [data["uid"], uid];
@@ -576,7 +612,7 @@ class _ChatScreenState extends State<ChatScreen> with AutomaticKeepAliveClientMi
             } else {
               return snapshot.data!.docs.isEmpty
                   ? const SizedBox()
-                  : _buildMessageItem(snapshot.data!.docs.last, data["name"], data["uid"], data["pro_pic"].toString(), legth, snapshot);
+                  : _buildMessageItem(snapshot.data!.docs.last, data["name"], data["uid"], data["pro_pic"].toString(), legth, snapshot, index);
             }
           });
     } else {
