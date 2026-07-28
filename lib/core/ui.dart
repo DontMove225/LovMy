@@ -45,8 +45,8 @@ class AppColors {
   static Color appBgColordart = obsidian;
   static Color textLight = obsidian;
   static Color text1Light = steelMidnight;
-  static Color textDark = ivory;
-  static Color text1Dark = tenderRose;
+  static Color textDark = Colors.white;
+  static Color text1Dark = Colors.white;
   static Color greyDark = const Color(0xff979491);
   static Color greyLight = const Color(0xffE2E8F0);
   static Color white = ivory;

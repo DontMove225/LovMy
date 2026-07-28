@@ -41,7 +41,19 @@ class TextFieldPro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    final radius = BorderRadius.circular(14);
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextFormField(
 
       onTap: ontapp ?? () {},
       maxLines: maxline ?? 1,
@@ -91,16 +103,17 @@ class TextFieldPro extends StatelessWidget {
                   ),
                 )
               : null,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),),
-          disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),),
-          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12),borderSide: BorderSide(color: AppColors.appColor),),
+          border: OutlineInputBorder(borderRadius: radius,borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),),
+          disabledBorder: OutlineInputBorder(borderRadius: radius,borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),),
+          enabledBorder: OutlineInputBorder(borderRadius: radius,borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),),
+          focusedBorder: OutlineInputBorder(borderRadius: radius,borderSide: BorderSide(color: AppColors.appColor, width: 1.6),),
           isDense: true,
           contentPadding:const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           hintText: hintText,
           prefix: Text(prefix ?? ""),
           prefixStyle: Theme.of(context).textTheme.bodyMedium,
           hintStyle: Theme.of(context).textTheme.bodySmall),
+      ),
     );
   }
 }

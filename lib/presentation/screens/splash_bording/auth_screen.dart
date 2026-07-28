@@ -13,7 +13,6 @@ import 'package:lovmy/presentation/widgets/sizeboxx.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,7 +105,6 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const SizBoxH(size: 0.02),
-                        SvgPicture.asset("assets/Image/appLogo.svg",height: 60,width: 60,),
                         const Spacer(flex: 6),
                         Text(AppLocalizations.of(context)?.translate("Let's dive in into your account!") ?? "Let's dive in into your account!",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),),
 

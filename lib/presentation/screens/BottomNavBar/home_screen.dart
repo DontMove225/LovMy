@@ -378,12 +378,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         clipBehavior: Clip.none,
                                                         children: [
 
-                                                          state.homeData.profilelist![nextIndex].isSubscribe != "0" ?  Row(
-                                                            children: [
-                                                              Image.asset("assets/Image/premium.png",height: 25,width: 25,),
-                                                              const SizedBox(width: 8,),
-                                                              Text("Premium",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),)
-                                                            ],
+                                                          state.homeData.profilelist![nextIndex].isSubscribe != "0" ?  FittedBox(
+                                                            fit: BoxFit.scaleDown,
+                                                            child: Row(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              children: [
+                                                                Image.asset("assets/Image/premium.png",height: 25,width: 25,),
+                                                                const SizedBox(width: 8,),
+                                                                Text("Premium",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),)
+                                                              ],
+                                                            ),
                                                           ) : const SizedBox(),
 
                                                           SizedBox(
@@ -776,13 +780,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: [
 
-                                                                    state.homeData.profilelist![homeProvider.currentIndex].isSubscribe != "0" ?  Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                      children: [
-                                                                        Image.asset("assets/Image/premium.png",height: 25,width: 25,),
-                                                                        const SizedBox(width: 8,),
-                                                                        Text(AppLocalizations.of(context)?.translate("Premium") ?? "Premium",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),),
-                                                                      ],
+                                                                    state.homeData.profilelist![homeProvider.currentIndex].isSubscribe != "0" ?  FittedBox(
+                                                                      fit: BoxFit.scaleDown,
+                                                                      child: Row(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Image.asset("assets/Image/premium.png",height: 25,width: 25,),
+                                                                          const SizedBox(width: 8,),
+                                                                          Text(AppLocalizations.of(context)?.translate("Premium") ?? "Premium",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),),
+                                                                        ],
+                                                                      ),
                                                                     ) : const SizedBox(),
 
                                                                     const SizBoxH(size: 0.02),
