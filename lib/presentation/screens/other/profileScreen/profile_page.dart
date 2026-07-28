@@ -58,7 +58,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin {
   late HomeProvider homeProvider;
   late ProfileProvider profileProvider;
   late OnBordingProvider onBordingProvider;
@@ -70,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // late Future<void> _initializeControllerFuture;
 
+  late final AnimationController _rowsEntranceController;
 
   @override
   void initState() {
@@ -87,13 +88,32 @@ class _ProfilePageState extends State<ProfilePage> {
     walleteProvider.walletreportApi(context: context);
     getdata();
     fun();
+    _rowsEntranceController = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
+    _rowsEntranceController.forward();
   }
 
-
+  /// Entrée fade+slide-up échelonnée pour les lignes de réglages (langue,
+  /// thème, confidentialité, FAQ...) — plafonnée aux 8 premières lignes pour
+  /// ne pas sur-chorégraphier une longue liste. Purement visuel : aucune
+  /// logique de sélection/navigation n'est touchée par cet enrobage.
+  Widget _rowEntrance(int index, Widget child) {
+    final cappedIndex = index.clamp(0, 7);
+    final start = (0.08 * cappedIndex).clamp(0.0, 1.0);
+    final end = (start + 0.5).clamp(0.0, 1.0);
+    final curved = CurvedAnimation(parent: _rowsEntranceController, curve: Interval(start, end, curve: Curves.easeOut));
+    return FadeTransition(
+      opacity: curved,
+      child: SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero).animate(curved),
+        child: child,
+      ),
+    );
+  }
 
   @override
   void dispose() {
     imagecontroller.dispose();
+    _rowsEntranceController.dispose();
     super.dispose();
   }
 
@@ -249,7 +269,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Stack(
+                              Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: AppColors.gradientPrimary,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.passionRed.withOpacity(0.35),
+                                      blurRadius: 18,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: Stack(
                               clipBehavior: Clip.none,
                                 alignment: Alignment.center,
                                 children: [
@@ -323,6 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
                                 ],
+                              ),
                               ),
                               const SizBoxW(size: 0.02),
 
@@ -933,7 +967,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
 
-                                ListTile(
+                                _rowEntrance(i, ListTile(
                                   onTap: () async {
                                     if (i == 0) {
                                       Navigator.pushNamed(context, EditProfile.editProfileRoute);
@@ -1113,12 +1147,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                       ),
                                                                     ),
                                                                     const SizedBox(height: 10),
-                                                                    Column(
-                                                                      crossAxisAlignment:
-                                                                      CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        Text(languagetext[index], style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14)),
-                                                                      ],
+                                                                    Flexible(
+                                                                      child: Column(
+                                                                        crossAxisAlignment:
+                                                                        CrossAxisAlignment.start,
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        children: [
+                                                                          Text(languagetext[index], style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                     const Spacer(),
                                                                     CheckboxListTile(index),
@@ -1176,7 +1213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   title: Text(AppLocalizations.of(context)?.translate("${profileProvider.menuList[i]["title"]}") ?? "${profileProvider.menuList[i]["title"]}", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: profileProvider.menuList[i]["iconShow"] == "0" ? Colors.red : null),),
                                   trailing:
                                   profileProvider.menuList[i]["iconShow"] == "1" ? SvgPicture.asset("${profileProvider.menuList[i]["traling"]}",colorFilter: ColorFilter.mode(Theme.of(context).indicatorColor, BlendMode.srcIn),) : const SizedBox(),
-                                );
+                                ));
                               },
                               itemCount: profileProvider.menuList.length
                           ) : ListView.builder(
@@ -1216,7 +1253,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
 
-                                ListTile(
+                                _rowEntrance(i, ListTile(
                                   onTap: () async {
                                     if (i == 0) {
                                       Navigator.pushNamed(context, EditProfile.editProfileRoute);
@@ -1390,12 +1427,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                         ),
                                                                       ),
                                                                       const SizedBox(height: 10),
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                        CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(languagetext[index], style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14)),
-                                                                        ],
+                                                                      Flexible(
+                                                                        child: Column(
+                                                                          crossAxisAlignment:
+                                                                          CrossAxisAlignment.start,
+                                                                          mainAxisSize: MainAxisSize.min,
+                                                                          children: [
+                                                                            Text(languagetext[index], style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                                                          ],
+                                                                        ),
                                                                       ),
                                                                       const Spacer(),
                                                                       CheckboxListTile(index),
@@ -1453,7 +1493,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   title: Text(AppLocalizations.of(context)?.translate("${profileProvider.menuListcondition[i]["title"]}") ?? "${profileProvider.menuListcondition[i]["title"]}", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: profileProvider.menuListcondition[i]["iconShow"] == "0" ? Colors.red : null),),
                                   trailing:
                                   profileProvider.menuListcondition[i]["iconShow"] == "1" ? SvgPicture.asset("${profileProvider.menuListcondition[i]["traling"]}",colorFilter: ColorFilter.mode(Theme.of(context).indicatorColor, BlendMode.srcIn),) : const SizedBox(),
-                                );
+                                ));
                               },
                               itemCount: profileProvider.menuListcondition.length
                           ),
@@ -1527,7 +1567,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 children: [
                                   Icon(opt.$3, color: Theme.of(context).indicatorColor),
                                   const SizedBox(width: 15),
-                                  Text(AppLocalizations.of(context)?.translate(opt.$2) ?? opt.$2, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14)),
+                                  Flexible(
+                                    child: Text(AppLocalizations.of(context)?.translate(opt.$2) ?? opt.$2, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                  ),
                                   const Spacer(),
                                   if (selected) Icon(Icons.check_circle, color: AppColors.appColor),
                                 ],
