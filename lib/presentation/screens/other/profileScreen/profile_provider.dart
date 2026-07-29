@@ -295,7 +295,8 @@ class ProfileProvider extends ChangeNotifier {
                Expanded(
                    child: InkWell(
                      onTap: () {
-                       deleteAccountApi(context);
+                       Navigator.pop(context);
+                       _deleteAccountFinalConfirm(context);
                      },
                      child: Container(
                        height: 60,
@@ -320,6 +321,91 @@ class ProfileProvider extends ChangeNotifier {
      );
    },);
 }
+
+  /// Deuxième confirmation, plus explicite sur l'irréversibilité — évite une
+  /// suppression accidentelle après un simple tap sur la première feuille.
+  Future _deleteAccountFinalConfirm(context) {
+    return showModalBottomSheet(
+      context: context, builder: (context) {
+      return Container(
+        height: 260,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Icon(Icons.warning_amber_rounded, color: AppColors.appColor, size: 34),
+            const SizedBox(height: 10),
+            Text(
+                AppLocalizations.of(context)?.translate("This action is permanent") ?? "This action is permanent",
+                style: Theme.of(context).textTheme.headlineSmall
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                  AppLocalizations.of(context)?.translate("All your data, matches, and messages will be permanently deleted. This cannot be undone.") ?? "All your data, matches, and messages will be permanently deleted. This cannot be undone.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: 60,
+                      margin: const EdgeInsets.all(15),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(45),
+                      ),
+                      child: Text(
+                          AppLocalizations.of(context)?.translate("Cancel") ?? "Cancel",
+                          style: Theme.of(context).textTheme.bodyMedium
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        deleteAccountApi(context);
+                      },
+                      child: Container(
+                        height: 60,
+                        margin: const EdgeInsets.all(15),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.appColor,
+                          borderRadius: BorderRadius.circular(45),
+                        ),
+                        child: Text(
+                            AppLocalizations.of(context)?.translate("Yes, delete permanently") ?? "Yes, delete permanently",
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white)
+                        ),
+                      ),
+                    )
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    },);
+  }
 
 
 

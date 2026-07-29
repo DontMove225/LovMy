@@ -449,12 +449,19 @@ class _ChattingPageState extends State<ChattingPage> {
                           height: 3,
                         ),
 
-                        // data["isOnline"] == true
-                        //     ? Text(
-                        //   "Online",
-                        //   style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.green),
-                        // )
-                        //     :  const SizedBox()
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance.collection('datingUser').doc(resiverUserId).snapshots(),
+                          builder: (context, snapshot) {
+                            final data = snapshot.data?.data() as Map<String, dynamic>?;
+                            final isOnline = data?["isOnline"] == true;
+                            return isOnline
+                                ? Text(
+                              AppLocalizations.of(context)?.translate("Online") ?? "Online",
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.green),
+                            )
+                                : const SizedBox();
+                          },
+                        ),
 
                       ],
                     ),

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, avoid_unnecessary_containers
 
 import 'package:lovmy/core/ui.dart';
+import 'package:lovmy/presentation/firebase/chatting_provider.dart';
 import 'package:lovmy/presentation/screens/BottomNavBar/match/browes.dart';
 import 'package:lovmy/presentation/screens/BottomNavBar/chats.dart';
 import 'package:lovmy/presentation/screens/BottomNavBar/homeProvider/homeprovier.dart';
@@ -25,7 +26,7 @@ class BottomBar extends StatefulWidget {
   State<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
   List pages = [
     // HomePage(),
@@ -65,6 +66,28 @@ class _BottomBarState extends State<BottomBar> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _setOnline(true));
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _setOnline(false);
+    super.dispose();
+  }
+
+  /// Marque l'utilisateur en ligne/hors ligne dans `datingUser/{uid}` selon
+  /// le cycle de vie de l'app — alimente l'indicateur "Online" du chat.
+  void _setOnline(bool online) {
+    final uid = Provider.of<HomeProvider>(context, listen: false).uid;
+    if (uid == null || uid.isEmpty) return;
+    Provider.of<ChattingProvider>(context, listen: false).isUserOnlie(uid, online);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _setOnline(state == AppLifecycleState.resumed);
   }
 
   @override

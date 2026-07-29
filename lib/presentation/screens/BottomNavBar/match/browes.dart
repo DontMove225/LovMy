@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:lovmy/Logic/cubits/Home_cubit/home_cubit.dart';
+import 'package:lovmy/Logic/cubits/Home_cubit/homestate.dart';
 import 'package:lovmy/Logic/cubits/match_cubit/match_cubit.dart';
 import 'package:lovmy/Logic/cubits/match_cubit/match_states.dart';
 import 'package:lovmy/core/config.dart';
@@ -10,6 +12,7 @@ import 'package:lovmy/presentation/screens/BottomNavBar/homeProvider/homeprovier
 import 'package:lovmy/presentation/screens/BottomNavBar/match/matchprovider.dart';
 import 'package:lovmy/presentation/screens/other/likeMatch/like_match.dart';
 import 'package:lovmy/presentation/screens/other/likeMatch/likematch_provider.dart';
+import 'package:lovmy/presentation/screens/other/premium/premium.dart';
 import 'package:lovmy/presentation/widgets/sizeboxx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -365,6 +368,8 @@ class _BrowesPage extends State<BrowesPage> {
   }
 
   Widget likeMe(LikeMeModel likeMeModel) {
+    final homeState = BlocProvider.of<HomePageCubit>(context).state;
+    final isPremium = homeState is HomeCompleteState && homeState.homeData.planId != "0";
     return likeMeModel.likemelist!.isEmpty
         ? notFoundPage()
         : Expanded(
@@ -390,6 +395,12 @@ class _BrowesPage extends State<BrowesPage> {
                   return;
                 }else{
                   ontapvarable = true;
+                }
+
+                if (!isPremium) {
+                  ontapvarable = false;
+                  Navigator.pushNamed(context, PremiumScreen.premiumScreenRoute);
+                  return;
                 }
 
                 var lat =
@@ -429,7 +440,11 @@ class _BrowesPage extends State<BrowesPage> {
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Container(
+                    ImageFiltered(
+                      imageFilter: isPremium
+                          ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
+                          : ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                      child: Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
@@ -440,6 +455,13 @@ class _BrowesPage extends State<BrowesPage> {
                           borderRadius: BorderRadius.circular(30),
                           color: AppColors.greyLight),
                     ),
+                    ),
+                    if (!isPremium)
+                      Positioned.fill(
+                        child: Center(
+                          child: Icon(Icons.lock_rounded, color: Colors.white, size: 36),
+                        ),
+                      ),
                     SvgPicture.asset("assets/Image/Rectangle.svg",
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
@@ -484,7 +506,9 @@ class _BrowesPage extends State<BrowesPage> {
                                     CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "${data.profileName.toString()},${data.profileAge}",
+                                          isPremium
+                                              ? "${data.profileName.toString()},${data.profileAge}"
+                                              : (AppLocalizations.of(context)?.translate("Premium") ?? "Premium"),
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyLarge!

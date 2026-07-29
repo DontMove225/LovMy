@@ -1,8 +1,10 @@
 import 'package:lovmy/core/ui.dart';
+import 'package:lovmy/presentation/screens/auth/login_screen.dart';
 import 'package:lovmy/presentation/widgets/main_button.dart';
 import 'package:lovmy/presentation/widgets/sizeboxx.dart';
 import 'package:lovmy/presentation/widgets/textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../language/localization/app_localization.dart';
 import '../../widgets/other_widget.dart';
 
@@ -82,7 +84,21 @@ class _RecoverEmailState extends State<RecoverEmail> {
                   ],
                 ),
                 const SizBoxH(size: 0.040),
-                MainButton(title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue"),
+                MainButton(
+                  title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",
+                  onTap: () {
+                    if (controller.text.trim().isEmpty) {
+                      Fluttertoast.showToast(msg: AppLocalizations.of(context)?.translate("Please Enter Email") ?? "Please Enter Email");
+                      return;
+                    }
+                    // Pas encore d'endpoint back-end pour la récupération par
+                    // e-mail (voir cahier des charges) — on redirige vers le
+                    // flux mobile+OTP déjà fonctionnel plutôt que de laisser
+                    // le bouton ne rien faire.
+                    Fluttertoast.showToast(msg: AppLocalizations.of(context)?.translate("Email recovery isn't available yet — use SMS recovery instead") ?? "Email recovery isn't available yet — use SMS recovery instead");
+                    Navigator.pushNamedAndRemoveUntil(context, LoginScreen.loginRoute, (route) => false);
+                  },
+                ),
               ]),
             ),
           ],
