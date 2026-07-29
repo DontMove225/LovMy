@@ -1147,7 +1147,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                                                                       ),
                                                                     ),
                                                                     const SizedBox(height: 10),
-                                                                    Flexible(
+                                                                    Expanded(
                                                                       child: Column(
                                                                         crossAxisAlignment:
                                                                         CrossAxisAlignment.start,
@@ -1157,7 +1157,6 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                                                                         ],
                                                                       ),
                                                                     ),
-                                                                    const Spacer(),
                                                                     CheckboxListTile(index),
                                                                     const SizedBox(width: 15,),
                                                                   ],
@@ -1427,7 +1426,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                                                                         ),
                                                                       ),
                                                                       const SizedBox(height: 10),
-                                                                      Flexible(
+                                                                      Expanded(
                                                                         child: Column(
                                                                           crossAxisAlignment:
                                                                           CrossAxisAlignment.start,
@@ -1437,7 +1436,6 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                                                                           ],
                                                                         ),
                                                                       ),
-                                                                      const Spacer(),
                                                                       CheckboxListTile(index),
                                                                       const SizedBox(width: 15,),
                                                                     ],
@@ -1567,10 +1565,9 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                                 children: [
                                   Icon(opt.$3, color: Theme.of(context).indicatorColor),
                                   const SizedBox(width: 15),
-                                  Flexible(
+                                  Expanded(
                                     child: Text(AppLocalizations.of(context)?.translate(opt.$2) ?? opt.$2, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14), overflow: TextOverflow.ellipsis, maxLines: 1),
                                   ),
-                                  const Spacer(),
                                   if (selected) Icon(Icons.check_circle, color: AppColors.appColor),
                                 ],
                               ),
