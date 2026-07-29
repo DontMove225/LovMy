@@ -457,7 +457,7 @@ class _ChattingPageState extends State<ChattingPage> {
                             return isOnline
                                 ? Text(
                               AppLocalizations.of(context)?.translate("Online") ?? "Online",
-                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.green),
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.appColor),
                             )
                                 : const SizedBox();
                           },

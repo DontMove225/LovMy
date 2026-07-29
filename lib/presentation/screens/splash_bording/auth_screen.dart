@@ -165,6 +165,8 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                         )),
 
                         const SizBoxH(size: 0.018),
+                        Image.asset("assets/Image/appmainLogo1.png", height: 36, width: 36),
+                        const SizBoxH(size: 0.012),
                         _staggeredEntry(1, Row(
                           children: [
                           Expanded(child: MainButton(
