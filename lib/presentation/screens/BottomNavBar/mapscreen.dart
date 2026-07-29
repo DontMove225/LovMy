@@ -351,7 +351,7 @@ class _MapScreenState extends State<MapScreen> {
                           itemCount: homeProvider.mapModel.profilelist!.length,
                           scrollDirection: Axis.horizontal,
                           onPageChanged: (index) {
-                            updateMarker(context: context,profileuimage: "assets/icons/Pin.png",id: homeProvider.mapModel.profilelist![index].profileId,lat1: double.parse(homeProvider.mapModel.profilelist![index].profileLat.toString()),long1: double.parse(homeProvider.mapModel.profilelist![index].profileLongs.toString()),title: homeProvider.mapModel.profilelist![index].profileName,subTitle: homeProvider.mapModel.profilelist![index].profileBio);
+                            updateMarker(context: context,profileuimage: "assets/icons/Pin.png",id: homeProvider.mapModel.profilelist![index].profileId,lat1: double.parse(homeProvider.mapModel.profilelist![index].profileLat.toString()),long1: double.parse(homeProvider.mapModel.profilelist![index].profileLongs.toString()),title: homeProvider.mapModel.profilelist![index].profileName ?? '',subTitle: homeProvider.mapModel.profilelist![index].profileBio ?? '');
                             Future.delayed(
                               const Duration(milliseconds: 100),
                                   () {
@@ -411,10 +411,15 @@ class _MapScreenState extends State<MapScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
 
-                                          Text("${homeProvider.mapModel.profilelist![index].profileName.toString()}, ${homeProvider.mapModel.profilelist![index].profileAge.toString()}", style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w800, overflow: TextOverflow.ellipsis,), maxLines: 1),
+                                          Text(
+                                              homeProvider.mapModel.profilelist![index].profileAge != null
+                                                  ? "${homeProvider.mapModel.profilelist![index].profileName}, ${homeProvider.mapModel.profilelist![index].profileAge}"
+                                                  : "${homeProvider.mapModel.profilelist![index].profileName}",
+                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w800, overflow: TextOverflow.ellipsis,), maxLines: 1),
 
                                           const SizedBox(height: 2),
 
+                                          if ((homeProvider.mapModel.profilelist![index].profileBio ?? '').toString().isNotEmpty)
                                           Text(homeProvider.mapModel.profilelist![index].profileBio.toString(), style: Theme.of(context).textTheme.bodySmall!, maxLines: 1, overflow: TextOverflow.ellipsis),
 
                                         ],
@@ -490,6 +495,7 @@ class _MapScreenState extends State<MapScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        if ((subTitle ?? '').toString().isNotEmpty)
                         Text(
                           subTitle,
                           maxLines: 1,

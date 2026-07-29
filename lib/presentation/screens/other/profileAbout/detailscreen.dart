@@ -78,7 +78,7 @@ class _DetailScreenState extends State<DetailScreen> {
   late HomeProvider homeProvider;
   fun(){
     Future.delayed(const Duration(milliseconds: 500),() {
-      updateMarker(context: context,profileuimage: "assets/icons/Pin.png",id: homeProvider.mapModel.profilelist![0].profileId,lat1: double.parse(homeProvider.mapModel.profilelist![0].profileLat.toString()),long1: double.parse(homeProvider.mapModel.profilelist![0].profileLongs.toString()),title: homeProvider.mapModel.profilelist![0].profileName,subTitle: homeProvider.mapModel.profilelist![0].profileBio);
+      updateMarker(context: context,profileuimage: "assets/icons/Pin.png",id: homeProvider.mapModel.profilelist![0].profileId,lat1: double.parse(homeProvider.mapModel.profilelist![0].profileLat.toString()),long1: double.parse(homeProvider.mapModel.profilelist![0].profileLongs.toString()),title: homeProvider.mapModel.profilelist![0].profileName ?? '',subTitle: homeProvider.mapModel.profilelist![0].profileBio ?? '');
     },);
     Navigator.pop(context);
     setState(() {

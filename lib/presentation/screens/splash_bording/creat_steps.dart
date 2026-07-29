@@ -90,7 +90,10 @@ class _CreatStepsState extends State<CreatSteps> {
         }
       },
       child: Container(
-      decoration: const BoxDecoration(gradient: AppColors.gradientPassion),
+      // Dégradé "Nuit" (rouge nuit -> obsidienne) de la charte graphique,
+      // pour un fond sombre premium au lieu du rouge plein-écran trop
+      // saturé — cohérent avec le fond obsidienne utilisé partout ailleurs.
+      decoration: const BoxDecoration(gradient: AppColors.gradientNight),
       child: Scaffold(
         floatingActionButton: Container(
           decoration: const BoxDecoration(
