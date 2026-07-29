@@ -52,6 +52,20 @@ class _MapScreenState extends State<MapScreen> {
     homeProvider = Provider.of<HomeProvider>(context, listen: false);
     homeProvider.loadDataFrorMap(context).then((value) {
       fun();
+      final lat = Provider.of<OnBordingProvider>(context, listen: false).lat;
+      final long = Provider.of<OnBordingProvider>(context, listen: false).long;
+      if (lat != null && long != null) {
+        _markers.removeWhere((m) => m.markerId.value == 'my_location');
+        _markers.add(
+          Marker(
+            markerId: const MarkerId('my_location'),
+            position: LatLng(lat, long),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+            anchor: const Offset(0.5, 0.5),
+            zIndexInt: 0,
+          ),
+        );
+      }
       setState(() {
 
       });
@@ -123,7 +137,10 @@ class _MapScreenState extends State<MapScreen> {
                     },
                     mapType: MapType.normal,
                     padding: const EdgeInsets.only(top: 110),
-                    myLocationEnabled: true,
+                    // Le point bleu natif est remplacé par un marqueur rouge
+                    // ("my_location", ajouté dans initState) pour rester
+                    // cohérent avec l'identité visuelle de l'app.
+                    myLocationEnabled: false,
                     zoomGesturesEnabled: true,
                     tiltGesturesEnabled: true,
                     zoomControlsEnabled: false,
@@ -460,7 +477,9 @@ class _MapScreenState extends State<MapScreen> {
 
  Future updateMarker({id,lat1, long1,title,subTitle,profileuimage,context}) async {
   final Uint8List markIcons = await getImages("$profileuimage", 100);
-    _markers.clear(); // Clear previous marker
+    // Ne retire que l'ancien pin de profil — préserve le marqueur rouge
+    // "my_location" ajouté séparément pour la position GPS de l'utilisateur.
+    _markers.removeWhere((m) => m.markerId.value != 'my_location');
     _markers.add(
       Marker(
         markerId: MarkerId(id),
