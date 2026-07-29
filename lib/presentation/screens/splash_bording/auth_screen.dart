@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'package:camera/camera.dart';
 import 'package:lovmy/Logic/cubits/auth_cubit/auth_cubit.dart';
 import 'package:lovmy/Logic/cubits/auth_cubit/auth_state.dart';
@@ -7,12 +8,14 @@ import 'package:lovmy/presentation/screens/BottomNavBar/bottombar.dart';
 import 'package:lovmy/presentation/screens/splash_bording/creat_steps.dart';
 import 'package:lovmy/presentation/screens/auth/login_screen.dart';
 import 'package:lovmy/presentation/screens/splash_bording/onBordingProvider/onbording_provider.dart';
-import 'package:lovmy/presentation/widgets/loginwith_button.dart';
 import 'package:lovmy/presentation/widgets/main_button.dart';
+import 'package:lovmy/presentation/widgets/other_widget.dart';
 import 'package:lovmy/presentation/widgets/sizeboxx.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,8 +115,8 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                   stops: const [0.1, 1, 1.3],
                   colors: [
                     Colors.transparent,
-                    AppColors.appColor.withOpacity(0.8),
-                    AppColors.appColor,
+                    AppColors.auroraIndigo.withOpacity(0.85),
+                    AppColors.auroraIndigo,
                   ],
                 ),
               ),
@@ -133,37 +136,42 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                         Text(AppLocalizations.of(context)?.translate("Let's dive in into your account!") ?? "Let's dive in into your account!",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),),
 
                         const SizedBox(height: 10,),
-                        _staggeredEntry(0, LoginWithButton(
-                            bgColor: Colors.white,
-                            title: AppLocalizations.of(context)?.translate("Connect with Google") ?? "Connect with Google",
-                            iconpath: "assets/icons/google.svg",
-                            onTap: () {
-                              BlocProvider.of<AuthCubit>(context).signInWithGoogle(context);
-                            })),
-                        const SizBoxH(size: 0.018),
-                        // onbordingCubit.smaTypeApiModel?.socialLoginEnabled == "No" ? const SizedBox() : LoginWithButton(
-                        //   bgColor: Colors.white,
-                        //   title: AppLocalizations.of(context)?.translate("Connect with Facebook") ?? "Connect with Facebook",
-                        //   iconpath: "assets/icons/facebook.svg",
-                        //   onTap: () {
-                        //     BlocProvider.of<AuthCubit>(context).signInWithFacebook(context);
-                        //   },
-                        // ),
-                        // onbordingCubit.smaTypeApiModel?.socialLoginEnabled == "No" ? SizedBox() :  const SizBoxH(size: 0.018),
-                        // onbordingCubit.smaTypeApiModel?.socialLoginEnabled == "No" ? SizedBox() :   LoginWithButton(
-                        //   bgColor: Colors.white,
-                        //   title: AppLocalizations.of(context)?.translate("Connect with Apple") ?? "Connect with Apple",
-                        //   iconpath: "assets/icons/applelogo.svg",
-                        //   onTap: () {
-                        //     BlocProvider.of<AuthCubit>(context).signInWithApple(context);
-                        //   },
-                        // ),
-
+                        _staggeredEntry(0, Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (Platform.isAndroid)
+                              _SocialIconButton(
+                                iconPath: "assets/icons/google.svg",
+                                onTap: () {
+                                  BlocProvider.of<AuthCubit>(context).signInWithGoogle(context);
+                                },
+                              ),
+                            if (Platform.isAndroid) const SizedBox(width: 18),
+                            _SocialIconButton(
+                              iconPath: "assets/icons/facebook.svg",
+                              onTap: () {
+                                Fluttertoast.showToast(msg: AppLocalizations.of(context)?.translate("Coming soon") ?? "Bientôt disponible");
+                              },
+                            ),
+                            if (Platform.isIOS) const SizedBox(width: 18),
+                            if (Platform.isIOS)
+                              _SocialIconButton(
+                                iconPath: "assets/icons/applelogo.svg",
+                                onTap: () {
+                                  Fluttertoast.showToast(msg: AppLocalizations.of(context)?.translate("Coming soon") ?? "Bientôt disponible");
+                                },
+                              ),
+                          ],
+                        )),
 
                         const SizBoxH(size: 0.018),
                         _staggeredEntry(1, Row(
                           children: [
-                          Expanded(child: MainButton(title: AppLocalizations.of(context)?.translate("Continue with Email/Mobile Number") ?? "Continue with Email/Mobile Number",onTap: () {
+                          Expanded(child: MainButton(
+                            title: AppLocalizations.of(context)?.translate("Continue with Email/Mobile Number") ?? "Continue with Email/Mobile Number",
+                            gradient: AppColors.gradientAurora,
+                            glowColor: AppColors.auroraViolet,
+                            onTap: () {
                             onBordingProvider.updatestepsCount(0);
                             Navigator.pushNamed(context, CreatSteps.creatStepsRoute);
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => CreatSteps(),));
@@ -231,6 +239,41 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
           ),
 
         ],
+      ),
+    );
+  }
+}
+
+/// Petit bouton rond de connexion sociale — Google (Android), Facebook
+/// (toutes plateformes) et Apple (iOS) sont affichés conditionnellement par
+/// [Platform] à l'appel de ce widget, pas ici.
+class _SocialIconButton extends StatelessWidget {
+  final String iconPath;
+  final VoidCallback onTap;
+
+  const _SocialIconButton({required this.iconPath, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return PressScale(
+      onTap: onTap,
+      child: Container(
+        height: 52,
+        width: 52,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: SvgPicture.asset(iconPath, height: 22, width: 22),
+        ),
       ),
     );
   }

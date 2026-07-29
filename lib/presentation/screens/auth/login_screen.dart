@@ -174,7 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       const SizedBox(height: 10,),
                                       Row(
                                         children: [
-                                          Expanded(child: MainButton(title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",onTap: () {
+                                          Expanded(child: MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",onTap: () {
 
                                             if(onbordingCubit.smaTypeApiModel?.otpAuth == "Yes"){
                                               print("otp yes condition");
@@ -254,6 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                                                     const SizedBox(height: 20),
                                                                     MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,
                                                                       title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",
                                                                       onTap: () async {
                                                                         final verified = await onbordingCubit.verifyMsgOtpApi(
@@ -339,6 +341,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                                                       const SizedBox(height: 20),
                                                                       MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,
                                                                         // title: "Continue".tr,
                                                                         title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",
                                                                         onTap: () async {
@@ -472,7 +475,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       const SizedBox(height: 10,),
                                       Row(
                                         children: [
-                                          Expanded(child: MainButton(title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",onTap: () {
+                                          Expanded(child: MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",onTap: () {
 
                                             if(onbordingCubit.smaTypeApiModel?.otpAuth == "Yes"){
                                               print("otp yes condition");
@@ -551,6 +555,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                                                     const SizedBox(height: 20),
                                                                     MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,
                                                                       title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",
                                                                       onTap: () async {
 
@@ -638,6 +643,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                                                       const SizedBox(height: 20),
                                                                       MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,
                                                                         title: AppLocalizations.of(context)?.translate("Continue") ?? "Continue",
                                                                         onTap: () async {
 
@@ -702,6 +708,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ])),
                     const SizBoxH(size: 0.04),
                     MainButton(
+  gradient: AppColors.gradientAurora, glowColor: AppColors.auroraViolet,
                       title: AppLocalizations.of(context)?.translate("Sign In") ?? "Sign In",
                       titleColor: Colors.white,
                       bgColor: AppColors.appColor,

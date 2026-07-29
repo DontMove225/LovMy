@@ -11,13 +11,15 @@ class MainButton extends StatefulWidget {
   final String? iconpath;
   final double? radius;
   final bool? error;
+  final Gradient? gradient;
+  final Color? glowColor;
   const MainButton(
       {super.key,
       this.onTap,
       required this.title,
       this.bgColor,
       this.iconpath,
-      this.titleColor, this.radius, this.error});
+      this.titleColor, this.radius, this.error, this.gradient, this.glowColor});
 
   @override
   State<MainButton> createState() => _MainButtonState();
@@ -105,10 +107,10 @@ class _MainButtonState extends State<MainButton> {
         : Container(
             decoration: BoxDecoration(
               borderRadius: borderRadius,
-              gradient: AppColors.gradientPrimary,
+              gradient: widget.gradient ?? AppColors.gradientPrimary,
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.passionRed.withOpacity(0.38),
+                  color: (widget.glowColor ?? AppColors.passionRed).withOpacity(0.38),
                   blurRadius: 26,
                   offset: const Offset(0, 12),
                 ),

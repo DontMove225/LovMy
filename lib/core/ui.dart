@@ -11,11 +11,25 @@ class AppColors {
   static const Color tenderRose = Color(0xFFE89EA1);
   static const Color ivory = Color(0xFFFBF7F6);
 
+  // Piste "Aurora" (violet/magenta) — testee en premier sur les ecrans
+  // d'inscription/connexion, en alternative au rouge passion.
+  static const Color auroraViolet = Color(0xFF6C3CE9);
+  static const Color auroraIndigo = Color(0xFF4A2AB0);
+  static const Color auroraMagenta = Color(0xFFD6409F);
+
   // Degrades signatures
   static const LinearGradient gradientPrimary = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [ember, passionRed]);
+  static const LinearGradient gradientAurora = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [auroraViolet, auroraMagenta]);
+  static const LinearGradient gradientAuroraDeep = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [auroraIndigo, auroraMagenta]);
   static const LinearGradient gradientPassion = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,

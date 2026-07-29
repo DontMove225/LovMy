@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Logic/cubits/onBording_cubit/onbording_cubit.dart';
 import '../../../core/notifications.dart';
+import '../../../core/ui.dart';
 import '../../../language/localization/app_localization.dart';
 import '../../widgets/other_widget.dart';
 import '../BottomNavBar/home_screen.dart';
@@ -130,7 +131,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                            child: Text(AppLocalizations.of(context)?.translate("Skip") ?? "Skip",style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w700),textAlign: TextAlign.center,))
                        ),
                        Expanded(
-                         child: MainButton(title: AppLocalizations.of(context)?.translate("Let's Start") ?? "Let's Start",radius: 80,onTap: () async {
+                         child: MainButton(title: AppLocalizations.of(context)?.translate("Let's Start") ?? "Let's Start",radius: 80,gradient: AppColors.gradientAurora,glowColor: AppColors.auroraViolet,onTap: () async {
                            SharedPreferences prefs = await SharedPreferences.getInstance();
                            prefs.setString("maintainanceenabled", onbordingCubit.smaTypeApiModel?.maintainanceEnabled ?? "No");
                            Navigator.pushNamedAndRemoveUntil(context, AuthScreen.authScreenRoute, (route) => false);
@@ -147,7 +148,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         },
                         child: Text(AppLocalizations.of(context)?.translate("Skip") ?? "Skip",style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w700),textAlign: TextAlign.center,))
                     ),
-                     Expanded(child: MainButton(title: AppLocalizations.of(context)?.translate("Next") ?? "Next",radius: 80,onTap: () {
+                     Expanded(child: MainButton(title: AppLocalizations.of(context)?.translate("Next") ?? "Next",radius: 80,gradient: AppColors.gradientAurora,glowColor: AppColors.auroraViolet,onTap: () {
                        onBordingProvider.onbordingScroll.jumpToPage(onBordingProvider.onboradingCurrent+1);
                     },)),
                   ]),
