@@ -3,17 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LovMy — Appli de Rencontre en France et en Côte d'Ivoire</title>
-<meta name="description" content="LovMy, l'appli de rencontre qui allie IA et vraie alchimie humaine. Rencontres sérieuses en France, à Abidjan et en Afrique francophone. Téléchargez gratuitement.">
+<title>LovMy — L'appli de rencontre pour trouver l'âme sœur, partout dans le monde</title>
+<meta name="description" content="LovMy, l'appli de rencontre qui allie IA et vraie alchimie humaine. Trouvez l'âme sœur près de chez vous ou partout dans le monde. Réservé aux 18 ans et plus. Téléchargez gratuitement.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://lovmy.fr/">
 <meta name="theme-color" content="#080714">
+<meta name="rating" content="RTA-5042-1996-1400-1667-RTA">
+<meta name="rating" content="adult">
 
-<!-- ciblage géographique (France + Côte d'Ivoire) -->
-<meta name="geo.region" content="FR">
-<meta name="geo.placename" content="France, Abidjan, Côte d'Ivoire">
-<link rel="alternate" href="https://lovmy.fr/" hreflang="fr-FR">
-<link rel="alternate" href="https://lovmy.fr/" hreflang="fr-CI">
 <link rel="alternate" href="https://lovmy.fr/" hreflang="fr">
 <link rel="alternate" href="https://lovmy.fr/" hreflang="x-default">
 
@@ -23,16 +20,16 @@
 <meta property="og:locale" content="fr_FR">
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:url" content="https://lovmy.fr/">
-<meta property="og:title" content="LovMy — Appli de Rencontre en France et en Côte d'Ivoire">
-<meta property="og:description" content="L'appli de rencontre qui allie IA et vraie alchimie humaine. Rencontres sérieuses en France, à Abidjan et en Afrique francophone.">
+<meta property="og:title" content="LovMy — L'appli de rencontre pour trouver l'âme sœur, partout dans le monde">
+<meta property="og:description" content="L'appli de rencontre qui allie IA et vraie alchimie humaine. Trouvez l'âme sœur près de chez vous ou partout dans le monde. Réservé aux 18 ans et plus.">
 <meta property="og:image" content="https://lovmy.fr/assets/hero-couple.webp">
 <meta property="og:image:width" content="600">
 <meta property="og:image:height" content="398">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LovMy — Appli de Rencontre en France et en Côte d'Ivoire">
-<meta name="twitter:description" content="L'appli de rencontre qui allie IA et vraie alchimie humaine. Rencontres sérieuses en France, à Abidjan et en Afrique francophone.">
+<meta name="twitter:title" content="LovMy — L'appli de rencontre pour trouver l'âme sœur, partout dans le monde">
+<meta name="twitter:description" content="L'appli de rencontre qui allie IA et vraie alchimie humaine. Trouvez l'âme sœur près de chez vous ou partout dans le monde. Réservé aux 18 ans et plus.">
 <meta name="twitter:image" content="https://lovmy.fr/assets/hero-couple.webp">
 
 <link rel="icon" href="assets/logo.png" type="image/png">
@@ -50,12 +47,14 @@
   "applicationCategory": "SocialNetworkingApplication",
   "operatingSystem": "iOS, Android",
   "url": "https://lovmy.fr/",
-  "description": "LovMy est une application de rencontre qui combine intelligence artificielle et modération humaine pour créer de vraies connexions, en France, en Côte d'Ivoire et dans toute l'Afrique francophone.",
+  "description": "LovMy est une application de rencontre qui combine intelligence artificielle et modération humaine pour créer de vraies connexions, où que vous soyez dans le monde.",
   "inLanguage": ["fr", "en", "es", "pt", "de", "it", "nl", "ru", "uk", "pl", "tr", "ar", "zh", "ja", "ko"],
-  "areaServed": [
-    {"@type": "Country", "name": "France"},
-    {"@type": "Country", "name": "Côte d'Ivoire"}
-  ],
+  "areaServed": "Worldwide",
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 18
+  },
+  "contentRating": "18+",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -141,6 +140,8 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:80;
 }
 .brand .word{font-family:var(--serif);font-size:1.28rem;font-weight:600;color:var(--txt)}
 .brand .word em{font-style:italic;color:var(--ember)}
+.age-chip{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.04em;color:var(--blush);
+  border:1px solid var(--line);border-radius:6px;padding:2px 5px;line-height:1;margin-left:2px;flex:none}
 nav.links{display:flex;gap:28px;font-size:.92rem}
 nav.links a{text-decoration:none;color:var(--txt-soft);transition:color .2s}
 nav.links a:hover{color:var(--txt)}
@@ -166,6 +167,8 @@ nav.links a:hover{color:var(--txt)}
   border-bottom:1px solid var(--line)}
 .mobile-menu a:last-child{border-bottom:none}
 .mobile-menu a:hover{color:var(--txt)}
+.mobile-menu a.mobile-login{color:#fff;font-weight:700;background:linear-gradient(135deg,var(--ember),var(--passion));
+  border-radius:12px;border-bottom:none;text-align:center;margin:8px 0 4px;padding:13px 4px}
 @media(min-width:981px){.mobile-menu{display:none!important}}
 
 @media(max-width:560px){
@@ -174,6 +177,7 @@ nav.links a:hover{color:var(--txt)}
   .brand .word{font-size:1.05rem}
   .nav-right{gap:6px}
   .nav-right .btn-primary{display:none}
+  .nav-right .nav-login{display:none}
 }
 
 /* ---------- language switch ---------- */
@@ -194,7 +198,9 @@ nav.links a:hover{color:var(--txt)}
 [dir="rtl"] .lang-menu button{text-align:right}
 .lang-menu button:hover{background:rgba(255,255,255,.05);color:var(--txt)}
 .lang-menu button.on{background:rgba(246,65,53,.14);color:var(--txt)}
-.lang-menu .flag{font-size:1.05rem}
+.lang-menu .flag{flex:none}
+.flag{display:block;border-radius:2px;object-fit:cover;flex:none;background:rgba(255,255,255,.08)}
+.lang-btn .flag{width:20px;height:15px}
 
 /* ---------- currency switch (same dropdown style as language switch, to save space) ---------- */
 .curr-switch{position:relative}
@@ -230,6 +236,8 @@ nav.links a:hover{color:var(--txt)}
 .btn-ghost{background:transparent;border-color:var(--line);color:var(--txt)}
 .btn-ghost:hover{border-color:var(--blush);color:var(--blush)}
 .btn-sm{padding:9px 16px;font-size:.8rem}
+.nav-login{border-color:var(--ember);color:var(--txt)}
+.nav-login:hover{border-color:var(--passion);color:#fff;background:rgba(235,6,3,.08)}
 
 /* ---------- hero ---------- */
 .hero{position:relative;padding:172px 0 108px;overflow:hidden}
@@ -372,6 +380,35 @@ footer{border-top:1px solid var(--line);padding:64px 0 34px;margin-top:60px}
   stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:560px){.back-to-top{right:16px;bottom:16px;width:42px;height:42px}}
 
+/* ---------- ad billboard slot (970x250 IAB standard) ---------- */
+.ad-slot{padding:40px 0}
+@media(max-width:720px){.ad-slot{padding:26px 0}}
+.ad-billboard{max-width:970px;width:100%;aspect-ratio:970/250;margin:0 auto;
+  border:1px dashed var(--line);border-radius:var(--r-md);
+  background:linear-gradient(160deg,var(--steel),var(--obsidian) 75%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  text-align:center;position:relative;overflow:hidden}
+.ad-billboard .ad-eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--blush)}
+.ad-billboard .ad-msg{font-family:var(--serif);font-style:italic;color:var(--txt);
+  font-size:clamp(1rem,2.4vw,1.3rem)}
+.ad-billboard .ad-dim{font-family:var(--mono);font-size:.68rem;color:var(--txt-soft);letter-spacing:.05em}
+
+/* ---------- decorative background (fills the flat black past the hero) ---------- */
+.bg-decor{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-decor .wm{position:absolute;top:50%;left:50%;width:min(64vw,720px);height:auto;
+  transform:translate(-50%,-50%);opacity:.05;filter:saturate(0) brightness(1.6)}
+.bg-decor .heart{position:absolute;bottom:-12%;line-height:1;
+  animation:floatHeart linear infinite;will-change:transform,opacity}
+@keyframes floatHeart{
+  0%{transform:translateY(0) translateX(0) rotate(-6deg);opacity:0}
+  12%{opacity:var(--ho,.16)}
+  50%{transform:translateY(-55vh) translateX(16px) rotate(6deg)}
+  88%{opacity:var(--ho,.16)}
+  100%{transform:translateY(-115vh) translateX(-14px) rotate(-4deg);opacity:0}
+}
+@media(max-width:720px){.bg-decor .heart{font-size:calc(var(--hs,28px) * .7)!important}}
+
 /* skip link / focus */
 a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offset:3px;border-radius:4px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
@@ -379,11 +416,26 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
 </head>
 <body>
 
+<div class="bg-decor" aria-hidden="true">
+  <img class="wm" src="assets/logo.png" alt="">
+  <span class="heart" style="left:4%;--hs:20px;font-size:20px;color:var(--ember);animation-duration:21s;animation-delay:0s">♥</span>
+  <span class="heart" style="left:14%;--hs:36px;font-size:36px;color:var(--passion);animation-duration:27s;animation-delay:4s">♥</span>
+  <span class="heart" style="left:24%;--hs:16px;font-size:16px;color:var(--blush);animation-duration:18s;animation-delay:9s">♥</span>
+  <span class="heart" style="left:36%;--hs:44px;font-size:44px;color:var(--ember);animation-duration:31s;animation-delay:2s">♥</span>
+  <span class="heart" style="left:48%;--hs:24px;font-size:24px;color:var(--blush);animation-duration:22s;animation-delay:13s">♥</span>
+  <span class="heart" style="left:60%;--hs:30px;font-size:30px;color:var(--passion);animation-duration:26s;animation-delay:6s">♥</span>
+  <span class="heart" style="left:70%;--hs:18px;font-size:18px;color:var(--ember);animation-duration:19s;animation-delay:11s">♥</span>
+  <span class="heart" style="left:80%;--hs:40px;font-size:40px;color:var(--blush);animation-duration:29s;animation-delay:1s">♥</span>
+  <span class="heart" style="left:90%;--hs:22px;font-size:22px;color:var(--passion);animation-duration:23s;animation-delay:8s">♥</span>
+  <span class="heart" style="left:94%;--hs:14px;font-size:14px;color:var(--ember);animation-duration:17s;animation-delay:15s">♥</span>
+</div>
+
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="#top">
       <span class="mark"><img src="assets/logo.png" alt="LovMy" width="36" height="36"></span>
       <span class="word">Lov<em>My</em></span>
+      <span class="age-chip" title="Réservé aux 18 ans et plus">18+</span>
     </a>
     <nav class="links">
       <a href="#comment" data-i18n="nav_how">Comment ça marche</a>
@@ -400,16 +452,18 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       </div>
       <div class="lang-switch">
         <button type="button" class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
-          <span id="langBtnFlag">🇫🇷</span><span id="langBtnCode">FR</span><span class="car">▾</span>
+          <img id="langBtnFlag" class="flag" src="https://flagcdn.com/24x18/fr.png" width="20" height="15" alt=""><span id="langBtnCode">FR</span><span class="car">▾</span>
         </button>
         <div class="lang-menu" id="langMenu" role="menu"></div>
       </div>
+      <a class="btn btn-ghost btn-sm nav-login" id="loginLink" href="https://lovmy.fr/login" data-i18n="nav_login">Se connecter</a>
       <a class="btn btn-primary btn-sm" href="#telecharger" data-i18n="nav_download">Télécharger</a>
       <button type="button" class="nav-burger" id="navBurger" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
       </button>
     </div>
     <div class="mobile-menu" id="mobileMenu">
+      <a class="mobile-login" id="loginLinkMobile" href="https://lovmy.fr/login" data-i18n="nav_login">Se connecter</a>
       <a href="#comment" data-i18n="nav_how">Comment ça marche</a>
       <a href="#confiance" data-i18n="nav_trust">Confiance</a>
       <a href="#international" data-i18n="lang_label">Langues</a>
@@ -432,7 +486,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       <div class="hero-grid">
         <span class="eyebrow" data-i18n="hero_eyebrow">Rencontres augmentées, cœur garanti</span>
         <h1 style="margin-top:20px" data-i18n="hero_title">L'amour, calculé avec le cœur.</h1>
-        <p class="lede" data-i18n="hero_lede">LovMy affine vos rencontres grâce à une intelligence discrète qui comprend vos priorités réelles — disponible en France, en Afrique francophone et partout ailleurs.</p>
+        <p class="lede" data-i18n="hero_lede">LovMy vous connecte à des célibataires vérifiés près de chez vous — ou à l'autre bout du monde. Une intelligence discrète qui affine vos rencontres selon ce qui compte vraiment pour vous.</p>
         <p class="slogan">Never be lonely</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#telecharger" data-i18n="hero_cta_primary">Télécharger gratuitement</a>
@@ -446,6 +500,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       </div>
     </div>
   </section>
+
+  <!-- AD SLOT 1 (970x250 billboard) -->
+  <div class="ad-slot">
+    <div class="wrap">
+      <div class="ad-billboard">
+        <span class="ad-eyebrow" data-i18n="ad_label">Espace publicitaire</span>
+        <span class="ad-msg" data-i18n="ad_msg">Votre marque, ici, devant une audience qui dit oui à l'amour.</span>
+        <span class="ad-dim">970 × 250</span>
+      </div>
+    </div>
+  </div>
 
   <!-- HOW IT WORKS -->
   <section id="comment">
@@ -476,6 +541,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       </div>
     </div>
   </section>
+
+  <!-- AD SLOT 2 (970x250 billboard) -->
+  <div class="ad-slot">
+    <div class="wrap">
+      <div class="ad-billboard">
+        <span class="ad-eyebrow" data-i18n="ad_label">Espace publicitaire</span>
+        <span class="ad-msg" data-i18n="ad_msg2">Touchez des célibataires vérifiés, prêts à passer à l'action.</span>
+        <span class="ad-dim">970 × 250</span>
+      </div>
+    </div>
+  </div>
 
   <!-- TRUST -->
   <section id="confiance" style="background:linear-gradient(180deg,rgba(48,59,99,.08),transparent)">
@@ -582,7 +658,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
         </div>
 
         <div class="plan">
-          <span class="tier" data-i18n="plan_discovery_name">Découverte</span>
+          <span class="tier" data-i18n="plan_discovery_name">Premium</span>
           <div class="price">
             <span class="price-value" data-eur="14.99" data-usd="16.99" data-xof="9900">14,99 €</span>
             <span class="price-suffix"> / <span data-i18n="period_month">mois</span></span>
@@ -592,12 +668,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
             <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><span data-i18n="plan_discovery_f2">Compatibilité affinée par l'IA</span></li>
             <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><span data-i18n="plan_discovery_f3">5 super-likes par semaine</span></li>
           </ul>
-          <a class="btn btn-ghost" href="#telecharger" style="width:100%;justify-content:center" data-i18n="plan_discovery_cta">Essayer Découverte</a>
+          <a class="btn btn-ghost" href="#telecharger" style="width:100%;justify-content:center" data-i18n="plan_discovery_cta">Essayer Premium</a>
         </div>
 
         <div class="plan hi">
-          <span class="tier-badge">Premium</span>
-          <span class="tier" data-i18n="plan_premium_name">Premium</span>
+          <span class="tier-badge">Gold</span>
+          <span class="tier" data-i18n="plan_premium_name">Gold</span>
           <div class="price">
             <span class="price-value" data-eur="24.99" data-usd="27.99" data-xof="16500">24,99 €</span>
             <span class="price-suffix"> / <span data-i18n="period_month">mois</span></span>
@@ -607,7 +683,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
             <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><span data-i18n="plan_premium_f2">Profil boosté chaque semaine</span></li>
             <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><span data-i18n="plan_premium_f3">Support prioritaire dédié</span></li>
           </ul>
-          <a class="btn btn-primary" href="#telecharger" style="width:100%;justify-content:center" data-i18n="plan_premium_cta">Passer en Premium</a>
+          <a class="btn btn-primary" href="#telecharger" style="width:100%;justify-content:center" data-i18n="plan_premium_cta">Passer au Gold</a>
         </div>
 
       </div>
@@ -652,6 +728,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
           <span class="word">Lov<em>My</em></span>
         </a>
         <p class="faint" style="max-width:32ch;margin-top:16px;font-size:.88rem" data-i18n="footer_tagline">L'application de rencontre qui combine intelligence discrète et vraies connexions humaines.</p>
+        <p class="faint" style="max-width:34ch;margin-top:10px;font-size:.78rem" data-i18n="footer_age_notice">🔞 LovMy est réservé aux personnes majeures. Accès strictement interdit aux moins de 18 ans.</p>
         <div class="social-row">
           <a class="social-btn" id="socialFacebook" href="#" aria-label="Facebook" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3a3 3 0 0 0-3 3v2H9v3h2v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1Z" fill="currentColor" stroke="none"/></svg>
@@ -714,38 +791,41 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     ios:       "#",                          // Lien App Store
     android:   "#",                          // Lien Google Play
     download:  "https://lovmy.fr/download",  // Lien générique utilisé pour générer le QR code
-    facebook:  "#",
-    instagram: "#",
-    tiktok:    "#",
-    youtube:   "#"
+    login:     "https://lovmy.fr/login",     // Lien vers le front web (Next.js) de connexion
+    facebook:  "https://facebook.com/LovMyApp",
+    instagram: "https://instagram.com/LovMyApp",
+    tiktok:    "https://tiktok.com/@LovMyApp",
+    youtube:   "https://youtube.com/@LovMyApp"
   };
 
   /* ================= i18n data ================= */
   var LANGS = [
-    {code:"fr", flag:"🇫🇷", name:"Français",   dir:"ltr"},
-    {code:"en", flag:"🇬🇧", name:"English",    dir:"ltr"},
-    {code:"es", flag:"🇪🇸", name:"Español",    dir:"ltr"},
-    {code:"pt", flag:"🇵🇹", name:"Português",  dir:"ltr"},
-    {code:"de", flag:"🇩🇪", name:"Deutsch",    dir:"ltr"},
-    {code:"it", flag:"🇮🇹", name:"Italiano",   dir:"ltr"},
-    {code:"nl", flag:"🇳🇱", name:"Nederlands", dir:"ltr"},
-    {code:"ru", flag:"🇷🇺", name:"Русский",    dir:"ltr"},
-    {code:"uk", flag:"🇺🇦", name:"Українська", dir:"ltr"},
-    {code:"pl", flag:"🇵🇱", name:"Polski",     dir:"ltr"},
-    {code:"tr", flag:"🇹🇷", name:"Türkçe",     dir:"ltr"},
-    {code:"ar", flag:"🇸🇦", name:"العربية",    dir:"rtl"},
-    {code:"zh", flag:"🇨🇳", name:"简体中文",     dir:"ltr"},
-    {code:"ja", flag:"🇯🇵", name:"日本語",      dir:"ltr"},
-    {code:"ko", flag:"🇰🇷", name:"한국어",      dir:"ltr"}
+    {code:"fr", cc:"fr", flag:"🇫🇷", name:"Français",   dir:"ltr"},
+    {code:"en", cc:"gb", flag:"🇬🇧", name:"English",    dir:"ltr"},
+    {code:"es", cc:"es", flag:"🇪🇸", name:"Español",    dir:"ltr"},
+    {code:"pt", cc:"pt", flag:"🇵🇹", name:"Português",  dir:"ltr"},
+    {code:"de", cc:"de", flag:"🇩🇪", name:"Deutsch",    dir:"ltr"},
+    {code:"it", cc:"it", flag:"🇮🇹", name:"Italiano",   dir:"ltr"},
+    {code:"nl", cc:"nl", flag:"🇳🇱", name:"Nederlands", dir:"ltr"},
+    {code:"ru", cc:"ru", flag:"🇷🇺", name:"Русский",    dir:"ltr"},
+    {code:"uk", cc:"ua", flag:"🇺🇦", name:"Українська", dir:"ltr"},
+    {code:"pl", cc:"pl", flag:"🇵🇱", name:"Polski",     dir:"ltr"},
+    {code:"tr", cc:"tr", flag:"🇹🇷", name:"Türkçe",     dir:"ltr"},
+    {code:"ar", cc:"sa", flag:"🇸🇦", name:"العربية",    dir:"rtl"},
+    {code:"zh", cc:"cn", flag:"🇨🇳", name:"简体中文",     dir:"ltr"},
+    {code:"ja", cc:"jp", flag:"🇯🇵", name:"日本語",      dir:"ltr"},
+    {code:"ko", cc:"kr", flag:"🇰🇷", name:"한국어",      dir:"ltr"}
   ];
+  function flagUrl(cc){ return "https://flagcdn.com/24x18/" + cc + ".png"; }
 
   var T = {
     fr:{
       nav_how:"Comment ça marche", nav_trust:"Confiance", nav_pricing:"Tarifs", nav_download:"Télécharger",
+      nav_login:"Se connecter",
+      ad_label:"Espace publicitaire", ad_msg:"Votre marque, ici, devant une audience qui dit oui à l'amour.", ad_msg2:"Touchez des célibataires vérifiés, prêts à passer à l'action.",
       hero_eyebrow:"Rencontres augmentées, cœur garanti",
       hero_title:"L'amour, calculé avec le cœur.",
       hero_lede:"LovMy vous connecte à des célibataires vérifiés près de chez vous — ou à l'autre bout du monde. Une intelligence discrète qui affine vos rencontres selon ce qui compte vraiment pour vous.",
-      hero_lede_ci:"LovMy affine vos rencontres grâce à une intelligence discrète qui comprend vos priorités réelles — la référence des rencontres sérieuses à Abidjan et dans toute la Côte d'Ivoire.",
       hero_cta_primary:"Télécharger gratuitement", hero_cta_secondary:"Voir comment ça marche",
       stat1_num:"15", stat1_label:"langues disponibles",
       stat2_num:"92%", stat2_label:"profils vérifiés par selfie",
@@ -757,7 +837,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       step3_title:"Rencontrez, en toute confiance", step3_desc:"Appel vidéo intégré, partage de position sécurisé et check-in après le rendez-vous.",
       trust_eyebrow:"Sécurité & crédibilité", trust_title:"La confiance, avant la romance.",
       trust_intro:"Mêmes standards de sécurité, mêmes garanties, où que vous soyez dans le monde.",
-      trust_intro_ci:"Mêmes standards de sécurité, mêmes garanties, à Abidjan comme dans tout le pays.",
       card1_title:"Profils vérifiés", card1_desc:"Vérification par selfie et détection continue des faux comptes.",
       card2_title:"Modération 24/7", card2_desc:"Une équipe francophone répond en moins d'une heure, jour et nuit.",
       card3_title:"Données chiffrées", card3_desc:"Conforme RGPD, hébergement européen, aucune revente de données.",
@@ -775,16 +854,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"toujours", period_month:"mois",
       plan_free_name:"Gratuit", plan_free_f1:"Profil vérifié et matchs illimités", plan_free_f2:"Messagerie sécurisée",
       plan_free_f3:"Modération 24/7", plan_free_cta:"Commencer gratuitement",
-      plan_discovery_name:"Découverte", plan_discovery_f1:"Voir qui vous a déjà aimé",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Voir qui vous a déjà aimé",
       plan_discovery_f2:"Compatibilité affinée par l'IA", plan_discovery_f3:"5 super-likes par semaine",
-      plan_discovery_cta:"Essayer Découverte",
-      plan_premium_name:"Premium", plan_premium_f1:"Appels vidéo illimités", plan_premium_f2:"Profil boosté chaque semaine",
-      plan_premium_f3:"Support prioritaire dédié", plan_premium_cta:"Passer en Premium",
+      plan_discovery_cta:"Essayer Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Appels vidéo illimités", plan_premium_f2:"Profil boosté chaque semaine",
+      plan_premium_f3:"Support prioritaire dédié", plan_premium_cta:"Passer au Gold",
       final_eyebrow:"Prêt·e ?", final_title:"Votre prochaine conversation vous attend.",
       final_p:"Téléchargez LovMy en moins d'une minute, gratuitement, où que vous soyez.",
       store_ios_small:"Télécharger sur", store_ios_big:"App Store", store_android_small:"Disponible sur", store_android_big:"Google Play",
       qr_caption:"Scannez pour télécharger",
       footer_tagline:"L'application de rencontre qui combine intelligence discrète et vraies connexions humaines.",
+      footer_age_notice:"🔞 LovMy est réservé aux personnes majeures. Accès strictement interdit aux moins de 18 ans.",
       footer_col1_title:"Produit", footer_col1_l1:"Comment ça marche", footer_col1_l2:"Sécurité", footer_col1_l3:"Tarifs",
       footer_col2_title:"Entreprise", footer_col2_l1:"International", footer_col2_l2:"À propos", footer_col2_l3:"Contact",
       footer_col3_title:"Légal", footer_col3_l1:"Conditions d'utilisation", footer_col3_l2:"Confidentialité", footer_col3_l3:"Sécurité des données",
@@ -792,6 +872,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     en:{
       nav_how:"How it works", nav_trust:"Trust", nav_pricing:"Pricing", nav_download:"Download",
+      nav_login:"Log in",
+      ad_label:"Advertisement", ad_msg:"Your brand, here, in front of an audience that says yes to love.", ad_msg2:"Reach verified singles, ready to take action.",
       hero_eyebrow:"Augmented dating, human at heart",
       hero_title:"Love, calculated with heart.",
       hero_lede:"LovMy connects you with verified singles near you — or on the other side of the world. A discreet intelligence that refines your matches around what truly matters to you.",
@@ -823,16 +905,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"always", period_month:"month",
       plan_free_name:"Free", plan_free_f1:"Verified profile and unlimited matches", plan_free_f2:"Secure messaging",
       plan_free_f3:"24/7 moderation", plan_free_cta:"Start for free",
-      plan_discovery_name:"Discovery", plan_discovery_f1:"See who already liked you",
+      plan_discovery_name:"Premium", plan_discovery_f1:"See who already liked you",
       plan_discovery_f2:"AI-refined compatibility", plan_discovery_f3:"5 super-likes a week",
-      plan_discovery_cta:"Try Discovery",
-      plan_premium_name:"Premium", plan_premium_f1:"Unlimited video calls", plan_premium_f2:"Weekly profile boost",
-      plan_premium_f3:"Dedicated priority support", plan_premium_cta:"Go Premium",
+      plan_discovery_cta:"Try Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Unlimited video calls", plan_premium_f2:"Weekly profile boost",
+      plan_premium_f3:"Dedicated priority support", plan_premium_cta:"Go Gold",
       final_eyebrow:"Ready?", final_title:"Your next conversation is waiting.",
       final_p:"Download LovMy in under a minute, for free, wherever you are.",
       store_ios_small:"Download on the", store_ios_big:"App Store", store_android_small:"Get it on", store_android_big:"Google Play",
       qr_caption:"Scan to download",
       footer_tagline:"The dating app that combines discreet intelligence with real human connection.",
+      footer_age_notice:"🔞 LovMy is reserved for adults. Strictly no access for anyone under 18.",
       footer_col1_title:"Product", footer_col1_l1:"How it works", footer_col1_l2:"Safety", footer_col1_l3:"Pricing",
       footer_col2_title:"Company", footer_col2_l1:"International", footer_col2_l2:"About", footer_col2_l3:"Contact",
       footer_col3_title:"Legal", footer_col3_l1:"Terms of use", footer_col3_l2:"Privacy", footer_col3_l3:"Data safety",
@@ -840,6 +923,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     es:{
       nav_how:"Cómo funciona", nav_trust:"Confianza", nav_pricing:"Precios", nav_download:"Descargar",
+      nav_login:"Iniciar sesión",
+      ad_label:"Espacio publicitario", ad_msg:"Tu marca, aquí, frente a una audiencia que le dice sí al amor.", ad_msg2:"Llega a solteros verificados, listos para pasar a la acción.",
       hero_eyebrow:"Citas aumentadas, corazón garantizado",
       hero_title:"El amor, calculado con el corazón.",
       hero_lede:"LovMy te conecta con solteros verificados cerca de ti — o al otro lado del mundo. Una inteligencia discreta que afina tus encuentros según lo que de verdad te importa.",
@@ -871,16 +956,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"siempre", period_month:"mes",
       plan_free_name:"Gratis", plan_free_f1:"Perfil verificado y matches ilimitados", plan_free_f2:"Mensajería segura",
       plan_free_f3:"Moderación 24/7", plan_free_cta:"Empezar gratis",
-      plan_discovery_name:"Descubrimiento", plan_discovery_f1:"Ver quién ya te dio like",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Ver quién ya te dio like",
       plan_discovery_f2:"Compatibilidad afinada por IA", plan_discovery_f3:"5 súper-likes por semana",
-      plan_discovery_cta:"Probar Descubrimiento",
-      plan_premium_name:"Premium", plan_premium_f1:"Videollamadas ilimitadas", plan_premium_f2:"Perfil destacado cada semana",
-      plan_premium_f3:"Soporte prioritario dedicado", plan_premium_cta:"Pasar a Premium",
+      plan_discovery_cta:"Probar Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Videollamadas ilimitadas", plan_premium_f2:"Perfil destacado cada semana",
+      plan_premium_f3:"Soporte prioritario dedicado", plan_premium_cta:"Pasar a Gold",
       final_eyebrow:"¿Listo?", final_title:"Tu próxima conversación te espera.",
       final_p:"Descarga LovMy en menos de un minuto, gratis, estés donde estés.",
       store_ios_small:"Descargar en", store_ios_big:"App Store", store_android_small:"Disponible en", store_android_big:"Google Play",
       qr_caption:"Escanea para descargar",
       footer_tagline:"La app de citas que combina inteligencia discreta y conexiones humanas reales.",
+      footer_age_notice:"🔞 LovMy está reservado para mayores de edad. Acceso estrictamente prohibido a menores de 18 años.",
       footer_col1_title:"Producto", footer_col1_l1:"Cómo funciona", footer_col1_l2:"Seguridad", footer_col1_l3:"Precios",
       footer_col2_title:"Empresa", footer_col2_l1:"Internacional", footer_col2_l2:"Acerca de", footer_col2_l3:"Contacto",
       footer_col3_title:"Legal", footer_col3_l1:"Condiciones de uso", footer_col3_l2:"Privacidad", footer_col3_l3:"Seguridad de datos",
@@ -888,6 +974,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     pt:{
       nav_how:"Como funciona", nav_trust:"Confiança", nav_pricing:"Preços", nav_download:"Transferir",
+      nav_login:"Iniciar sessão",
+      ad_label:"Espaço publicitário", ad_msg:"A sua marca, aqui, diante de um público que diz sim ao amor.", ad_msg2:"Alcance solteiros verificados, prontos para agir.",
       hero_eyebrow:"Encontros aumentados, coração garantido",
       hero_title:"O amor, calculado com o coração.",
       hero_lede:"O LovMy conecta-te a solteiros verificados perto de ti — ou do outro lado do mundo. Uma inteligência discreta que aperfeiçoa os teus encontros com base no que realmente importa.",
@@ -919,16 +1007,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"sempre", period_month:"mês",
       plan_free_name:"Grátis", plan_free_f1:"Perfil verificado e matches ilimitados", plan_free_f2:"Mensagens seguras",
       plan_free_f3:"Moderação 24/7", plan_free_cta:"Começar gratuitamente",
-      plan_discovery_name:"Descoberta", plan_discovery_f1:"Veja quem já gostou de si",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Veja quem já gostou de si",
       plan_discovery_f2:"Compatibilidade aperfeiçoada por IA", plan_discovery_f3:"5 super-likes por semana",
-      plan_discovery_cta:"Experimentar Descoberta",
-      plan_premium_name:"Premium", plan_premium_f1:"Chamadas de vídeo ilimitadas", plan_premium_f2:"Perfil destacado todas as semanas",
-      plan_premium_f3:"Suporte prioritário dedicado", plan_premium_cta:"Passar para Premium",
+      plan_discovery_cta:"Experimentar Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Chamadas de vídeo ilimitadas", plan_premium_f2:"Perfil destacado todas as semanas",
+      plan_premium_f3:"Suporte prioritário dedicado", plan_premium_cta:"Passar para Gold",
       final_eyebrow:"Pronto·a?", final_title:"A sua próxima conversa está à espera.",
       final_p:"Transfira o LovMy em menos de um minuto, gratuitamente, onde quer que esteja.",
       store_ios_small:"Transferir na", store_ios_big:"App Store", store_android_small:"Disponível no", store_android_big:"Google Play",
       qr_caption:"Digitalize para transferir",
       footer_tagline:"A aplicação de encontros que combina inteligência discreta e ligações humanas reais.",
+      footer_age_notice:"🔞 O LovMy é reservado a maiores de idade. Acesso estritamente proibido a menores de 18 anos.",
       footer_col1_title:"Produto", footer_col1_l1:"Como funciona", footer_col1_l2:"Segurança", footer_col1_l3:"Preços",
       footer_col2_title:"Empresa", footer_col2_l1:"Internacional", footer_col2_l2:"Sobre", footer_col2_l3:"Contacto",
       footer_col3_title:"Legal", footer_col3_l1:"Termos de utilização", footer_col3_l2:"Privacidade", footer_col3_l3:"Segurança dos dados",
@@ -936,6 +1025,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     de:{
       nav_how:"So funktioniert's", nav_trust:"Vertrauen", nav_pricing:"Preise", nav_download:"Herunterladen",
+      nav_login:"Anmelden",
+      ad_label:"Werbefläche", ad_msg:"Ihre Marke, hier, vor einem Publikum, das Ja zur Liebe sagt.", ad_msg2:"Erreichen Sie verifizierte Singles, bereit zu handeln.",
       hero_eyebrow:"Erweiterte Partnersuche, mit Herz",
       hero_title:"Liebe, mit Herz berechnet.",
       hero_lede:"LovMy verbindet dich mit verifizierten Singles in deiner Nähe — oder am anderen Ende der Welt. Eine diskrete Intelligenz, die deine Matches nach dem verfeinert, was dir wirklich wichtig ist.",
@@ -967,16 +1058,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"immer", period_month:"Monat",
       plan_free_name:"Kostenlos", plan_free_f1:"Verifiziertes Profil und unbegrenzte Matches", plan_free_f2:"Sichere Nachrichten",
       plan_free_f3:"24/7-Moderation", plan_free_cta:"Kostenlos starten",
-      plan_discovery_name:"Entdeckung", plan_discovery_f1:"Sieh, wer dich schon geliked hat",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Sieh, wer dich schon geliked hat",
       plan_discovery_f2:"KI-verfeinerte Kompatibilität", plan_discovery_f3:"5 Super-Likes pro Woche",
-      plan_discovery_cta:"Entdeckung testen",
-      plan_premium_name:"Premium", plan_premium_f1:"Unbegrenzte Videoanrufe", plan_premium_f2:"Wöchentlicher Profil-Boost",
-      plan_premium_f3:"Dedizierter Prioritäts-Support", plan_premium_cta:"Zu Premium wechseln",
+      plan_discovery_cta:"Premium testen",
+      plan_premium_name:"Gold", plan_premium_f1:"Unbegrenzte Videoanrufe", plan_premium_f2:"Wöchentlicher Profil-Boost",
+      plan_premium_f3:"Dedizierter Prioritäts-Support", plan_premium_cta:"Zu Gold wechseln",
       final_eyebrow:"Bereit?", final_title:"Dein nächstes Gespräch wartet auf dich.",
       final_p:"Lade LovMy in unter einer Minute herunter, kostenlos, egal wo du bist.",
       store_ios_small:"Laden im", store_ios_big:"App Store", store_android_small:"Erhältlich bei", store_android_big:"Google Play",
       qr_caption:"Scannen zum Herunterladen",
       footer_tagline:"Die Dating-App, die diskrete Intelligenz mit echten menschlichen Verbindungen verbindet.",
+      footer_age_notice:"🔞 LovMy ist ausschließlich Erwachsenen vorbehalten. Zugang für Personen unter 18 Jahren streng untersagt.",
       footer_col1_title:"Produkt", footer_col1_l1:"So funktioniert's", footer_col1_l2:"Sicherheit", footer_col1_l3:"Preise",
       footer_col2_title:"Unternehmen", footer_col2_l1:"International", footer_col2_l2:"Über uns", footer_col2_l3:"Kontakt",
       footer_col3_title:"Rechtliches", footer_col3_l1:"Nutzungsbedingungen", footer_col3_l2:"Datenschutz", footer_col3_l3:"Datensicherheit",
@@ -984,6 +1076,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     it:{
       nav_how:"Come funziona", nav_trust:"Fiducia", nav_pricing:"Prezzi", nav_download:"Scarica",
+      nav_login:"Accedi",
+      ad_label:"Spazio pubblicitario", ad_msg:"Il tuo brand, qui, davanti a un pubblico che dice sì all'amore.", ad_msg2:"Raggiungi single verificati, pronti ad agire.",
       hero_eyebrow:"Incontri aumentati, cuore garantito",
       hero_title:"L'amore, calcolato con il cuore.",
       hero_lede:"LovMy ti mette in contatto con single verificati vicino a te — o dall'altra parte del mondo. Un'intelligenza discreta che affina i tuoi incontri in base a ciò che conta davvero per te.",
@@ -1015,16 +1109,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"sempre", period_month:"mese",
       plan_free_name:"Gratis", plan_free_f1:"Profilo verificato e match illimitati", plan_free_f2:"Messaggistica sicura",
       plan_free_f3:"Moderazione 24/7", plan_free_cta:"Inizia gratis",
-      plan_discovery_name:"Scoperta", plan_discovery_f1:"Scopri chi ti ha già messo like",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Scopri chi ti ha già messo like",
       plan_discovery_f2:"Compatibilità affinata dall'IA", plan_discovery_f3:"5 super-like a settimana",
-      plan_discovery_cta:"Prova Scoperta",
-      plan_premium_name:"Premium", plan_premium_f1:"Videochiamate illimitate", plan_premium_f2:"Boost del profilo ogni settimana",
-      plan_premium_f3:"Supporto prioritario dedicato", plan_premium_cta:"Passa a Premium",
+      plan_discovery_cta:"Prova Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Videochiamate illimitate", plan_premium_f2:"Boost del profilo ogni settimana",
+      plan_premium_f3:"Supporto prioritario dedicato", plan_premium_cta:"Passa a Gold",
       final_eyebrow:"Pronto·a?", final_title:"La tua prossima conversazione ti aspetta.",
       final_p:"Scarica LovMy in meno di un minuto, gratis, ovunque tu sia.",
       store_ios_small:"Scarica su", store_ios_big:"App Store", store_android_small:"Disponibile su", store_android_big:"Google Play",
       qr_caption:"Scansiona per scaricare",
       footer_tagline:"L'app di incontri che unisce intelligenza discreta e vere connessioni umane.",
+      footer_age_notice:"🔞 LovMy è riservato ai maggiorenni. Accesso severamente vietato ai minori di 18 anni.",
       footer_col1_title:"Prodotto", footer_col1_l1:"Come funziona", footer_col1_l2:"Sicurezza", footer_col1_l3:"Prezzi",
       footer_col2_title:"Azienda", footer_col2_l1:"Internazionale", footer_col2_l2:"Chi siamo", footer_col2_l3:"Contatti",
       footer_col3_title:"Legale", footer_col3_l1:"Termini di utilizzo", footer_col3_l2:"Privacy", footer_col3_l3:"Sicurezza dei dati",
@@ -1032,6 +1127,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     nl:{
       nav_how:"Hoe het werkt", nav_trust:"Vertrouwen", nav_pricing:"Prijzen", nav_download:"Downloaden",
+      nav_login:"Inloggen",
+      ad_label:"Advertentieruimte", ad_msg:"Jouw merk, hier, voor een publiek dat ja zegt tegen de liefde.", ad_msg2:"Bereik geverifieerde singles, klaar om in actie te komen.",
       hero_eyebrow:"Daten met AI, hart gegarandeerd",
       hero_title:"Liefde, berekend met hart.",
       hero_lede:"LovMy verbindt je met geverifieerde singles in jouw buurt — of aan de andere kant van de wereld. Een discrete intelligentie die je matches verfijnt op basis van wat écht belangrijk voor je is.",
@@ -1063,16 +1160,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"altijd", period_month:"maand",
       plan_free_name:"Gratis", plan_free_f1:"Geverifieerd profiel en onbeperkte matches", plan_free_f2:"Beveiligde berichten",
       plan_free_f3:"24/7-moderatie", plan_free_cta:"Gratis starten",
-      plan_discovery_name:"Ontdekking", plan_discovery_f1:"Zie wie je al leuk vond",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Zie wie je al leuk vond",
       plan_discovery_f2:"Door AI verfijnde compatibiliteit", plan_discovery_f3:"5 super-likes per week",
-      plan_discovery_cta:"Probeer Ontdekking",
-      plan_premium_name:"Premium", plan_premium_f1:"Onbeperkte videogesprekken", plan_premium_f2:"Wekelijkse profielboost",
-      plan_premium_f3:"Toegewijde prioritaire ondersteuning", plan_premium_cta:"Ga naar Premium",
+      plan_discovery_cta:"Probeer Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Onbeperkte videogesprekken", plan_premium_f2:"Wekelijkse profielboost",
+      plan_premium_f3:"Toegewijde prioritaire ondersteuning", plan_premium_cta:"Ga naar Gold",
       final_eyebrow:"Klaar?", final_title:"Je volgende gesprek wacht op je.",
       final_p:"Download LovMy in minder dan een minuut, gratis, waar je ook bent.",
       store_ios_small:"Downloaden in de", store_ios_big:"App Store", store_android_small:"Verkrijgbaar via", store_android_big:"Google Play",
       qr_caption:"Scan om te downloaden",
       footer_tagline:"De datingapp die discrete intelligentie combineert met echte menselijke connecties.",
+      footer_age_notice:"🔞 LovMy is uitsluitend bedoeld voor volwassenen. Toegang voor personen onder de 18 jaar is strikt verboden.",
       footer_col1_title:"Product", footer_col1_l1:"Hoe het werkt", footer_col1_l2:"Veiligheid", footer_col1_l3:"Prijzen",
       footer_col2_title:"Bedrijf", footer_col2_l1:"Internationaal", footer_col2_l2:"Over ons", footer_col2_l3:"Contact",
       footer_col3_title:"Juridisch", footer_col3_l1:"Gebruiksvoorwaarden", footer_col3_l2:"Privacy", footer_col3_l3:"Gegevensveiligheid",
@@ -1080,6 +1178,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     ru:{
       nav_how:"Как это работает", nav_trust:"Доверие", nav_pricing:"Тарифы", nav_download:"Скачать",
+      nav_login:"Войти",
+      ad_label:"Рекламное место", ad_msg:"Ваш бренд здесь, перед аудиторией, которая говорит любви «да».", ad_msg2:"Охватите проверенных одиноких людей, готовых к действию.",
       hero_eyebrow:"Знакомства нового уровня, сердце гарантировано",
       hero_title:"Любовь, просчитанная сердцем.",
       hero_lede:"LovMy знакомит вас с проверенными одинокими людьми рядом с вами — или на другом конце света. Деликатный интеллект, который подбирает совпадения по-настоящему важному для вас.",
@@ -1111,16 +1211,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"навсегда", period_month:"месяц",
       plan_free_name:"Бесплатно", plan_free_f1:"Проверенная анкета и неограниченные совпадения", plan_free_f2:"Безопасные сообщения",
       plan_free_f3:"Модерация 24/7", plan_free_cta:"Начать бесплатно",
-      plan_discovery_name:"Открытие", plan_discovery_f1:"Смотрите, кто уже поставил вам лайк",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Смотрите, кто уже поставил вам лайк",
       plan_discovery_f2:"Совместимость, уточнённая ИИ", plan_discovery_f3:"5 супер-лайков в неделю",
-      plan_discovery_cta:"Попробовать Открытие",
-      plan_premium_name:"Premium", plan_premium_f1:"Неограниченные видеозвонки", plan_premium_f2:"Еженедельное продвижение анкеты",
-      plan_premium_f3:"Выделенная приоритетная поддержка", plan_premium_cta:"Перейти на Premium",
+      plan_discovery_cta:"Попробовать Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Неограниченные видеозвонки", plan_premium_f2:"Еженедельное продвижение анкеты",
+      plan_premium_f3:"Выделенная приоритетная поддержка", plan_premium_cta:"Перейти на Gold",
       final_eyebrow:"Готовы?", final_title:"Ваш следующий разговор уже ждёт.",
       final_p:"Скачайте LovMy меньше чем за минуту, бесплатно, где бы вы ни находились.",
       store_ios_small:"Загрузить в", store_ios_big:"App Store", store_android_small:"Доступно в", store_android_big:"Google Play",
       qr_caption:"Отсканируйте, чтобы скачать",
       footer_tagline:"Приложение для знакомств, сочетающее деликатный интеллект и настоящие человеческие связи.",
+      footer_age_notice:"🔞 LovMy предназначен только для совершеннолетних. Доступ лицам младше 18 лет строго запрещён.",
       footer_col1_title:"Продукт", footer_col1_l1:"Как это работает", footer_col1_l2:"Безопасность", footer_col1_l3:"Тарифы",
       footer_col2_title:"Компания", footer_col2_l1:"Международное присутствие", footer_col2_l2:"О нас", footer_col2_l3:"Контакты",
       footer_col3_title:"Правовая информация", footer_col3_l1:"Условия использования", footer_col3_l2:"Конфиденциальность", footer_col3_l3:"Безопасность данных",
@@ -1128,6 +1229,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     uk:{
       nav_how:"Як це працює", nav_trust:"Довіра", nav_pricing:"Тарифи", nav_download:"Завантажити",
+      nav_login:"Увійти",
+      ad_label:"Рекламне місце", ad_msg:"Ваш бренд тут, перед аудиторією, яка каже коханню «так».", ad_msg2:"Охопіть перевірених самотніх людей, готових до дії.",
       hero_eyebrow:"Знайомства нового рівня, серце гарантоване",
       hero_title:"Кохання, обчислене серцем.",
       hero_lede:"LovMy знайомить вас із перевіреними самотніми людьми поруч із вами — або на іншому кінці світу. Делікатний інтелект, який добирає збіги за тим, що справді важливо для вас.",
@@ -1159,16 +1262,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"назавжди", period_month:"місяць",
       plan_free_name:"Безкоштовно", plan_free_f1:"Перевірена анкета та необмежені збіги", plan_free_f2:"Безпечні повідомлення",
       plan_free_f3:"Модерація 24/7", plan_free_cta:"Почати безкоштовно",
-      plan_discovery_name:"Відкриття", plan_discovery_f1:"Дивіться, хто вже вподобав вас",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Дивіться, хто вже вподобав вас",
       plan_discovery_f2:"Сумісність, уточнена ШІ", plan_discovery_f3:"5 супер-лайків на тиждень",
-      plan_discovery_cta:"Спробувати Відкриття",
-      plan_premium_name:"Premium", plan_premium_f1:"Необмежені відеодзвінки", plan_premium_f2:"Щотижневе просування анкети",
-      plan_premium_f3:"Виділена пріоритетна підтримка", plan_premium_cta:"Перейти на Premium",
+      plan_discovery_cta:"Спробувати Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Необмежені відеодзвінки", plan_premium_f2:"Щотижневе просування анкети",
+      plan_premium_f3:"Виділена пріоритетна підтримка", plan_premium_cta:"Перейти на Gold",
       final_eyebrow:"Готові?", final_title:"Ваша наступна розмова вже чекає.",
       final_p:"Завантажте LovMy менш ніж за хвилину, безкоштовно, де б ви не були.",
       store_ios_small:"Завантажити в", store_ios_big:"App Store", store_android_small:"Доступно в", store_android_big:"Google Play",
       qr_caption:"Відскануйте, щоб завантажити",
       footer_tagline:"Застосунок для знайомств, що поєднує делікатний інтелект і справжні людські зв'язки.",
+      footer_age_notice:"🔞 LovMy призначений лише для повнолітніх. Доступ особам молодше 18 років суворо заборонено.",
       footer_col1_title:"Продукт", footer_col1_l1:"Як це працює", footer_col1_l2:"Безпека", footer_col1_l3:"Тарифи",
       footer_col2_title:"Компанія", footer_col2_l1:"Міжнародна присутність", footer_col2_l2:"Про нас", footer_col2_l3:"Контакти",
       footer_col3_title:"Правова інформація", footer_col3_l1:"Умови використання", footer_col3_l2:"Конфіденційність", footer_col3_l3:"Безпека даних",
@@ -1176,6 +1280,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     pl:{
       nav_how:"Jak to działa", nav_trust:"Zaufanie", nav_pricing:"Cennik", nav_download:"Pobierz",
+      nav_login:"Zaloguj się",
+      ad_label:"Miejsce reklamowe", ad_msg:"Twoja marka, tutaj, przed publicznością, która mówi tak miłości.", ad_msg2:"Dotrzyj do zweryfikowanych singli, gotowych do działania.",
       hero_eyebrow:"Randkowanie wspomagane, z sercem",
       hero_title:"Miłość, obliczona sercem.",
       hero_lede:"LovMy łączy Cię ze zweryfikowanymi singlami w Twojej okolicy — albo po drugiej stronie świata. Dyskretna inteligencja, która dopasowuje Twoje matche do tego, co naprawdę się liczy.",
@@ -1207,16 +1313,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"zawsze", period_month:"miesiąc",
       plan_free_name:"Darmowy", plan_free_f1:"Zweryfikowany profil i nieograniczone dopasowania", plan_free_f2:"Bezpieczne wiadomości",
       plan_free_f3:"Moderacja 24/7", plan_free_cta:"Zacznij za darmo",
-      plan_discovery_name:"Odkrycie", plan_discovery_f1:"Zobacz, kto Cię już polubił",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Zobacz, kto Cię już polubił",
       plan_discovery_f2:"Kompatybilność dopracowana przez AI", plan_discovery_f3:"5 super polubień tygodniowo",
-      plan_discovery_cta:"Wypróbuj Odkrycie",
-      plan_premium_name:"Premium", plan_premium_f1:"Nieograniczone rozmowy wideo", plan_premium_f2:"Cotygodniowe wyróżnienie profilu",
-      plan_premium_f3:"Dedykowane wsparcie priorytetowe", plan_premium_cta:"Przejdź na Premium",
+      plan_discovery_cta:"Wypróbuj Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Nieograniczone rozmowy wideo", plan_premium_f2:"Cotygodniowe wyróżnienie profilu",
+      plan_premium_f3:"Dedykowane wsparcie priorytetowe", plan_premium_cta:"Przejdź na Gold",
       final_eyebrow:"Gotowi?", final_title:"Twoja następna rozmowa już czeka.",
       final_p:"Pobierz LovMy w mniej niż minutę, za darmo, gdziekolwiek jesteś.",
       store_ios_small:"Pobierz w", store_ios_big:"App Store", store_android_small:"Dostępne w", store_android_big:"Google Play",
       qr_caption:"Zeskanuj, aby pobrać",
       footer_tagline:"Aplikacja randkowa, która łączy dyskretną inteligencję z prawdziwymi relacjami międzyludzkimi.",
+      footer_age_notice:"🔞 LovMy jest przeznaczony wyłącznie dla osób pełnoletnich. Dostęp osobom poniżej 18 roku życia jest surowo zabroniony.",
       footer_col1_title:"Produkt", footer_col1_l1:"Jak to działa", footer_col1_l2:"Bezpieczeństwo", footer_col1_l3:"Cennik",
       footer_col2_title:"Firma", footer_col2_l1:"Międzynarodowo", footer_col2_l2:"O nas", footer_col2_l3:"Kontakt",
       footer_col3_title:"Informacje prawne", footer_col3_l1:"Warunki korzystania", footer_col3_l2:"Prywatność", footer_col3_l3:"Bezpieczeństwo danych",
@@ -1224,6 +1331,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     tr:{
       nav_how:"Nasıl çalışır", nav_trust:"Güven", nav_pricing:"Fiyatlandırma", nav_download:"İndir",
+      nav_login:"Giriş yap",
+      ad_label:"Reklam alanı", ad_msg:"Markanız burada, aşka evet diyen bir kitlenin önünde.", ad_msg2:"Harekete geçmeye hazır, doğrulanmış bekarlara ulaşın.",
       hero_eyebrow:"Yapay zekâ destekli tanışma, kalpten",
       hero_title:"Aşk, kalple hesaplanır.",
       hero_lede:"LovMy, sizi yakınınızdaki ya da dünyanın öbür ucundaki doğrulanmış bekarlarla buluşturur. Sizin için gerçekten önemli olanı anlayan sağduyulu bir zekâ ile eşleşmelerinizi inceltir.",
@@ -1255,16 +1364,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"her zaman", period_month:"ay",
       plan_free_name:"Ücretsiz", plan_free_f1:"Doğrulanmış profil ve sınırsız eşleşme", plan_free_f2:"Güvenli mesajlaşma",
       plan_free_f3:"7/24 moderasyon", plan_free_cta:"Ücretsiz başla",
-      plan_discovery_name:"Keşif", plan_discovery_f1:"Sizi kimlerin beğendiğini görün",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Sizi kimlerin beğendiğini görün",
       plan_discovery_f2:"Yapay zekâ ile iyileştirilmiş uyumluluk", plan_discovery_f3:"Haftada 5 süper beğeni",
-      plan_discovery_cta:"Keşif'i deneyin",
-      plan_premium_name:"Premium", plan_premium_f1:"Sınırsız görüntülü arama", plan_premium_f2:"Haftalık profil öne çıkarma",
-      plan_premium_f3:"Özel öncelikli destek", plan_premium_cta:"Premium'a geçin",
+      plan_discovery_cta:"Premium'u deneyin",
+      plan_premium_name:"Gold", plan_premium_f1:"Sınırsız görüntülü arama", plan_premium_f2:"Haftalık profil öne çıkarma",
+      plan_premium_f3:"Özel öncelikli destek", plan_premium_cta:"Gold'a geçin",
       final_eyebrow:"Hazır mısınız?", final_title:"Bir sonraki sohbetiniz sizi bekliyor.",
       final_p:"LovMy'ı bir dakikadan kısa sürede, ücretsiz olarak, nerede olursanız olun indirin.",
       store_ios_small:"İndirin", store_ios_big:"App Store", store_android_small:"Edinin", store_android_big:"Google Play",
       qr_caption:"İndirmek için tarayın",
       footer_tagline:"Sağduyulu zekâ ile gerçek insan bağlantılarını birleştiren tanışma uygulaması.",
+      footer_age_notice:"🔞 LovMy yalnızca reşit kişiler içindir. 18 yaşından küçüklerin erişimi kesinlikle yasaktır.",
       footer_col1_title:"Ürün", footer_col1_l1:"Nasıl çalışır", footer_col1_l2:"Güvenlik", footer_col1_l3:"Fiyatlandırma",
       footer_col2_title:"Şirket", footer_col2_l1:"Uluslararası", footer_col2_l2:"Hakkımızda", footer_col2_l3:"İletişim",
       footer_col3_title:"Yasal", footer_col3_l1:"Kullanım koşulları", footer_col3_l2:"Gizlilik", footer_col3_l3:"Veri güvenliği",
@@ -1272,6 +1382,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     ar:{
       nav_how:"كيف يعمل", nav_trust:"الثقة", nav_pricing:"الأسعار", nav_download:"تحميل",
+      nav_login:"تسجيل الدخول",
+      ad_label:"مساحة إعلانية", ad_msg:"علامتك التجارية هنا، أمام جمهور يقول نعم للحب.", ad_msg2:"تواصل مع عازبين موثّقين، مستعدين لاتخاذ خطوة.",
       hero_eyebrow:"مواعدة معزّزة، بقلب مضمون",
       hero_title:"الحب، محسوب بالقلب.",
       hero_lede:"يربطك LovMy بأشخاص عازبين موثّقين بالقرب منك — أو في الطرف الآخر من العالم. ذكاء اصطناعي دقيق يُحسّن تطابقاتك بناءً على ما يهمك فعلاً.",
@@ -1303,16 +1415,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"دائمًا", period_month:"شهر",
       plan_free_name:"مجاني", plan_free_f1:"ملف موثّق وتطابقات غير محدودة", plan_free_f2:"مراسلة آمنة",
       plan_free_f3:"إشراف على مدار الساعة", plan_free_cta:"ابدأ مجانًا",
-      plan_discovery_name:"استكشاف", plan_discovery_f1:"شاهد من أعجب بك بالفعل",
+      plan_discovery_name:"Premium", plan_discovery_f1:"شاهد من أعجب بك بالفعل",
       plan_discovery_f2:"توافق محسّن بالذكاء الاصطناعي", plan_discovery_f3:"5 إعجابات مميزة أسبوعيًا",
-      plan_discovery_cta:"جرّب استكشاف",
-      plan_premium_name:"Premium", plan_premium_f1:"مكالمات فيديو غير محدودة", plan_premium_f2:"إبراز الملف الشخصي أسبوعيًا",
-      plan_premium_f3:"دعم مخصص ذو أولوية", plan_premium_cta:"الترقية إلى Premium",
+      plan_discovery_cta:"جرّب Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"مكالمات فيديو غير محدودة", plan_premium_f2:"إبراز الملف الشخصي أسبوعيًا",
+      plan_premium_f3:"دعم مخصص ذو أولوية", plan_premium_cta:"الترقية إلى Gold",
       final_eyebrow:"جاهز؟", final_title:"محادثتك القادمة في انتظارك.",
       final_p:"حمّل LovMy في أقل من دقيقة، مجانًا، أينما كنت.",
       store_ios_small:"حمّله من", store_ios_big:"App Store", store_android_small:"متوفر على", store_android_big:"Google Play",
       qr_caption:"امسح للتحميل",
       footer_tagline:"تطبيق المواعدة الذي يجمع بين الذكاء الدقيق والتواصل الإنساني الحقيقي.",
+      footer_age_notice:"🔞 تطبيق LovMy مخصص للبالغين فقط. يُمنع منعًا باتًا دخول من هم دون 18 عامًا.",
       footer_col1_title:"المنتج", footer_col1_l1:"كيف يعمل", footer_col1_l2:"الأمان", footer_col1_l3:"الأسعار",
       footer_col2_title:"الشركة", footer_col2_l1:"دولي", footer_col2_l2:"من نحن", footer_col2_l3:"اتصل بنا",
       footer_col3_title:"قانوني", footer_col3_l1:"شروط الاستخدام", footer_col3_l2:"الخصوصية", footer_col3_l3:"أمان البيانات",
@@ -1320,6 +1433,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     zh:{
       nav_how:"如何使用", nav_trust:"信任与安全", nav_pricing:"价格", nav_download:"下载",
+      nav_login:"登录",
+      ad_label:"广告位", ad_msg:"您的品牌，就在这里，面向对爱说“是”的受众。", ad_msg2:"触达已验证、随时行动的单身人士。",
       hero_eyebrow:"智能加持的约会，用心保证",
       hero_title:"用心计算的爱情。",
       hero_lede:"LovMy 让您与身边或世界另一端经过验证的单身人士相遇——凭借懂得您真正在意之事的低调智能，优化每一次匹配。",
@@ -1351,16 +1466,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"永久", period_month:"月",
       plan_free_name:"免费版", plan_free_f1:"经过验证的资料与无限匹配", plan_free_f2:"安全消息",
       plan_free_f3:"全天候审核", plan_free_cta:"免费开始",
-      plan_discovery_name:"探索版", plan_discovery_f1:"查看谁已经喜欢您",
+      plan_discovery_name:"Premium", plan_discovery_f1:"查看谁已经喜欢您",
       plan_discovery_f2:"AI 优化的兼容度", plan_discovery_f3:"每周5次超级喜欢",
-      plan_discovery_cta:"试用探索版",
-      plan_premium_name:"Premium", plan_premium_f1:"无限视频通话", plan_premium_f2:"每周资料曝光提升",
-      plan_premium_f3:"专属优先客服支持", plan_premium_cta:"升级到 Premium",
+      plan_discovery_cta:"试用 Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"无限视频通话", plan_premium_f2:"每周资料曝光提升",
+      plan_premium_f3:"专属优先客服支持", plan_premium_cta:"升级到 Gold",
       final_eyebrow:"准备好了吗？", final_title:"您的下一段对话正在等待。",
       final_p:"不到一分钟即可免费下载 LovMy，无论您身在何处。",
       store_ios_small:"前往下载", store_ios_big:"App Store", store_android_small:"前往获取", store_android_big:"Google Play",
       qr_caption:"扫码 下载",
       footer_tagline:"这款约会应用将低调的智能与真实的人际连接融为一体。",
+      footer_age_notice:"🔞 LovMy 仅限成年人使用，严禁18岁以下人士访问。",
       footer_col1_title:"产品", footer_col1_l1:"如何使用", footer_col1_l2:"安全", footer_col1_l3:"价格",
       footer_col2_title:"公司", footer_col2_l1:"国际", footer_col2_l2:"关于我们", footer_col2_l3:"联系我们",
       footer_col3_title:"法律", footer_col3_l1:"使用条款", footer_col3_l2:"隐私政策", footer_col3_l3:"数据安全",
@@ -1368,6 +1484,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     ja:{
       nav_how:"使い方", nav_trust:"信頼と安全", nav_pricing:"料金", nav_download:"ダウンロード",
+      nav_login:"ログイン",
+      ad_label:"広告スペース", ad_msg:"あなたのブランドを、愛にイエスと言うオーディエンスの前に。", ad_msg2:"行動する準備ができた、認証済みの独身者にアプローチ。",
       hero_eyebrow:"知性が支える出会い、心は本物",
       hero_title:"心で計算する、恋。",
       hero_lede:"LovMyは、あなたのそばにいる、あるいは地球の裏側にいる、身元確認済みの独身者とあなたをつなげます。本当に大切にしていることを理解する控えめな知性が、マッチングを精緻化します。",
@@ -1399,16 +1517,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"ずっと", period_month:"月",
       plan_free_name:"無料", plan_free_f1:"認証済みプロフィールと無制限のマッチング", plan_free_f2:"安全なメッセージ機能",
       plan_free_f3:"24時間365日のモデレーション", plan_free_cta:"無料で始める",
-      plan_discovery_name:"ディスカバリー", plan_discovery_f1:"すでに「いいね」してくれた人を確認",
+      plan_discovery_name:"Premium", plan_discovery_f1:"すでに「いいね」してくれた人を確認",
       plan_discovery_f2:"AIによる相性の精緻化", plan_discovery_f3:"週5回のスーパーいいね",
-      plan_discovery_cta:"ディスカバリーを試す",
-      plan_premium_name:"Premium", plan_premium_f1:"無制限のビデオ通話", plan_premium_f2:"毎週のプロフィールブースト",
-      plan_premium_f3:"専任の優先サポート", plan_premium_cta:"Premiumにアップグレード",
+      plan_discovery_cta:"Premiumを試す",
+      plan_premium_name:"Gold", plan_premium_f1:"無制限のビデオ通話", plan_premium_f2:"毎週のプロフィールブースト",
+      plan_premium_f3:"専任の優先サポート", plan_premium_cta:"Goldにアップグレード",
       final_eyebrow:"準備はいいですか？", final_title:"次の会話が、あなたを待っています。",
       final_p:"1分もかからず、無料で、どこにいてもLovMyをダウンロードできます。",
       store_ios_small:"ダウンロードは", store_ios_big:"App Store", store_android_small:"入手先は", store_android_big:"Google Play",
       qr_caption:"スキャンして ダウンロード",
       footer_tagline:"控えめな知性と本物の人とのつながりを両立させた出会い系アプリ。",
+      footer_age_notice:"🔞 LovMyは成人限定のサービスです。18歳未満の方のアクセスは固くお断りします。",
       footer_col1_title:"製品", footer_col1_l1:"使い方", footer_col1_l2:"安全性", footer_col1_l3:"料金",
       footer_col2_title:"会社情報", footer_col2_l1:"海外展開", footer_col2_l2:"会社概要", footer_col2_l3:"お問い合わせ",
       footer_col3_title:"法的情報", footer_col3_l1:"利用規約", footer_col3_l2:"プライバシー", footer_col3_l3:"データの安全性",
@@ -1416,6 +1535,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
     },
     ko:{
       nav_how:"이용 방법", nav_trust:"신뢰와 안전", nav_pricing:"요금제", nav_download:"다운로드",
+      nav_login:"로그인",
+      ad_label:"광고 공간", ad_msg:"사랑에 예스라고 말하는 이들 앞에, 당신의 브랜드를.", ad_msg2:"행동할 준비가 된 인증된 싱글에게 다가가세요.",
       hero_eyebrow:"지능이 더한 만남, 진심은 그대로",
       hero_title:"마음으로 계산하는 사랑.",
       hero_lede:"LovMy는 당신 근처에 있든, 지구 반대편에 있든 신원이 확인된 싱글과 당신을 연결합니다. 진정으로 중요한 것을 이해하는 섬세한 지능이 매칭을 정교하게 다듬습니다.",
@@ -1447,16 +1568,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       period_always:"항상", period_month:"월",
       plan_free_name:"무료", plan_free_f1:"인증된 프로필과 무제한 매칭", plan_free_f2:"안전한 메시지",
       plan_free_f3:"24시간 모니터링", plan_free_cta:"무료로 시작하기",
-      plan_discovery_name:"디스커버리", plan_discovery_f1:"이미 나를 좋아요한 사람 보기",
+      plan_discovery_name:"Premium", plan_discovery_f1:"이미 나를 좋아요한 사람 보기",
       plan_discovery_f2:"AI로 정교화된 궁합", plan_discovery_f3:"주 5회 슈퍼 라이크",
-      plan_discovery_cta:"디스커버리 체험하기",
-      plan_premium_name:"Premium", plan_premium_f1:"무제한 영상통화", plan_premium_f2:"매주 프로필 부스트",
-      plan_premium_f3:"전담 우선 고객지원", plan_premium_cta:"Premium으로 전환하기",
+      plan_discovery_cta:"Premium 체험하기",
+      plan_premium_name:"Gold", plan_premium_f1:"무제한 영상통화", plan_premium_f2:"매주 프로필 부스트",
+      plan_premium_f3:"전담 우선 고객지원", plan_premium_cta:"Gold로 전환하기",
       final_eyebrow:"준비되셨나요?", final_title:"다음 대화가 당신을 기다리고 있어요.",
       final_p:"1분도 채 걸리지 않아 LovMy를 무료로, 어디서든 다운로드하세요.",
       store_ios_small:"다운로드", store_ios_big:"App Store", store_android_small:"다운로드", store_android_big:"Google Play",
       qr_caption:"스캔하여 다운로드",
       footer_tagline:"섬세한 지능과 진짜 인간적 연결을 결합한 데이팅 앱.",
+      footer_age_notice:"🔞 LovMy는 성인 전용 서비스입니다. 18세 미만은 이용하실 수 없습니다.",
       footer_col1_title:"제품", footer_col1_l1:"이용 방법", footer_col1_l2:"안전", footer_col1_l3:"요금제",
       footer_col2_title:"회사", footer_col2_l1:"글로벌 진출", footer_col2_l2:"회사 소개", footer_col2_l3:"문의하기",
       footer_col3_title:"법적 고지", footer_col3_l1:"이용약관", footer_col3_l2:"개인정보 처리방침", footer_col3_l3:"데이터 보안",
@@ -1469,7 +1591,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   LANGS.forEach(function(l){
     var b = document.createElement('button');
     b.type = 'button'; b.dataset.code = l.code;
-    b.innerHTML = '<span class="flag">'+l.flag+'</span><span>'+l.name+'</span>';
+    b.innerHTML = '<img class="flag" src="'+flagUrl(l.cc)+'" width="20" height="15" alt="">'+'<span>'+l.name+'</span>';
     b.addEventListener('click', function(){ setLang(l.code); closeMenu(); });
     langMenu.appendChild(b);
   });
@@ -1486,19 +1608,18 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   });
 
   var currentLang = 'fr';
-  var isCI = false; // ajusté par detectCountry() — affine le narratif pour la Côte d'Ivoire
   function setLang(code){
     var dict = T[code]; if(!dict) return;
     currentLang = code;
     var meta = LANGS.filter(function(l){return l.code===code;})[0];
     document.documentElement.lang = code;
     document.documentElement.dir = meta.dir;
-    document.getElementById('langBtnFlag').textContent = meta.flag;
+    document.getElementById('langBtnFlag').src = flagUrl(meta.cc);
     document.getElementById('langBtnCode').textContent = code.toUpperCase();
 
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       var key = el.getAttribute('data-i18n');
-      var val = (isCI && dict[key + '_ci'] !== undefined) ? dict[key + '_ci'] : dict[key];
+      var val = dict[key];
       if(val !== undefined){ el.textContent = val; }
     });
 
@@ -1508,7 +1629,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   }
   setLang('fr');
 
-  /* ---- narratif géolocalisé : Côte d'Ivoire vs reste du monde ---- */
+  /* ---- devise par défaut selon le pays détecté : CFA en zone UEMOA/CEMAC, EUR en zone euro, USD ailleurs ---- */
+  var CFA_COUNTRIES = ["BJ","BF","CI","GW","ML","NE","SN","TG","CM","CF","TD","CG","GQ","GA"];
+  var EURO_COUNTRIES = ["FR","DE","ES","IT","PT","NL","BE","IE","AT","FI","GR","LU","SI","SK","EE","LV","LT","CY","MT","HR","AD","MC","SM","VA"];
   (function detectCountry(){
     var timedOut = false;
     var timer = setTimeout(function(){ timedOut = true; }, 4000);
@@ -1516,15 +1639,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       .then(function(r){ return r.json(); })
       .then(function(data){
         clearTimeout(timer);
-        if(timedOut || !data) return;
-        if(data.country === 'CI'){
-          isCI = true;
-          setLang(currentLang);
-        }
+        if(timedOut || !data || !data.country || currencyManuallySet) return;
+        if(CFA_COUNTRIES.indexOf(data.country) !== -1){ applyCurrency('xof'); }
+        else if(EURO_COUNTRIES.indexOf(data.country) !== -1){ applyCurrency('eur'); }
+        else{ applyCurrency('usd'); }
       })
       .catch(function(){
         clearTimeout(timer);
-        /* échec ou bloqué par un bloqueur de pub : on garde le narratif international par défaut */
+        /* échec ou bloqué par un bloqueur de pub : on garde la devise par défaut (EUR) */
       });
   })();
 
@@ -1536,6 +1658,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   ];
 
   var currentCurrency = 'eur';
+  var currencyManuallySet = false;
   function fmtPrice(cur, eur, usd, xof){
     if(cur==='usd'){ return '$' + usd.toFixed(2); }
     if(cur==='xof'){ return (xof===0? '0' : Math.round(xof).toLocaleString('fr-FR')) + ' CFA'; }
@@ -1572,7 +1695,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
       var b = document.createElement('button');
       b.type = 'button'; b.dataset.curr = c.code;
       b.innerHTML = '<span class="sym">'+c.symbol+'</span><span>'+c.label+' ('+c.short+')</span>';
-      b.addEventListener('click', function(){ applyCurrency(c.code); closeCurrMenu(menu, btn); });
+      b.addEventListener('click', function(){ currencyManuallySet = true; applyCurrency(c.code); closeCurrMenu(menu, btn); });
       menu.appendChild(b);
     });
     btn.addEventListener('click', function(e){
@@ -1629,6 +1752,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blush);outline-offs
   /* ---- external links + QR code (from the LINKS config above) ---- */
   document.getElementById('iosLink').href = LINKS.ios;
   document.getElementById('androidLink').href = LINKS.android;
+  document.getElementById('loginLink').href = LINKS.login;
+  document.getElementById('loginLinkMobile').href = LINKS.login;
   document.getElementById('socialFacebook').href = LINKS.facebook;
   document.getElementById('socialInstagram').href = LINKS.instagram;
   document.getElementById('socialTiktok').href = LINKS.tiktok;
