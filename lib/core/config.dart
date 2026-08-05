@@ -12,11 +12,11 @@ class Config {
   // Pour l'émulateur Android : utiliser http://10.0.2.2:8000
   // Pour staging : https://lovmy.dontmove.app
   // -------------------------------------------------------------------------
-  static const String baseUrl = 'http://192.168.1.69:8000/';
+  static const String baseUrl = 'http://192.168.1.75:8000/';
 
-  static const String imageBaseUrl = 'http://192.168.1.69:8000/';
+  static const String imageBaseUrl = 'http://192.168.1.75:8000/';
 
-  static const String baseUrlApi = 'http://192.168.1.69:8000/api';
+  static const String baseUrlApi = 'http://192.168.1.75:8000/api';
   
 
   static const Map<String, dynamic> header = {

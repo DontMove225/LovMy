@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LovMy — Intégration MSG91 OTP (Laravel 12 + Flutter)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --passion:#EB0603;
+  --ember:#F64135;
+  --velvet:#800001;
+  --noir-rouge:#440004;
+  --obsidian:#080714;
+  --steel:#303B63;
+  --blush:#E89EA1;
+  --white:#FFFFFF;
+  --ivory:#FBF7F6;
+
+  --ink:#0c0a16;
+  --paper:#100b1c;
+  --line:rgba(232,158,161,.16);
+  --txt:#EDE7EA;
+  --txt-soft:#B8AEB8;
+  --txt-faint:#7C7388;
+
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Manrope",system-ui,sans-serif;
+  --mono:"Space Grotesk",ui-monospace,monospace;
+
+  --maxw:1180px;
+  --radius:14px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(235,6,3,.16), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(48,59,99,.28), transparent 55%),
+    var(--ink);
+  color:var(--txt);
+  line-height:1.65;
+}
+
+a{color:var(--blush)}
+
+/* ---------- HEADER ---------- */
+header.hero{
+  position:relative;
+  padding:64px 32px 56px;
+  background:
+    linear-gradient(180deg, rgba(8,7,20,.2), var(--ink) 92%),
+    linear-gradient(120deg, var(--velvet) 0%, var(--noir-rouge) 45%, var(--obsidian) 100%);
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+header.hero::before{
+  content:"";
+  position:absolute; inset:-40% -10% auto auto;
+  width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, var(--ember), transparent 65%);
+  opacity:.35; filter:blur(10px);
+}
+.hero-inner{max-width:var(--maxw); margin:0 auto; position:relative; z-index:1}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--blush); border:1px solid var(--line); padding:6px 14px; border-radius:999px;
+  background:rgba(232,158,161,.06);
+}
+h1.title{
+  font-family:var(--serif); font-weight:600; font-style:italic;
+  font-size:clamp(32px,4.4vw,52px); margin:22px 0 10px; color:var(--white); letter-spacing:-.01em;
+}
+p.subtitle{color:var(--txt-soft); font-size:18px; max-width:720px; margin:0 0 28px}
+.meta-row{display:flex; flex-wrap:wrap; gap:14px; font-family:var(--mono); font-size:13px; color:var(--txt-faint)}
+.meta-row span{border:1px solid var(--line); padding:6px 12px; border-radius:8px; background:rgba(255,255,255,.02)}
+
+/* ---------- NAV ---------- */
+nav.toc{
+  position:sticky; top:0; z-index:50;
+  background:rgba(16,11,27,.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:10px 20px;
+}
+nav.toc .toc-inner{
+  max-width:var(--maxw); margin:0 auto;
+  display:flex; gap:4px; overflow-x:auto; scrollbar-width:thin;
+}
+nav.toc a{
+  flex:0 0 auto;
+  font-family:var(--mono); font-size:12.5px; color:var(--txt-soft);
+  text-decoration:none; padding:8px 12px; border-radius:8px; white-space:nowrap;
+  border:1px solid transparent;
+}
+nav.toc a:hover{color:var(--white); border-color:var(--line); background:rgba(255,255,255,.03)}
+
+/* ---------- MAIN ---------- */
+main{max-width:var(--maxw); margin:0 auto; padding:56px 32px 120px}
+section{margin-bottom:64px; scroll-margin-top:74px}
+section .num{
+  font-family:var(--mono); color:var(--ember); font-size:13px; letter-spacing:.12em;
+}
+h2{
+  font-family:var(--serif); font-weight:600; font-size:clamp(24px,2.6vw,34px);
+  color:var(--white); margin:6px 0 22px; padding-bottom:16px; border-bottom:1px solid var(--line);
+}
+h3{font-family:var(--sans); font-weight:700; font-size:18px; color:var(--white); margin:28px 0 10px}
+p{color:var(--txt-soft)}
+ul,ol{color:var(--txt-soft); padding-left:22px}
+li{margin-bottom:6px}
+strong{color:var(--txt)}
+
+.card{
+  background:rgba(255,255,255,.025); border:1px solid var(--line); border-radius:var(--radius);
+  padding:22px 24px; margin:18px 0;
+}
+.card.warn{border-color:rgba(246,65,53,.4); background:rgba(246,65,53,.06)}
+.card.info{border-color:rgba(48,59,99,.55); background:rgba(48,59,99,.12)}
+.card-label{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ember); margin-bottom:8px; display:block;
+}
+.card.info .card-label{color:#93a1e0}
+
+pre{
+  background:#0a0812; border:1px solid var(--line); border-radius:10px;
+  padding:18px 20px; overflow:auto; font-family:var(--mono); font-size:13.2px; color:#f0e9ee;
+  line-height:1.55;
+}
+code{font-family:var(--mono); background:rgba(255,255,255,.06); padding:1px 6px; border-radius:5px; font-size:.92em; color:var(--blush)}
+pre code{background:none; padding:0; color:inherit}
+
+table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px}
+th,td{border:1px solid var(--line); padding:10px 14px; text-align:left; vertical-align:top}
+th{background:rgba(235,6,3,.08); color:var(--white); font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+td{color:var(--txt-soft)}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+
+.badge{
+  display:inline-block; font-family:var(--mono); font-size:11.5px; padding:3px 9px; border-radius:6px;
+  border:1px solid var(--line); color:var(--txt-soft); margin-right:6px;
+}
+.badge.ok{color:#8fe3a6; border-color:rgba(143,227,166,.35)}
+.badge.err{color:#f6a3a1; border-color:rgba(246,163,161,.35)}
+
+.steps{counter-reset:step}
+.steps>li{list-style:none; position:relative; padding-left:38px; margin-bottom:14px}
+.steps>li::before{
+  counter-increment:step; content:counter(step);
+  position:absolute; left:0; top:0; width:26px; height:26px; border-radius:50%;
+  background:linear-gradient(135deg,var(--passion),var(--ember));
+  color:#fff; font-family:var(--mono); font-size:13px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.checklist{list-style:none; padding-left:0}
+.checklist li{
+  display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px dashed var(--line);
+}
+.checklist li:last-child{border-bottom:none}
+.checklist input{margin-top:4px; width:16px; height:16px; accent-color:var(--passion)}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+.flow{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:20px 0}
+.flow .step{
+  background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:10px;
+  padding:12px 16px; font-size:13.5px; color:var(--txt); flex:1 1 150px; text-align:center;
+}
+.flow .arrow{color:var(--ember); font-family:var(--mono); font-size:18px}
+
+footer{
+  border-top:1px solid var(--line); padding:40px 32px; background:rgba(0,0,0,.2);
+}
+.footer-inner{max-width:var(--maxw); margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px}
+footer p{margin:0; color:var(--txt-faint); font-size:13.5px}
+footer strong{color:var(--white)}
+
+.tag-required{color:var(--ember); font-family:var(--mono); font-size:11px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">● Documentation technique — LovMy.fr</span>
+    <h1 class="title">Intégration MSG91 OTP</h1>
+    <p class="subtitle">Guide de référence pour l'authentification par code à usage unique (OTP) sur LovMy — destiné aux développeurs Laravel 12 (API) et Flutter (mobile).</p>
+    <div class="meta-row">
+      <span>Version 2.0</span>
+      <span>Laravel 12 · PHP 8.4</span>
+      <span>Flutter (iOS / Android)</span>
+      <span>Auteur : Hyacinthe AGO — CTO &amp; Founder, Full IT</span>
+      <span>Dernière mise à jour : 30/07/2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#presentation">1. Présentation</a>
+    <a href="#architecture">2. Architecture</a>
+    <a href="#compte-msg91">3. Compte MSG91</a>
+    <a href="#widget-otp">4. Widget OTP</a>
+    <a href="#templates">5. Templates SMS</a>
+    <a href="#sender-id">6. Sender ID</a>
+    <a href="#variables">7. Variables</a>
+    <a href="#laravel">8. Intégration Laravel</a>
+    <a href="#service">9. Msg91OtpService</a>
+    <a href="#controleurs">10. Contrôleurs</a>
+    <a href="#routes">11. Routes API</a>
+    <a href="#validation">12. Validation</a>
+    <a href="#erreurs">13. Erreurs</a>
+    <a href="#journalisation">14. Journalisation</a>
+    <a href="#securite">15. Sécurité</a>
+    <a href="#rate-limiting">16. Rate Limiting</a>
+    <a href="#postman">17. Tests Postman</a>
+    <a href="#flutter">18. Tests Flutter</a>
+    <a href="#production">19. Production</a>
+    <a href="#checklist">20. Checklist</a>
+    <a href="#annexes">21. Annexes</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- 1 -->
+<section id="presentation">
+  <span class="num">01 / 21</span>
+  <h2>Présentation</h2>
+  <p>Ce document décrit l'intégration complète du service <strong>MSG91 OTP Widget</strong> dans l'écosystème LovMy, pour sécuriser l'inscription et la connexion des utilisateurs par vérification du numéro de téléphone.</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="card-label">Périmètre</span>
+      <ul>
+        <li>API d'authentification Laravel 12 (backend, monorepo <code>Prj_LovMy</code>)</li>
+        <li>Application mobile Flutter (écrans numéro / OTP)</li>
+        <li>Configuration du compte et du Widget MSG91</li>
+        <li>Environnements staging (<code>dontmove.app</code>) et production (<code>lovmy.fr</code>)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label">Public visé</span>
+      <ul>
+        <li>Développeurs backend Laravel travaillant sur l'API <code>/api/v1/auth</code></li>
+        <li>Développeurs Flutter en charge du flux d'inscription/connexion</li>
+        <li>Toute personne amenée à administrer le compte MSG91 de LovMy</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card info">
+    <span class="card-label">Pourquoi MSG91 ?</span>
+    <p style="margin:0">MSG91 fournit un widget OTP prêt à l'emploi (envoi SMS, gestion des tentatives, renvoi, expiration) sans avoir à opérer notre propre passerelle SMS. Il est mutualisable avec les autres produits MSG91 déjà utilisés dans l'écosystème Don't Move (Email, WhatsApp, Campaign).</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="architecture">
+  <span class="num">02 / 21</span>
+  <h2>Architecture de l'authentification LovMy</h2>
+  <p>Le flux d'authentification repose sur trois acteurs : l'application <strong>Flutter</strong>, l'API <strong>Laravel 12</strong> et le service <strong>MSG91</strong>. Laravel ne stocke jamais l'OTP en clair et ne fait jamais confiance à un OTP validé côté client : la vérification finale passe toujours par MSG91.</p>
+
+  <div class="flow">
+    <div class="step">📱 Saisie du numéro<br><small>Flutter</small></div>
+    <div class="arrow">→</div>
+    <div class="step">🔐 <code>POST /otp/send</code><br><small>Laravel → MSG91</small></div>
+    <div class="arrow">→</div>
+    <div class="step">✉️ SMS envoyé<br><small>MSG91</small></div>
+    <div class="arrow">→</div>
+    <div class="step">🔢 Saisie du code<br><small>Flutter</small></div>
+    <div class="arrow">→</div>
+    <div class="step">✅ <code>POST /otp/verify</code><br><small>Laravel ↔ MSG91</small></div>
+    <div class="arrow">→</div>
+    <div class="step">🎟️ Session (Sanctum/JWT)<br><small>Laravel → Flutter</small></div>
+  </div>
+
+  <h3>Principes clés</h3>
+  <ul>
+    <li><strong>Stateless côté Laravel</strong> — l'état de l'OTP (code, expiration, tentatives) est délégué à MSG91 via son <em>Widget ID</em>. Laravel journalise seulement les tentatives (numéro, horodatage, résultat).</li>
+    <li><strong>Un seul point de vérité</strong> — la vérification finale du code se fait toujours via l'appel serveur-à-serveur à MSG91 (jamais uniquement côté mobile).</li>
+    <li><strong>Session émise uniquement après succès</strong> — le token Sanctum (ou JWT) n'est généré qu'après une réponse <code>success</code> de MSG91.</li>
+    <li><strong>Idempotence</strong> — un compte existant se reconnecte via le même flux ; un nouveau numéro déclenche la création de compte après vérification.</li>
+  </ul>
+</section>
+
+<!-- 3 -->
+<section id="compte-msg91">
+  <span class="num">03 / 21</span>
+  <h2>Création du compte MSG91</h2>
+  <ol class="steps">
+    <li>Créer un compte sur <a href="https://control.msg91.com" target="_blank">control.msg91.com</a> avec l'adresse <code>contact@lovmy.fr</code>.</li>
+    <li>Renseigner les informations de l'entreprise (Full IT / LovMy) et valider l'e-mail professionnel.</li>
+    <li>Compléter le KYC si demandé (nécessaire pour lever certaines limites d'envoi SMS).</li>
+    <li>Depuis le menu principal (icône grille en haut à gauche), sélectionner le produit <strong>OTP</strong> dans la section « Products ».</li>
+    <li>Créditer le compte via <strong>Add Funds</strong> pour permettre l'envoi de SMS en production.</li>
+    <li>Ajouter les membres de l'équipe technique via <strong>Manage Members</strong> avec des rôles restreints (lecture seule pour la majorité, admin pour le CTO).</li>
+  </ol>
+  <div class="card">
+    <span class="card-label">Repères dans le dashboard</span>
+    <p style="margin:0">Le compte LovMy apparaît sous l'espace de travail <code>full11</code>. Le sélecteur « Select Service → OTP Widget » permet de basculer entre les produits MSG91 (Campaign, Hello, Segmento, OTP, One API) sans changer de compte.</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="widget-otp">
+  <span class="num">04 / 21</span>
+  <h2>Configuration complète du Widget OTP</h2>
+  <p>Le Widget OTP centralise la logique métier de l'OTP (génération, expiration, tentatives, renvoi). Il se configure une fois puis se réutilise pour tous les environnements via son <code>WIDGET_ID</code>.</p>
+
+  <ol class="steps">
+    <li>Dans <strong>OTP → OTP Widget</strong>, cliquer sur <strong>Create Widget</strong>.</li>
+    <li>Nommer le widget de façon explicite par environnement : <code>LovMy Production</code> et <code>LovMy Staging</code> (deux widgets distincts recommandés pour isoler les quotas et les logs).</li>
+    <li>Longueur de l'OTP : <strong>6 chiffres</strong> (équilibre sécurité / ergonomie mobile).</li>
+    <li>Expiration : <strong>300 secondes</strong> (5 minutes).</li>
+    <li>Nombre de tentatives de saisie : <strong>3</strong>.</li>
+    <li>Nombre de renvois autorisés : <strong>2</strong>, avec un délai minimal de 30 secondes entre deux renvois.</li>
+    <li>Canal actif : <strong>SMS uniquement</strong> (WhatsApp et Voice désactivés pour ce widget — gérés séparément si besoin).</li>
+    <li>Associer le <strong>Sender ID</strong> et le(s) template(s) créés aux sections 5 et 6.</li>
+    <li>Enregistrer, puis copier l'<code>AUTH KEY</code> (Settings → Authkey) et le <code>WIDGET ID</code> généré.</li>
+  </ol>
+
+  <div class="card warn">
+    <span class="card-label">Point de vigilance</span>
+    <p style="margin:0">L'<code>AUTH KEY</code> est un secret global au compte (pas seulement au widget). Il ne doit <strong>jamais</strong> être committé dans le dépôt Git ni exposé côté Flutter — il reste exclusivement côté serveur Laravel, dans le fichier <code>.env</code>.</p>
+  </div>
+
+  <pre><code># .env
+MSG91_AUTH_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
+MSG91_WIDGET_ID=xxxxxxxxxxxxxxxxxxxxxxxx
+MSG91_SENDER_ID=LOVMY</code></pre>
+</section>
+
+<!-- 5 -->
+<section id="templates">
+  <span class="num">05 / 21</span>
+  <h2>Création des Templates SMS</h2>
+  <p>Le template définit le texte exact envoyé par SMS. Il doit être approuvé par MSG91 avant utilisation en production.</p>
+
+  <pre><code>LovMy
+Votre code de vérification est : {{OTP}}
+Valable 5 minutes.
+Ne partagez jamais ce code.</code></pre>
+
+  <h3>Multilingue (15 langues)</h3>
+  <p>Conformément à l'ouverture internationale de LovMy, un template est décliné pour chaque langue supportée (FR, EN, ES, AR, PT, IT, DE, NL, RU, TR, SW, HA, WO, YO, ZH). Les traductions sont réalisées via DeepL puis relues par un locuteur natif avant soumission.</p>
+  <ul>
+    <li>Le placeholder <code>{{OTP}}</code> doit rester identique dans toutes les langues.</li>
+    <li>Chaque template est soumis séparément à validation MSG91 (délai habituel : quelques heures à 24h).</li>
+    <li>La langue envoyée est déterminée par la locale de l'appareil Flutter, transmise dans le corps de la requête <code>send</code>.</li>
+  </ul>
+
+  <div class="card info">
+    <span class="card-label">Bon à savoir</span>
+    <p style="margin:0">Selon les pays ciblés, certains opérateurs exigent un enregistrement réglementaire du template (équivalent DLT en Inde). Pour la Côte d'Ivoire et la zone UEMOA, aucun enregistrement DLT n'est requis, mais MSG91 impose sa propre validation de contenu.</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="sender-id">
+  <span class="num">06 / 21</span>
+  <h2>Configuration des Sender ID</h2>
+  <p>Le Sender ID est le nom affiché comme expéditeur du SMS (ex. <code>LOVMY</code> au lieu d'un numéro).</p>
+  <ol class="steps">
+    <li>Dans <strong>SMS → Sender ID</strong>, demander la création d'un Sender ID alphanumérique <code>LOVMY</code> (6 caractères max recommandé).</li>
+    <li>Fournir les justificatifs demandés par MSG91 (nom de marque, capture de l'app ou du site).</li>
+    <li>Attendre la validation (statut visible dans le dashboard, généralement 24–48h).</li>
+    <li>Associer ce Sender ID au Widget OTP créé en section 4.</li>
+  </ol>
+  <table>
+    <thead><tr><th>Environnement</th><th>Sender ID</th><th>Statut attendu</th></tr></thead>
+    <tbody>
+      <tr><td>Production (<code>lovmy.fr</code>)</td><td><code>LOVMY</code></td><td>Approuvé</td></tr>
+      <tr><td>Staging (<code>dontmove.app</code>)</td><td><code>LOVMYT</code></td><td>Approuvé ou Sender générique MSG91 le temps de la validation</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 7 -->
+<section id="variables">
+  <span class="num">07 / 21</span>
+  <h2>Configuration des Variables</h2>
+  <p>Toutes les valeurs sensibles transitent par les variables d'environnement, jamais en dur dans le code.</p>
+
+  <pre><code>// config/services.php
+return [
+    // ...
+    'msg91' => [
+        'auth_key'   => env('MSG91_AUTH_KEY'),
+        'widget_id'  => env('MSG91_WIDGET_ID'),
+        'sender_id'  => env('MSG91_SENDER_ID', 'LOVMY'),
+        'base_url'   => env('MSG91_BASE_URL', 'https://control.msg91.com/api/v5'),
+        'otp_length' => env('MSG91_OTP_LENGTH', 6),
+        'otp_ttl'    => env('MSG91_OTP_TTL', 300), // secondes
+    ],
+];</code></pre>
+
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th><th>Exemple</th></tr></thead>
+    <tbody>
+      <tr><td><code>MSG91_AUTH_KEY</code></td><td>Clé d'authentification du compte MSG91</td><td><span class="tag-required">requis</span></td></tr>
+      <tr><td><code>MSG91_WIDGET_ID</code></td><td>Identifiant du widget OTP</td><td><span class="tag-required">requis</span></td></tr>
+      <tr><td><code>MSG91_SENDER_ID</code></td><td>Sender ID approuvé</td><td><code>LOVMY</code></td></tr>
+      <tr><td><code>MSG91_BASE_URL</code></td><td>URL de base de l'API MSG91</td><td><code>https://control.msg91.com/api/v5</code></td></tr>
+      <tr><td><code>MSG91_OTP_LENGTH</code></td><td>Longueur du code (doit correspondre au widget)</td><td><code>6</code></td></tr>
+      <tr><td><code>MSG91_OTP_TTL</code></td><td>Durée de vie de l'OTP en secondes</td><td><code>300</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 8 -->
+<section id="laravel">
+  <span class="num">08 / 21</span>
+  <h2>Intégration Laravel 12</h2>
+  <p>Aucun package tiers n'est nécessaire : l'appel à l'API MSG91 se fait directement via le client HTTP natif de Laravel (<code>Illuminate\Support\Facades\Http</code>), déjà basé sur Guzzle.</p>
+
+  <ol class="steps">
+    <li>Vérifier la présence de <code>guzzlehttp/guzzle</code> dans <code>composer.json</code> (inclus par défaut avec Laravel 12).</li>
+    <li>Créer le service dédié <code>app/Services/Msg91OtpService.php</code> (section 9).</li>
+    <li>Créer le contrôleur <code>app/Http/Controllers/Api/Auth/OtpController.php</code> (section 10).</li>
+    <li>Déclarer les routes API sous <code>/api/v1/auth/otp/*</code> (section 11).</li>
+    <li>Créer les Form Requests de validation (section 12).</li>
+    <li>Ajouter un canal de log dédié <code>otp</code> (section 14).</li>
+    <li>Publier la configuration : <code>php artisan config:cache</code> après chaque modification du <code>.env</code> en production.</li>
+  </ol>
+
+  <div class="card">
+    <span class="card-label">Structure de dossiers proposée</span>
+<pre><code>app/
+├─ Http/
+│  ├─ Controllers/Api/Auth/OtpController.php
+│  └─ Requests/Auth/{SendOtpRequest,VerifyOtpRequest}.php
+├─ Services/Msg91OtpService.php
+└─ Exceptions/OtpException.php</code></pre>
+  </div>
+</section>
+
+<!-- 9 -->
+<section id="service">
+  <span class="num">09 / 21</span>
+  <h2>Service Msg91OtpService</h2>
+  <p>Ce service encapsule tous les appels HTTP vers MSG91 et normalise les réponses.</p>
+
+  <pre><code>&lt;?php
+
+namespace App\Services;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use App\Exceptions\OtpException;
+
+class Msg91OtpService
+{
+    protected string $authKey;
+    protected string $widgetId;
+    protected string $baseUrl;
+
+    public function __construct()
+    {
+        $this-&gt;authKey  = config('services.msg91.auth_key');
+        $this-&gt;widgetId = config('services.msg91.widget_id');
+        $this-&gt;baseUrl  = config('services.msg91.base_url');
+    }
+
+    /**
+     * Envoie un OTP au numéro fourni.
+     */
+    public function send(string $phone, string $locale = 'fr'): array
+    {
+        $response = Http::withHeaders(['authkey' =&gt; $this-&gt;authKey])
+            -&gt;asForm()
+            -&gt;post("{$this-&gt;baseUrl}/otp", [
+                'widget_id'    =&gt; $this-&gt;widgetId,
+                'mobile'       =&gt; $phone,
+                'template_lang' =&gt; $locale,
+            ]);
+
+        Log::channel('otp')-&gt;info('otp.send', [
+            'phone'  =&gt; $this-&gt;maskPhone($phone),
+            'status' =&gt; $response-&gt;status(),
+        ]);
+
+        if (! $response-&gt;successful() || ($response-&gt;json('type') ?? 'error') !== 'success') {
+            throw new OtpException(
+                $response-&gt;json('message', "Échec de l'envoi de l'OTP"),
+                $response-&gt;status()
+            );
+        }
+
+        return $response-&gt;json();
+    }
+
+    /**
+     * Vérifie l'OTP saisi par l'utilisateur.
+     */
+    public function verify(string $phone, string $otp): bool
+    {
+        $response = Http::withHeaders(['authkey' =&gt; $this-&gt;authKey])
+            -&gt;get("{$this-&gt;baseUrl}/otp/verify", [
+                'mobile' =&gt; $phone,
+                'otp'    =&gt; $otp,
+            ]);
+
+        $success = $response-&gt;successful()
+            &amp;&amp; ($response-&gt;json('type') ?? 'error') === 'success';
+
+        Log::channel('otp')-&gt;info('otp.verify', [
+            'phone'   =&gt; $this-&gt;maskPhone($phone),
+            'success' =&gt; $success,
+        ]);
+
+        return $success;
+    }
+
+    /**
+     * Déclenche un renvoi d'OTP (SMS uniquement pour LovMy).
+     */
+    public function resend(string $phone, string $retryType = 'text'): array
+    {
+        $response = Http::withHeaders(['authkey' =&gt; $this-&gt;authKey])
+            -&gt;get("{$this-&gt;baseUrl}/otp/retry", [
+                'mobile'     =&gt; $phone,
+                'retrytype'  =&gt; $retryType,
+            ]);
+
+        if (! $response-&gt;successful()) {
+            throw new OtpException("Échec du renvoi de l'OTP", $response-&gt;status());
+        }
+
+        return $response-&gt;json();
+    }
+
+    protected function maskPhone(string $phone): string
+    {
+        return substr($phone, 0, 4) . str_repeat('*', max(strlen($phone) - 6, 0)) . substr($phone, -2);
+    }
+}</code></pre>
+</section>
+
+<!-- 10 -->
+<section id="controleurs">
+  <span class="num">10 / 21</span>
+  <h2>Contrôleurs</h2>
+  <pre><code>&lt;?php
+
+namespace App\Http\Controllers\Api\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SendOtpRequest;
+use App\Http\Requests\Auth\VerifyOtpRequest;
+use App\Services\Msg91OtpService;
+use App\Models\User;
+use App\Exceptions\OtpException;
+use Illuminate\Support\Facades\RateLimiter;
+
+class OtpController extends Controller
+{
+    public function __construct(protected Msg91OtpService $otp) {}
+
+    public function send(SendOtpRequest $request)
+    {
+        $key = 'otp-send:' . $request-&gt;phone;
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            return response()-&gt;json([
+                'message' =&gt; 'Trop de demandes. Réessayez plus tard.',
+            ], 429);
+        }
+
+        RateLimiter::hit($key, 60); // 5 envois / minute / numéro
+
+        try {
+            $this-&gt;otp-&gt;send($request-&gt;phone, $request-&gt;locale ?? 'fr');
+
+            return response()-&gt;json(['message' =&gt; 'Code envoyé.']);
+        } catch (OtpException $e) {
+            return response()-&gt;json(['message' =&gt; $e-&gt;getMessage()], 422);
+        }
+    }
+
+    public function verify(VerifyOtpRequest $request)
+    {
+        $verified = $this-&gt;otp-&gt;verify($request-&gt;phone, $request-&gt;code);
+
+        if (! $verified) {
+            return response()-&gt;json(['message' =&gt; 'Code invalide ou expiré.'], 422);
+        }
+
+        $user = User::firstOrCreate(
+            ['phone' =&gt; $request-&gt;phone],
+            ['phone_verified_at' =&gt; now()]
+        );
+
+        $user-&gt;forceFill(['phone_verified_at' =&gt; now()])-&gt;save();
+
+        $token = $user-&gt;createToken('lovmy-mobile')-&gt;plainTextToken;
+
+        return response()-&gt;json([
+            'token' =&gt; $token,
+            'user'  =&gt; $user,
+        ]);
+    }
+
+    public function resend(SendOtpRequest $request)
+    {
+        try {
+            $this-&gt;otp-&gt;resend($request-&gt;phone);
+
+            return response()-&gt;json(['message' =&gt; 'Code renvoyé.']);
+        } catch (OtpException $e) {
+            return response()-&gt;json(['message' =&gt; $e-&gt;getMessage()], 422);
+        }
+    }
+}</code></pre>
+</section>
+
+<!-- 11 -->
+<section id="routes">
+  <span class="num">11 / 21</span>
+  <h2>Routes API</h2>
+  <pre><code>// routes/api.php
+use App\Http\Controllers\Api\Auth\OtpController;
+
+Route::prefix('v1/auth/otp')
+    -&gt;middleware(['throttle:otp'])
+    -&gt;group(function () {
+        Route::post('/send',   [OtpController::class, 'send']);
+        Route::post('/verify', [OtpController::class, 'verify']);
+        Route::post('/resend', [OtpController::class, 'resend']);
+    });</code></pre>
+
+  <table>
+    <thead><tr><th>Méthode</th><th>Endpoint</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge">POST</span></td><td><code>/api/v1/auth/otp/send</code></td><td>Déclenche l'envoi initial de l'OTP</td></tr>
+      <tr><td><span class="badge">POST</span></td><td><code>/api/v1/auth/otp/verify</code></td><td>Vérifie le code et ouvre une session</td></tr>
+      <tr><td><span class="badge">POST</span></td><td><code>/api/v1/auth/otp/resend</code></td><td>Renvoie un OTP (dans la limite du widget)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 12 -->
+<section id="validation">
+  <span class="num">12 / 21</span>
+  <h2>Validation des Request</h2>
+  <pre><code>&lt;?php
+
+namespace App\Http\Requests\Auth;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class SendOtpRequest extends FormRequest
+{
+    public function authorize(): bool { return true; }
+
+    public function rules(): array
+    {
+        return [
+            'phone'  =&gt; ['required', 'string', 'regex:/^\+?[1-9]\d{7,14}$/'],
+            'locale' =&gt; ['sometimes', 'string', 'size:2'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'phone.regex' =&gt; 'Le numéro de téléphone doit être au format international (ex. +2250700000000).',
+        ];
+    }
+}</code></pre>
+
+  <pre><code>&lt;?php
+
+namespace App\Http\Requests\Auth;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class VerifyOtpRequest extends FormRequest
+{
+    public function authorize(): bool { return true; }
+
+    public function rules(): array
+    {
+        return [
+            'phone' =&gt; ['required', 'string', 'regex:/^\+?[1-9]\d{7,14}$/'],
+            'code'  =&gt; ['required', 'digits:6'],
+        ];
+    }
+}</code></pre>
+</section>
+
+<!-- 13 -->
+<section id="erreurs">
+  <span class="num">13 / 21</span>
+  <h2>Gestion des erreurs</h2>
+  <pre><code>&lt;?php
+
+namespace App\Exceptions;
+
+use Exception;
+
+class OtpException extends Exception
+{
+    public function __construct(string $message, protected int $providerStatus = 0)
+    {
+        parent::__construct($message);
+    }
+
+    public function getProviderStatus(): int
+    {
+        return $this-&gt;providerStatus;
+    }
+}</code></pre>
+
+  <table>
+    <thead><tr><th>Code HTTP</th><th>Cas</th><th>Réponse utilisateur</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge err">422</span></td><td>Numéro invalide / OTP incorrect</td><td>« Code invalide ou expiré. »</td></tr>
+      <tr><td><span class="badge err">429</span></td><td>Trop de tentatives (rate limiting)</td><td>« Trop de demandes. Réessayez plus tard. »</td></tr>
+      <tr><td><span class="badge err">502</span></td><td>MSG91 injoignable / timeout</td><td>« Service momentanément indisponible. »</td></tr>
+      <tr><td><span class="badge ok">200</span></td><td>Envoi ou vérification réussie</td><td>Message de confirmation + token</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <span class="card-label">Bonne pratique</span>
+    <p style="margin:0">Ne jamais renvoyer au client le message d'erreur brut de MSG91 (il peut révéler des détails internes). Toujours passer par un message générique côté API, tout en journalisant le détail réel côté serveur.</p>
+  </div>
+</section>
+
+<!-- 14 -->
+<section id="journalisation">
+  <span class="num">14 / 21</span>
+  <h2>Journalisation</h2>
+  <pre><code>// config/logging.php
+'channels' =&gt; [
+    // ...
+    'otp' =&gt; [
+        'driver' =&gt; 'daily',
+        'path'   =&gt; storage_path('logs/otp.log'),
+        'level'  =&gt; env('LOG_LEVEL', 'info'),
+        'days'   =&gt; 30,
+    ],
+],</code></pre>
+  <ul>
+    <li>Le numéro de téléphone est toujours <strong>masqué</strong> avant écriture (voir <code>maskPhone()</code> section 9).</li>
+    <li>Le code OTP lui-même n'est <strong>jamais</strong> journalisé, ni en clair ni haché.</li>
+    <li>Chaque tentative de vérification échouée est loguée avec l'IP source pour détection d'abus.</li>
+    <li>Rotation quotidienne, rétention 30 jours, conforme à la politique de logs Full IT.</li>
+  </ul>
+</section>
+
+<!-- 15 -->
+<section id="securite">
+  <span class="num">15 / 21</span>
+  <h2>Sécurité</h2>
+  <div class="grid2">
+    <div class="card">
+      <span class="card-label">Côté serveur</span>
+      <ul>
+        <li>HTTPS obligatoire sur tous les endpoints d'authentification.</li>
+        <li><code>AUTH_KEY</code> stockée uniquement en variable d'environnement, jamais en base ou en dur.</li>
+        <li>Rotation de l'<code>AUTH_KEY</code> tous les 6 mois ou en cas de suspicion de fuite.</li>
+        <li>Validation stricte du format du numéro avant tout appel MSG91 (évite les envois vers des numéros invalides, facturés inutilement).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label">Côté mobile (Flutter)</span>
+      <ul>
+        <li>Le token de session est stocké via <code>flutter_secure_storage</code>, jamais en <code>SharedPreferences</code> brut.</li>
+        <li>Aucun secret MSG91 n'est présent dans le bundle mobile.</li>
+        <li>Le champ OTP est masqué à l'écran (option d'affichage temporaire uniquement).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card warn">
+    <span class="card-label">Rappel</span>
+    <p style="margin:0">La vérification de l'OTP doit toujours transiter par le backend Laravel. Une application mobile ne doit jamais appeler directement l'API MSG91 avec l'<code>AUTH_KEY</code>.</p>
+  </div>
+</section>
+
+<!-- 16 -->
+<section id="rate-limiting">
+  <span class="num">16 / 21</span>
+  <h2>Rate Limiting</h2>
+  <p>En complément des limites imposées par le Widget MSG91 (3 tentatives, 2 renvois), Laravel applique ses propres garde-fous.</p>
+  <pre><code>// app/Providers/AppServiceProvider.php (méthode boot)
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
+
+RateLimiter::for('otp', function (Request $request) {
+    return [
+        Limit::perMinute(5)-&gt;by($request-&gt;input('phone', $request-&gt;ip())),
+        Limit::perMinute(20)-&gt;by($request-&gt;ip()),
+    ];
+});</code></pre>
+  <table>
+    <thead><tr><th>Clé</th><th>Limite</th><th>Objectif</th></tr></thead>
+    <tbody>
+      <tr><td>Par numéro</td><td>5 requêtes / minute</td><td>Empêcher le spam d'un numéro cible</td></tr>
+      <tr><td>Par IP</td><td>20 requêtes / minute</td><td>Empêcher l'énumération de numéros depuis une même source</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 17 -->
+<section id="postman">
+  <span class="num">17 / 21</span>
+  <h2>Tests Postman</h2>
+  <p>Une collection Postman <code>LovMy-OTP.postman_collection.json</code> est maintenue dans le dossier <code>/docs/postman</code> du monorepo. Elle couvre les scénarios suivants :</p>
+  <ul class="checklist">
+    <li><input type="checkbox"><span>Envoi OTP — numéro valide (200)</span></li>
+    <li><input type="checkbox"><span>Envoi OTP — numéro mal formaté (422)</span></li>
+    <li><input type="checkbox"><span>Vérification — code correct (200 + token)</span></li>
+    <li><input type="checkbox"><span>Vérification — code incorrect (422)</span></li>
+    <li><input type="checkbox"><span>Vérification — code expiré (422)</span></li>
+    <li><input type="checkbox"><span>Renvoi OTP dans la limite autorisée (200)</span></li>
+    <li><input type="checkbox"><span>Dépassement du rate limit (429)</span></li>
+  </ul>
+  <pre><code>POST {{base_url}}/api/v1/auth/otp/send
+Content-Type: application/json
+
+{
+  "phone": "+2250700000000",
+  "locale": "fr"
+}</code></pre>
+  <pre><code>POST {{base_url}}/api/v1/auth/otp/verify
+Content-Type: application/json
+
+{
+  "phone": "+2250700000000",
+  "code": "123456"
+}</code></pre>
+</section>
+
+<!-- 18 -->
+<section id="flutter">
+  <span class="num">18 / 21</span>
+  <h2>Tests Flutter</h2>
+  <p>Le flux mobile suit trois écrans : saisie du numéro → saisie de l'OTP → redirection post-authentification.</p>
+  <pre><code>// test/otp_flow_test.dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:lovmy/features/auth/otp_screen.dart';
+
+void main() {
+  testWidgets('affiche une erreur si le code est incomplet', (tester) async {
+    await tester.pumpWidget(const OtpScreenTestApp());
+
+    await tester.enterText(find.byKey(const Key('otp_field')), '123');
+    await tester.tap(find.byKey(const Key('otp_submit')));
+    await tester.pump();
+
+    expect(find.text('Veuillez saisir les 6 chiffres.'), findsOneWidget);
+  });
+
+  testWidgets('déclenche verify() avec un code complet', (tester) async {
+    var called = false;
+
+    await tester.pumpWidget(OtpScreenTestApp(
+      onVerify: (code) async =&gt; called = true,
+    ));
+
+    await tester.enterText(find.byKey(const Key('otp_field')), '123456');
+    await tester.tap(find.byKey(const Key('otp_submit')));
+    await tester.pumpAndSettle();
+
+    expect(called, isTrue);
+  });
+}</code></pre>
+  <ul>
+    <li>Tests d'intégration couvrant le cas <em>renvoi de code</em> avec minuterie de 30 secondes désactivée en mode test.</li>
+    <li>Mock du client HTTP (<code>http.Client</code>) pour simuler les réponses 200 / 422 / 429 sans appeler MSG91 réellement.</li>
+    <li>Vérification que le token reçu est bien persisté via <code>flutter_secure_storage</code> après succès.</li>
+  </ul>
+</section>
+
+<!-- 19 -->
+<section id="production">
+  <span class="num">19 / 21</span>
+  <h2>Déploiement Production</h2>
+  <ol class="steps">
+    <li>Définir <code>MSG91_AUTH_KEY</code>, <code>MSG91_WIDGET_ID</code> et <code>MSG91_SENDER_ID</code> comme secrets dans le pipeline CI/CD GitHub Actions (jamais en clair dans le dépôt).</li>
+    <li>Vérifier que le domaine <code>lovmy.fr</code> sert l'API exclusivement en HTTPS (certificat Let's Encrypt renouvelé automatiquement sur le VPS Hostinger).</li>
+    <li>Activer les logs applicatifs (<code>otp</code> channel) avec rotation et purge automatique après 30 jours.</li>
+    <li>Configurer une alerte de supervision sur le solde MSG91 (<strong>Add Funds</strong>) pour éviter toute interruption d'envoi de SMS.</li>
+    <li>Exécuter <code>php artisan config:cache</code> et <code>php artisan route:cache</code> après chaque déploiement.</li>
+    <li>Valider en staging (<code>dontmove.app</code>) avec le Widget de test avant bascule en production.</li>
+  </ol>
+</section>
+
+<!-- 20 -->
+<section id="checklist">
+  <span class="num">20 / 21</span>
+  <h2>Checklist</h2>
+  <ul class="checklist">
+    <li><input type="checkbox"><span>Compte MSG91 créé et crédité</span></li>
+    <li><input type="checkbox"><span>Widget OTP Production &amp; Staging configurés</span></li>
+    <li><input type="checkbox"><span>Sender ID <code>LOVMY</code> approuvé</span></li>
+    <li><input type="checkbox"><span>Templates SMS créés, traduits (15 langues) et validés</span></li>
+    <li><input type="checkbox"><span>Variables d'environnement renseignées sur tous les environnements</span></li>
+    <li><input type="checkbox"><span><code>Msg91OtpService</code> opérationnel avec tests unitaires</span></li>
+    <li><input type="checkbox"><span>Contrôleurs, routes et Form Requests en place</span></li>
+    <li><input type="checkbox"><span>Rate limiting actif sur <code>/otp/*</code></span></li>
+    <li><input type="checkbox"><span>Journalisation dédiée sans fuite de données sensibles</span></li>
+    <li><input type="checkbox"><span>Collection Postman à jour et exécutée</span></li>
+    <li><input type="checkbox"><span>Tests Flutter (widget + intégration) au vert</span></li>
+    <li><input type="checkbox"><span>Déploiement production validé et supervision du quota MSG91 active</span></li>
+  </ul>
+</section>
+
+<!-- 21 -->
+<section id="annexes">
+  <span class="num">21 / 21</span>
+  <h2>Annexes</h2>
+
+  <h3>Glossaire</h3>
+  <table>
+    <thead><tr><th>Terme</th><th>Définition</th></tr></thead>
+    <tbody>
+      <tr><td>OTP</td><td>One-Time Password — code à usage unique envoyé par SMS</td></tr>
+      <tr><td>Widget ID</td><td>Identifiant du widget OTP configuré côté MSG91</td></tr>
+      <tr><td>Sender ID</td><td>Nom d'expéditeur alphanumérique affiché sur le SMS reçu</td></tr>
+      <tr><td>Auth Key</td><td>Clé d'authentification du compte MSG91, utilisée pour tous les appels API</td></tr>
+      <tr><td>Sanctum</td><td>Système d'authentification par token léger fourni par Laravel</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Liens utiles</h3>
+  <ul>
+    <li>Dashboard MSG91 : <a href="https://control.msg91.com" target="_blank">control.msg91.com</a></li>
+    <li>Documentation officielle MSG91 OTP : <a href="https://docs.msg91.com" target="_blank">docs.msg91.com</a></li>
+    <li>Dépôt LovMy : <code>github.com/Phacalet/Prj_LovMy</code></li>
+  </ul>
+
+  <h3>Historique des versions</h3>
+  <table>
+    <thead><tr><th>Version</th><th>Date</th><th>Modifications</th></tr></thead>
+    <tbody>
+      <tr><td>1.0</td><td>—</td><td>Version initiale (structure sommaire, 8 sections)</td></tr>
+      <tr><td>2.0</td><td>30/07/2026</td><td>Refonte complète — charte graphique LovMy, 21 sections détaillées, code Laravel &amp; Flutter</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p><strong>LovMy</strong> — Documentation d'intégration MSG91 OTP</p>
+    <p>Réalisé par <strong>Hyacinthe AGO</strong> — CTO &amp; Founder, Full IT</p>
+  </div>
+</footer>
+
+</body>
+</html>
