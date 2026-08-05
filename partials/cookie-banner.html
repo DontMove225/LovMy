@@ -1,0 +1,73 @@
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Gestion des cookies" style="display: none;">
+    <div class="cookie-content">
+        <p>
+            <strong data-i18n="cookie_title">🍪 Votre vie privée nous tient à cœur</strong><br>
+            <span data-i18n="cookie_text_before">Nous utilisons des cookies pour améliorer votre expérience, analyser le trafic et personnaliser les contenus. En cliquant sur « Accepter », vous consentez à notre utilisation de ces données. Consultez notre </span><a href="/politique-confidentialite" target="_blank" rel="noopener noreferrer" data-i18n="cookie_link">Politique de confidentialité</a><span data-i18n="cookie_text_after"> pour en savoir plus.</span>
+        </p>
+        <div class="cookie-actions">
+            <button id="accept-cookies" class="btn-accept" data-i18n="cookie_accept">Accepter</button>
+            <button id="refuse-cookies" class="btn-refuse" data-i18n="cookie_refuse">Refuser</button>
+            <button id="customize-cookies" class="btn-customize" data-i18n="cookie_customize">Personnaliser</button>
+        </div>
+    </div>
+</div>
+
+<!-- Panneau de préférences détaillées (ouvert via le bouton "Personnaliser") -->
+<div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title" style="display: none;">
+    <div class="cookie-modal-backdrop" data-cookie-modal-close></div>
+    <div class="cookie-modal-panel">
+        <div class="cookie-modal-header">
+            <h2 id="cookie-modal-title" data-i18n="cookie_modal_title">Préférences de cookies</h2>
+            <button type="button" class="cookie-modal-close" id="cookie-modal-close" aria-label="Fermer" data-cookie-modal-close>&times;</button>
+        </div>
+
+        <p class="cookie-modal-intro" data-i18n="cookie_modal_intro">Choisissez les cookies que vous autorisez sur LovMy. Ces réglages sont modifiables à tout moment.</p>
+
+        <div class="cookie-modal-globals">
+            <button type="button" id="cookie-refuse-all" class="btn-refuse" data-i18n="cookie_refuse_all">Tout refuser</button>
+            <button type="button" id="cookie-accept-all" class="btn-accept" data-i18n="cookie_accept_all">Tout accepter</button>
+        </div>
+
+        <ul class="cookie-categories">
+            <li class="cookie-category">
+                <div class="cookie-category-head">
+                    <span class="cookie-category-title" data-i18n="cat_essential_title">Cookies essentiels</span>
+                    <span class="cookie-required-badge" data-i18n="cookie_required_badge">Toujours actif</span>
+                </div>
+                <p class="cookie-category-desc" data-i18n="cat_essential_desc">Indispensables au fonctionnement du site (connexion, sécurité, mémorisation de vos préférences). Ils ne peuvent pas être désactivés.</p>
+            </li>
+            <li class="cookie-category">
+                <div class="cookie-category-head">
+                    <span class="cookie-category-title" id="cat-analytics-label" data-i18n="cat_analytics_title">Mesure d'audience</span>
+                    <button type="button" class="cookie-toggle" id="cookie-toggle-analytics" role="switch" aria-checked="false" data-category="analytics" aria-labelledby="cat-analytics-label">
+                        <span class="cookie-toggle-thumb"></span>
+                    </button>
+                </div>
+                <p class="cookie-category-desc" data-i18n="cat_analytics_desc">Nous aident à comprendre comment LovMy est utilisé, pour améliorer le service.</p>
+            </li>
+            <li class="cookie-category">
+                <div class="cookie-category-head">
+                    <span class="cookie-category-title" id="cat-ads-label" data-i18n="cat_ads_title">Publicité personnalisée</span>
+                    <button type="button" class="cookie-toggle" id="cookie-toggle-ads" role="switch" aria-checked="false" data-category="ads" aria-labelledby="cat-ads-label">
+                        <span class="cookie-toggle-thumb"></span>
+                    </button>
+                </div>
+                <p class="cookie-category-desc" data-i18n="cat_ads_desc">Permettent de vous proposer des publicités adaptées à vos centres d'intérêt, sur LovMy et ailleurs.</p>
+            </li>
+            <li class="cookie-category">
+                <div class="cookie-category-head">
+                    <span class="cookie-category-title" id="cat-personalization-label" data-i18n="cat_personalization_title">Personnalisation du contenu</span>
+                    <button type="button" class="cookie-toggle" id="cookie-toggle-personalization" role="switch" aria-checked="false" data-category="personalization" aria-labelledby="cat-personalization-label">
+                        <span class="cookie-toggle-thumb"></span>
+                    </button>
+                </div>
+                <p class="cookie-category-desc" data-i18n="cat_personalization_desc">Adaptent les contenus et suggestions affichés selon votre profil et votre navigation.</p>
+            </li>
+        </ul>
+
+        <div class="cookie-modal-footer">
+            <a href="/politique-confidentialite" target="_blank" rel="noopener noreferrer" data-i18n="cookie_link">Politique de confidentialité</a>
+            <button type="button" id="cookie-save-prefs" class="btn-accept" data-i18n="cookie_save_prefs">Enregistrer mes choix</button>
+        </div>
+    </div>
+</div>

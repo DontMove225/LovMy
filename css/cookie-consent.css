@@ -1,0 +1,89 @@
+/* ---------- cookie consent banner ---------- */
+.cookie-banner{position:fixed;left:50%;bottom:0;width:70%;transform:translateX(-50%);z-index:200;
+  background:linear-gradient(135deg,var(--steel),var(--obsidian));
+  border:1px solid var(--line);border-bottom:none;
+  border-radius:var(--r-lg) var(--r-lg) 0 0;
+  box-shadow:0 -20px 40px -14px rgba(0,0,0,.65);
+  padding:20px 28px;font-family:var(--sans)}
+.cookie-content{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;
+  align-items:center;justify-content:space-between;gap:18px}
+.cookie-content p{flex:2;min-width:280px;margin:0;font-size:.92rem;line-height:1.6;color:var(--txt-soft)}
+.cookie-content strong{color:var(--txt)}
+.cookie-content a{color:var(--ember);text-decoration:underline;font-weight:500}
+.cookie-content a:hover{color:var(--blush)}
+.cookie-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:none}
+.cookie-actions button{padding:11px 22px;border-radius:999px;font-weight:600;font-size:.82rem;
+  cursor:pointer;transition:all .2s ease;background:transparent;color:var(--txt);
+  border:1px solid var(--line);font-family:inherit}
+/* "Accepter" et "Refuser" : même gabarit, même remplissage plein — recommandation CNIL sur
+   l'égalité de visibilité entre les deux choix (taille, couleur, emplacement identiques). */
+.cookie-actions .btn-accept{background:linear-gradient(135deg,var(--ember),var(--passion));color:#fff;border-color:transparent}
+.cookie-actions .btn-refuse{background:var(--steel);color:var(--txt);border-color:transparent}
+.cookie-actions .btn-accept:hover{box-shadow:0 14px 28px -12px rgba(235,6,3,.65);transform:translateY(-1px)}
+.cookie-actions .btn-refuse:hover{filter:brightness(1.2);transform:translateY(-1px)}
+.cookie-actions .btn-customize:hover{border-color:var(--blush);color:var(--blush)}
+@media(max-width:700px){
+  .cookie-banner{width:94%;padding:18px 20px}
+  .cookie-content{flex-direction:column;text-align:center}
+  .cookie-actions{justify-content:center;width:100%}
+  .cookie-actions button{flex:1;min-width:100px}
+}
+
+/* ---------- cookie preferences modal ---------- */
+.cookie-modal{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:24px}
+.cookie-modal-backdrop{position:absolute;inset:0;background:rgba(4,3,10,.7);backdrop-filter:blur(3px)}
+.cookie-modal-panel{position:relative;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;
+  background:linear-gradient(160deg,var(--steel),var(--obsidian));
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.7);
+  padding:28px;font-family:var(--sans)}
+.cookie-modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.cookie-modal-header h2{font-family:var(--serif);font-size:1.3rem;color:var(--txt);margin:0}
+.cookie-modal-close{flex:none;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;
+  background:transparent;color:var(--txt-soft);font-size:1.2rem;line-height:1;cursor:pointer;
+  display:grid;place-items:center;transition:all .2s ease}
+.cookie-modal-close:hover{color:var(--blush);border-color:var(--blush)}
+.cookie-modal-intro{color:var(--txt-soft);font-size:.9rem;line-height:1.6;margin:12px 0 20px}
+.cookie-modal-globals{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.cookie-modal-globals button{flex:1;min-width:140px;padding:11px 20px;border-radius:999px;font-weight:600;
+  font-size:.82rem;cursor:pointer;transition:all .2s ease;background:transparent;color:var(--txt);
+  border:1px solid var(--line);font-family:inherit;text-align:center}
+.cookie-modal-globals .btn-accept{background:linear-gradient(135deg,var(--ember),var(--passion));color:#fff;border-color:transparent}
+.cookie-modal-globals .btn-refuse{background:var(--steel);color:var(--txt);border-color:transparent}
+.cookie-modal-globals .btn-accept:hover{box-shadow:0 14px 28px -12px rgba(235,6,3,.65)}
+.cookie-modal-globals .btn-refuse:hover{filter:brightness(1.2)}
+
+.cookie-categories{list-style:none;margin:0;padding:0}
+.cookie-category{padding:16px 0;border-top:1px solid var(--line)}
+.cookie-category:first-child{border-top:none;padding-top:0}
+.cookie-category-head{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.cookie-category-title{font-weight:600;color:var(--txt);font-size:.94rem}
+.cookie-category-desc{color:var(--txt-soft);font-size:.83rem;line-height:1.55;margin:6px 0 0}
+.cookie-required-badge{flex:none;font-family:var(--mono);font-size:.62rem;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--txt-faint);border:1px solid var(--line);border-radius:999px;
+  padding:3px 10px}
+
+.cookie-toggle{flex:none;width:44px;height:24px;border-radius:999px;border:none;padding:2px;
+  background:rgba(255,255,255,.14);cursor:pointer;position:relative;transition:background .2s ease}
+.cookie-toggle-thumb{display:block;width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.35);transition:transform .2s ease}
+.cookie-toggle[aria-checked="true"]{background:linear-gradient(135deg,var(--ember),var(--passion))}
+.cookie-toggle[aria-checked="true"] .cookie-toggle-thumb{transform:translateX(20px)}
+[dir="rtl"] .cookie-toggle[aria-checked="true"] .cookie-toggle-thumb{transform:translateX(-20px)}
+
+.cookie-modal-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.cookie-modal-footer a{color:var(--ember);text-decoration:underline;font-size:.82rem;font-weight:500}
+.cookie-modal-footer a:hover{color:var(--blush)}
+.cookie-modal-footer .btn-accept{padding:11px 22px;border-radius:999px;font-weight:600;font-size:.82rem;
+  cursor:pointer;border:1px solid transparent;color:#fff;font-family:inherit;
+  background:linear-gradient(135deg,var(--ember),var(--passion));transition:all .2s ease}
+.cookie-modal-footer .btn-accept:hover{box-shadow:0 14px 28px -12px rgba(235,6,3,.65)}
+
+@media(max-width:560px){
+  .cookie-modal{padding:12px}
+  .cookie-modal-panel{padding:22px 18px;max-height:90vh}
+  .cookie-modal-globals button{min-width:120px}
+  .cookie-modal-footer{flex-direction:column;align-items:stretch;text-align:center}
+  .cookie-modal-footer .btn-accept{width:100%}
+}

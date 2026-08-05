@@ -1,0 +1,1229 @@
+(function(){
+
+  /* =========================================================
+     LIENS À PERSONNALISER — modifiez uniquement les valeurs
+     ci-dessous quand vos liens définitifs seront prêts.
+     ========================================================= */
+  var LINKS = {
+    ios:       "#",                          // Lien App Store
+    android:   "#",                          // Lien Google Play
+    download:  "https://lovmy.fr/download",  // Lien générique utilisé pour générer le QR code
+    login:     "https://lovmy.fr/login",     // Lien vers le front web (Next.js) de connexion
+    facebook:  "https://facebook.com/LovMyApp",
+    instagram: "https://instagram.com/LovMyApp",
+    tiktok:    "https://tiktok.com/@LovMyApp",
+    youtube:   "https://youtube.com/@LovMyApp"
+  };
+
+  /* ================= i18n data ================= */
+  var LANGS = [
+    {code:"fr", cc:"fr", flag:"🇫🇷", name:"Français",   dir:"ltr"},
+    {code:"en", cc:"gb", flag:"🇬🇧", name:"English",    dir:"ltr"},
+    {code:"es", cc:"es", flag:"🇪🇸", name:"Español",    dir:"ltr"},
+    {code:"pt", cc:"pt", flag:"🇵🇹", name:"Português",  dir:"ltr"},
+    {code:"de", cc:"de", flag:"🇩🇪", name:"Deutsch",    dir:"ltr"},
+    {code:"it", cc:"it", flag:"🇮🇹", name:"Italiano",   dir:"ltr"},
+    {code:"nl", cc:"nl", flag:"🇳🇱", name:"Nederlands", dir:"ltr"},
+    {code:"ru", cc:"ru", flag:"🇷🇺", name:"Русский",    dir:"ltr"},
+    {code:"uk", cc:"ua", flag:"🇺🇦", name:"Українська", dir:"ltr"},
+    {code:"pl", cc:"pl", flag:"🇵🇱", name:"Polski",     dir:"ltr"},
+    {code:"tr", cc:"tr", flag:"🇹🇷", name:"Türkçe",     dir:"ltr"},
+    {code:"ar", cc:"sa", flag:"🇸🇦", name:"العربية",    dir:"rtl"},
+    {code:"zh", cc:"cn", flag:"🇨🇳", name:"简体中文",     dir:"ltr"},
+    {code:"ja", cc:"jp", flag:"🇯🇵", name:"日本語",      dir:"ltr"},
+    {code:"ko", cc:"kr", flag:"🇰🇷", name:"한국어",      dir:"ltr"}
+  ];
+  function flagUrl(cc){ return "https://flagcdn.com/24x18/" + cc + ".png"; }
+
+  var T = {
+    fr:{
+      nav_how:"Comment ça marche", nav_trust:"Confiance", nav_pricing:"Tarifs", nav_download:"Télécharger",
+      nav_login:"Se connecter",
+      ad_label:"Espace publicitaire", ad_msg:"Votre marque, ici, devant une audience qui dit oui à l'amour.", ad_msg2:"Touchez des célibataires vérifiés, prêts à passer à l'action.",
+      hero_eyebrow:"Rencontres augmentées, cœur garanti",
+      hero_title:"L'amour, calculé avec le cœur.",
+      hero_lede:"LovMy vous connecte à des célibataires vérifiés près de chez vous — ou à l'autre bout du monde. Une intelligence discrète qui affine vos rencontres selon ce qui compte vraiment pour vous.",
+      hero_cta_primary:"Télécharger gratuitement", hero_cta_secondary:"Voir comment ça marche",
+      stat1_num:"15", stat1_label:"langues disponibles",
+      stat2_num:"92%", stat2_label:"profils vérifiés par selfie",
+      stat3_num:"24/7", stat3_label:"modération humaine active",
+      how_eyebrow:"Le parcours", how_title:"Trois étapes, aucune perte de temps.",
+      how_intro:"Un parcours pensé pour aller à l'essentiel, sans jamais vous brusquer.",
+      step1_title:"Créez un profil vérifié", step1_desc:"Selfie de vérification en direct et prompts guidés, plutôt qu'un simple CV amoureux.",
+      step2_title:"Laissez l'IA affiner vos matchs", step2_desc:"Un score de compatibilité recalculé à chaque échange, jamais figé sur une photo.",
+      step3_title:"Rencontrez, en toute confiance", step3_desc:"Appel vidéo intégré, partage de position sécurisé et check-in après le rendez-vous.",
+      trust_eyebrow:"Sécurité & crédibilité", trust_title:"La confiance, avant la romance.",
+      trust_intro:"Mêmes standards de sécurité, mêmes garanties, où que vous soyez dans le monde.",
+      card1_title:"Profils vérifiés", card1_desc:"Vérification par selfie et détection continue des faux comptes.",
+      card2_title:"Modération 24/7", card2_desc:"Une équipe francophone répond en moins d'une heure, jour et nuit.",
+      card3_title:"Données chiffrées", card3_desc:"Conforme RGPD, hébergement européen, aucune revente de données.",
+      card4_title:"Depuis 2019, en confiance", card4_desc:"Une communauté établie qui grandit sans jamais céder sur ses standards.",
+      testimonial_quote:"« LovMy est la première application où je n'ai pas eu besoin de trier 40 profils avant d'avoir une vraie conversation. »",
+      testimonial_author:"Fatou, 29 ans — Abidjan",
+      testimonial2_quote:"« On m’a toujours dit que les applications ne comprenaient pas les couples comme le nôtre. LovMy a changé ça dès la première semaine. »",
+      testimonial2_author:"Aïcha & Nadia, ensemble depuis 2023 — Paris",
+      intl_eyebrow:"Une application, le monde entier", intl_title:"Le même LovMy, dans votre langue.",
+      intl_intro:"Interface disponible dans 15 langues et devise adaptée à votre pays — pensée pour la France, l'Afrique francophone et au-delà.",
+      intl_lang_hint:"Changez de langue à tout moment depuis le sélecteur en haut de page.",
+      lang_label:"Langue", currency_label:"Devise",
+      pricing_eyebrow:"Tarifs", pricing_title:"Gratuit pour commencer. Premium pour aller plus loin.",
+      pricing_intro:"Aucune carte requise pour découvrir LovMy — choisissez la formule qui vous ressemble.",
+      period_always:"toujours", period_month:"mois",
+      plan_free_name:"Gratuit", plan_free_f1:"Profil vérifié et matchs illimités", plan_free_f2:"Messagerie sécurisée",
+      plan_free_f3:"Modération 24/7", plan_free_cta:"Commencer gratuitement",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Voir qui vous a déjà aimé",
+      plan_discovery_f2:"Compatibilité affinée par l'IA", plan_discovery_f3:"5 super-likes par semaine",
+      plan_discovery_cta:"Essayer Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Appels vidéo illimités", plan_premium_f2:"Profil boosté chaque semaine",
+      plan_premium_f3:"Support prioritaire dédié", plan_premium_cta:"Passer au Gold",
+      final_eyebrow:"Prêt·e ?", final_title:"Votre prochaine conversation vous attend.",
+      final_p:"Téléchargez LovMy en moins d'une minute, gratuitement, où que vous soyez.",
+      store_ios_small:"Télécharger sur", store_ios_big:"App Store", store_android_small:"Disponible sur", store_android_big:"Google Play",
+      qr_caption:"Scannez pour télécharger",
+      footer_tagline:"L'application de rencontre qui combine intelligence discrète et vraies connexions humaines.",
+      footer_age_notice:"🔞 LovMy est réservé aux personnes majeures. Accès strictement interdit aux moins de 18 ans.",
+      footer_col1_title:"Produit", footer_col1_l1:"Comment ça marche", footer_col1_l2:"Sécurité", footer_col1_l3:"Tarifs",
+      footer_col2_title:"Entreprise", footer_col2_l1:"International", footer_col2_l2:"À propos", footer_col2_l3:"Contact",
+      footer_col3_title:"Légal", footer_col3_l1:"Conditions d'utilisation", footer_col3_l2:"Confidentialité", footer_col3_l3:"Sécurité des données",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Votre vie privée nous tient à cœur",
+      cookie_text_before:"Nous utilisons des cookies pour améliorer votre expérience, analyser le trafic et personnaliser les contenus. En cliquant sur « Accepter », vous consentez à notre utilisation de ces données. Consultez notre ",
+      cookie_link:"Politique de confidentialité", cookie_text_after:" pour en savoir plus.",
+      cookie_accept:"Accepter", cookie_refuse:"Refuser", cookie_customize:"Personnaliser",
+      cookie_customize_alert:"Fenêtre de personnalisation des cookies (à implémenter)",
+      cookie_modal_title:"Préférences de cookies", cookie_modal_intro:"Choisissez les cookies que vous autorisez sur LovMy. Ces réglages sont modifiables à tout moment.",
+      cookie_accept_all:"Tout accepter", cookie_refuse_all:"Tout refuser",
+      cookie_save_prefs:"Enregistrer mes choix", cookie_required_badge:"Toujours actif",
+      cat_essential_title:"Cookies essentiels", cat_essential_desc:"Indispensables au fonctionnement du site (connexion, sécurité, mémorisation de vos préférences). Ils ne peuvent pas être désactivés.",
+      cat_analytics_title:"Mesure d'audience", cat_analytics_desc:"Nous aident à comprendre comment LovMy est utilisé, pour améliorer le service.",
+      cat_ads_title:"Publicité personnalisée", cat_ads_desc:"Permettent de vous proposer des publicités adaptées à vos centres d'intérêt, sur LovMy et ailleurs.",
+      cat_personalization_title:"Personnalisation du contenu", cat_personalization_desc:"Adaptent les contenus et suggestions affichés selon votre profil et votre navigation.",
+      footer_manage_cookies:"Gérer les cookies"
+    },
+    en:{
+      nav_how:"How it works", nav_trust:"Trust", nav_pricing:"Pricing", nav_download:"Download",
+      nav_login:"Log in",
+      ad_label:"Advertisement", ad_msg:"Your brand, here, in front of an audience that says yes to love.", ad_msg2:"Reach verified singles, ready to take action.",
+      hero_eyebrow:"Augmented dating, human at heart",
+      hero_title:"Love, calculated with heart.",
+      hero_lede:"LovMy connects you with verified singles near you — or on the other side of the world. A discreet intelligence that refines your matches around what truly matters to you.",
+      hero_cta_primary:"Download for free", hero_cta_secondary:"See how it works",
+      stat1_num:"15", stat1_label:"languages available",
+      stat2_num:"92%", stat2_label:"profiles verified by selfie",
+      stat3_num:"24/7", stat3_label:"active human moderation",
+      how_eyebrow:"The journey", how_title:"Three steps, no wasted time.",
+      how_intro:"A flow designed to get to what matters, without ever rushing you.",
+      step1_title:"Create a verified profile", step1_desc:"Live verification selfie and guided prompts, instead of a plain dating résumé.",
+      step2_title:"Let AI refine your matches", step2_desc:"A compatibility score recalculated with every conversation, never frozen on a photo.",
+      step3_title:"Meet, with full confidence", step3_desc:"Built-in video calls, secure location sharing, and a check-in after the date.",
+      trust_eyebrow:"Safety & credibility", trust_title:"Trust, before romance.",
+      trust_intro:"The same safety standards, the same guarantees, wherever you are in the world.",
+      card1_title:"Verified profiles", card1_desc:"Selfie verification and continuous fake-account detection.",
+      card2_title:"24/7 moderation", card2_desc:"A French-speaking team replies within the hour, day and night.",
+      card3_title:"Encrypted data", card3_desc:"GDPR-compliant, European hosting, your data is never resold.",
+      card4_title:"Trusted since 2019", card4_desc:"An established community that keeps growing without lowering its standards.",
+      testimonial_quote:"“LovMy is the first app where I didn't have to sort through 40 profiles before having one real conversation.”",
+      testimonial_author:"Fatou, 29 — Abidjan",
+      testimonial2_quote:"“I’d always been told apps didn’t understand couples like ours. LovMy changed that from the very first week.”",
+      testimonial2_author:"Aïcha & Nadia, together since 2023 — Paris",
+      intl_eyebrow:"One app, the whole world", intl_title:"The same LovMy, in your language.",
+      intl_intro:"Interface available in 15 languages, with the currency that matches your country — built for France, Francophone Africa, and beyond.",
+      intl_lang_hint:"Switch languages anytime from the selector at the top of the page.",
+      lang_label:"Language", currency_label:"Currency",
+      pricing_eyebrow:"Pricing", pricing_title:"Free to start. Premium to go further.",
+      pricing_intro:"No card required to try LovMy — pick the plan that fits you.",
+      period_always:"always", period_month:"month",
+      plan_free_name:"Free", plan_free_f1:"Verified profile and unlimited matches", plan_free_f2:"Secure messaging",
+      plan_free_f3:"24/7 moderation", plan_free_cta:"Start for free",
+      plan_discovery_name:"Premium", plan_discovery_f1:"See who already liked you",
+      plan_discovery_f2:"AI-refined compatibility", plan_discovery_f3:"5 super-likes a week",
+      plan_discovery_cta:"Try Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Unlimited video calls", plan_premium_f2:"Weekly profile boost",
+      plan_premium_f3:"Dedicated priority support", plan_premium_cta:"Go Gold",
+      final_eyebrow:"Ready?", final_title:"Your next conversation is waiting.",
+      final_p:"Download LovMy in under a minute, for free, wherever you are.",
+      store_ios_small:"Download on the", store_ios_big:"App Store", store_android_small:"Get it on", store_android_big:"Google Play",
+      qr_caption:"Scan to download",
+      footer_tagline:"The dating app that combines discreet intelligence with real human connection.",
+      footer_age_notice:"🔞 LovMy is reserved for adults. Strictly no access for anyone under 18.",
+      footer_col1_title:"Product", footer_col1_l1:"How it works", footer_col1_l2:"Safety", footer_col1_l3:"Pricing",
+      footer_col2_title:"Company", footer_col2_l1:"International", footer_col2_l2:"About", footer_col2_l3:"Contact",
+      footer_col3_title:"Legal", footer_col3_l1:"Terms of use", footer_col3_l2:"Privacy", footer_col3_l3:"Data safety",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Your privacy matters to us",
+      cookie_text_before:"We use cookies to improve your experience, analyze traffic and personalize content. By clicking “Accept”, you consent to our use of this data. Read our ",
+      cookie_link:"Privacy Policy", cookie_text_after:" to learn more.",
+      cookie_accept:"Accept", cookie_refuse:"Decline", cookie_customize:"Customize",
+      cookie_customize_alert:"Cookie customization panel (coming soon)",
+      cookie_modal_title:"Cookie preferences", cookie_modal_intro:"Choose which cookies you allow on LovMy. You can change these settings at any time.",
+      cookie_accept_all:"Accept all", cookie_refuse_all:"Reject all",
+      cookie_save_prefs:"Save my choices", cookie_required_badge:"Always active",
+      cat_essential_title:"Essential cookies", cat_essential_desc:"Required for the site to work (login, security, remembering your preferences). They cannot be disabled.",
+      cat_analytics_title:"Audience measurement", cat_analytics_desc:"Help us understand how LovMy is used, so we can improve the service.",
+      cat_ads_title:"Personalized advertising", cat_ads_desc:"Let us show you ads tailored to your interests, on LovMy and elsewhere.",
+      cat_personalization_title:"Content personalization", cat_personalization_desc:"Tailor the content and suggestions you see based on your profile and browsing.",
+      footer_manage_cookies:"Manage cookies"
+    },
+    es:{
+      nav_how:"Cómo funciona", nav_trust:"Confianza", nav_pricing:"Precios", nav_download:"Descargar",
+      nav_login:"Iniciar sesión",
+      ad_label:"Espacio publicitario", ad_msg:"Tu marca, aquí, frente a una audiencia que le dice sí al amor.", ad_msg2:"Llega a solteros verificados, listos para pasar a la acción.",
+      hero_eyebrow:"Citas aumentadas, corazón garantizado",
+      hero_title:"El amor, calculado con el corazón.",
+      hero_lede:"LovMy te conecta con solteros verificados cerca de ti — o al otro lado del mundo. Una inteligencia discreta que afina tus encuentros según lo que de verdad te importa.",
+      hero_cta_primary:"Descargar gratis", hero_cta_secondary:"Ver cómo funciona",
+      stat1_num:"15", stat1_label:"idiomas disponibles",
+      stat2_num:"92%", stat2_label:"perfiles verificados por selfie",
+      stat3_num:"24/7", stat3_label:"moderación humana activa",
+      how_eyebrow:"El recorrido", how_title:"Tres pasos, sin perder el tiempo.",
+      how_intro:"Un recorrido pensado para ir a lo esencial, sin apresurarte nunca.",
+      step1_title:"Crea un perfil verificado", step1_desc:"Selfie de verificación en vivo y preguntas guiadas, en lugar de un simple currículum amoroso.",
+      step2_title:"Deja que la IA afine tus matches", step2_desc:"Una puntuación de compatibilidad recalculada en cada conversación, nunca fija en una foto.",
+      step3_title:"Conoce a alguien con toda confianza", step3_desc:"Videollamada integrada, ubicación compartida de forma segura y check-in tras la cita.",
+      trust_eyebrow:"Seguridad y credibilidad", trust_title:"La confianza, antes que el romance.",
+      trust_intro:"Los mismos estándares de seguridad, las mismas garantías, estés donde estés en el mundo.",
+      card1_title:"Perfiles verificados", card1_desc:"Verificación por selfie y detección continua de cuentas falsas.",
+      card2_title:"Moderación 24/7", card2_desc:"Un equipo francófono responde en menos de una hora, día y noche.",
+      card3_title:"Datos cifrados", card3_desc:"Conforme al RGPD, alojamiento europeo, tus datos nunca se revenden.",
+      card4_title:"Confianza desde 2019", card4_desc:"Una comunidad consolidada que crece sin bajar nunca sus estándares.",
+      testimonial_quote:"«LovMy es la primera app en la que no tuve que revisar 40 perfiles antes de tener una conversación real.»",
+      testimonial_author:"Fatou, 29 años — Abiyán",
+      testimonial2_quote:"«Siempre me dijeron que las apps no entendían a parejas como la nuestra. LovMy lo cambió desde la primera semana.»",
+      testimonial2_author:"Aïcha y Nadia, juntas desde 2023 — París",
+      intl_eyebrow:"Una app, el mundo entero", intl_title:"El mismo LovMy, en tu idioma.",
+      intl_intro:"Interfaz disponible en 15 idiomas, con la moneda de tu país — pensada para Francia, África francófona y más allá.",
+      intl_lang_hint:"Cambia de idioma en cualquier momento desde el selector en la parte superior de la página.",
+      lang_label:"Idioma", currency_label:"Moneda",
+      pricing_eyebrow:"Precios", pricing_title:"Gratis para empezar. Premium para ir más lejos.",
+      pricing_intro:"Sin tarjeta para descubrir LovMy — elige el plan que más se parece a ti.",
+      period_always:"siempre", period_month:"mes",
+      plan_free_name:"Gratis", plan_free_f1:"Perfil verificado y matches ilimitados", plan_free_f2:"Mensajería segura",
+      plan_free_f3:"Moderación 24/7", plan_free_cta:"Empezar gratis",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Ver quién ya te dio like",
+      plan_discovery_f2:"Compatibilidad afinada por IA", plan_discovery_f3:"5 súper-likes por semana",
+      plan_discovery_cta:"Probar Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Videollamadas ilimitadas", plan_premium_f2:"Perfil destacado cada semana",
+      plan_premium_f3:"Soporte prioritario dedicado", plan_premium_cta:"Pasar a Gold",
+      final_eyebrow:"¿Listo?", final_title:"Tu próxima conversación te espera.",
+      final_p:"Descarga LovMy en menos de un minuto, gratis, estés donde estés.",
+      store_ios_small:"Descargar en", store_ios_big:"App Store", store_android_small:"Disponible en", store_android_big:"Google Play",
+      qr_caption:"Escanea para descargar",
+      footer_tagline:"La app de citas que combina inteligencia discreta y conexiones humanas reales.",
+      footer_age_notice:"🔞 LovMy está reservado para mayores de edad. Acceso estrictamente prohibido a menores de 18 años.",
+      footer_col1_title:"Producto", footer_col1_l1:"Cómo funciona", footer_col1_l2:"Seguridad", footer_col1_l3:"Precios",
+      footer_col2_title:"Empresa", footer_col2_l1:"Internacional", footer_col2_l2:"Acerca de", footer_col2_l3:"Contacto",
+      footer_col3_title:"Legal", footer_col3_l1:"Condiciones de uso", footer_col3_l2:"Privacidad", footer_col3_l3:"Seguridad de datos",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Tu privacidad nos importa",
+      cookie_text_before:"Utilizamos cookies para mejorar tu experiencia, analizar el tráfico y personalizar los contenidos. Al hacer clic en «Aceptar», consientes el uso de estos datos. Consulta nuestra ",
+      cookie_link:"Política de privacidad", cookie_text_after:" para saber más.",
+      cookie_accept:"Aceptar", cookie_refuse:"Rechazar", cookie_customize:"Personalizar",
+      cookie_customize_alert:"Panel de personalización de cookies (próximamente)",
+      cookie_modal_title:"Preferencias de cookies", cookie_modal_intro:"Elige qué cookies permites en LovMy. Puedes cambiar esta configuración en cualquier momento.",
+      cookie_accept_all:"Aceptar todo", cookie_refuse_all:"Rechazar todo",
+      cookie_save_prefs:"Guardar mis opciones", cookie_required_badge:"Siempre activo",
+      cat_essential_title:"Cookies esenciales", cat_essential_desc:"Necesarias para el funcionamiento del sitio (inicio de sesión, seguridad, recordar tus preferencias). No se pueden desactivar.",
+      cat_analytics_title:"Medición de audiencia", cat_analytics_desc:"Nos ayudan a entender cómo se usa LovMy para mejorar el servicio.",
+      cat_ads_title:"Publicidad personalizada", cat_ads_desc:"Permiten mostrarte anuncios adaptados a tus intereses, en LovMy y en otros sitios.",
+      cat_personalization_title:"Personalización del contenido", cat_personalization_desc:"Adaptan los contenidos y sugerencias según tu perfil y tu navegación.",
+      footer_manage_cookies:"Gestionar cookies"
+    },
+    pt:{
+      nav_how:"Como funciona", nav_trust:"Confiança", nav_pricing:"Preços", nav_download:"Transferir",
+      nav_login:"Iniciar sessão",
+      ad_label:"Espaço publicitário", ad_msg:"A sua marca, aqui, diante de um público que diz sim ao amor.", ad_msg2:"Alcance solteiros verificados, prontos para agir.",
+      hero_eyebrow:"Encontros aumentados, coração garantido",
+      hero_title:"O amor, calculado com o coração.",
+      hero_lede:"O LovMy conecta-te a solteiros verificados perto de ti — ou do outro lado do mundo. Uma inteligência discreta que aperfeiçoa os teus encontros com base no que realmente importa.",
+      hero_cta_primary:"Transferir gratuitamente", hero_cta_secondary:"Ver como funciona",
+      stat1_num:"15", stat1_label:"idiomas disponíveis",
+      stat2_num:"92%", stat2_label:"perfis verificados por selfie",
+      stat3_num:"24/7", stat3_label:"moderação humana ativa",
+      how_eyebrow:"O percurso", how_title:"Três etapas, sem perder tempo.",
+      how_intro:"Um percurso pensado para ir direto ao essencial, sem nunca apressar.",
+      step1_title:"Crie um perfil verificado", step1_desc:"Selfie de verificação ao vivo e sugestões guiadas, em vez de um simples currículo amoroso.",
+      step2_title:"Deixe a IA aperfeiçoar os seus matches", step2_desc:"Uma pontuação de compatibilidade recalculada a cada conversa, nunca fixada numa foto.",
+      step3_title:"Conheça-se, com total confiança", step3_desc:"Chamada de vídeo integrada, partilha segura de localização e check-in após o encontro.",
+      trust_eyebrow:"Segurança e credibilidade", trust_title:"A confiança, antes do romance.",
+      trust_intro:"Os mesmos padrões de segurança, as mesmas garantias, onde quer que estejas no mundo.",
+      card1_title:"Perfis verificados", card1_desc:"Verificação por selfie e deteção contínua de contas falsas.",
+      card2_title:"Moderação 24/7", card2_desc:"Uma equipa francófona responde em menos de uma hora, de dia e de noite.",
+      card3_title:"Dados encriptados", card3_desc:"Conforme o RGPD, alojamento europeu, os seus dados nunca são revendidos.",
+      card4_title:"Confiança desde 2019", card4_desc:"Uma comunidade estabelecida que cresce sem nunca baixar os seus padrões.",
+      testimonial_quote:"«O LovMy é a primeira aplicação em que não precisei de filtrar 40 perfis antes de ter uma conversa verdadeira.»",
+      testimonial_author:"Fatou, 29 anos — Abidjan",
+      testimonial2_quote:"«Sempre me disseram que as aplicações não entendiam casais como o nosso. O LovMy mudou isso já na primeira semana.»",
+      testimonial2_author:"Aïcha e Nadia, juntas desde 2023 — Paris",
+      intl_eyebrow:"Uma aplicação, o mundo inteiro", intl_title:"O mesmo LovMy, no seu idioma.",
+      intl_intro:"Interface disponível em 15 idiomas, com a moeda do seu país — pensada para França, a África francófona e muito mais além.",
+      intl_lang_hint:"Mude de idioma a qualquer momento no seletor no topo da página.",
+      lang_label:"Idioma", currency_label:"Moeda",
+      pricing_eyebrow:"Preços", pricing_title:"Grátis para começar. Premium para ir mais longe.",
+      pricing_intro:"Sem cartão necessário para descobrir o LovMy — escolha o plano que mais se parece consigo.",
+      period_always:"sempre", period_month:"mês",
+      plan_free_name:"Grátis", plan_free_f1:"Perfil verificado e matches ilimitados", plan_free_f2:"Mensagens seguras",
+      plan_free_f3:"Moderação 24/7", plan_free_cta:"Começar gratuitamente",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Veja quem já gostou de si",
+      plan_discovery_f2:"Compatibilidade aperfeiçoada por IA", plan_discovery_f3:"5 super-likes por semana",
+      plan_discovery_cta:"Experimentar Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Chamadas de vídeo ilimitadas", plan_premium_f2:"Perfil destacado todas as semanas",
+      plan_premium_f3:"Suporte prioritário dedicado", plan_premium_cta:"Passar para Gold",
+      final_eyebrow:"Pronto·a?", final_title:"A sua próxima conversa está à espera.",
+      final_p:"Transfira o LovMy em menos de um minuto, gratuitamente, onde quer que esteja.",
+      store_ios_small:"Transferir na", store_ios_big:"App Store", store_android_small:"Disponível no", store_android_big:"Google Play",
+      qr_caption:"Digitalize para transferir",
+      footer_tagline:"A aplicação de encontros que combina inteligência discreta e ligações humanas reais.",
+      footer_age_notice:"🔞 O LovMy é reservado a maiores de idade. Acesso estritamente proibido a menores de 18 anos.",
+      footer_col1_title:"Produto", footer_col1_l1:"Como funciona", footer_col1_l2:"Segurança", footer_col1_l3:"Preços",
+      footer_col2_title:"Empresa", footer_col2_l1:"Internacional", footer_col2_l2:"Sobre", footer_col2_l3:"Contacto",
+      footer_col3_title:"Legal", footer_col3_l1:"Termos de utilização", footer_col3_l2:"Privacidade", footer_col3_l3:"Segurança dos dados",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 A sua privacidade é importante para nós",
+      cookie_text_before:"Utilizamos cookies para melhorar a sua experiência, analisar o tráfego e personalizar o conteúdo. Ao clicar em «Aceitar», consente a utilização destes dados. Consulte a nossa ",
+      cookie_link:"Política de Privacidade", cookie_text_after:" para saber mais.",
+      cookie_accept:"Aceitar", cookie_refuse:"Recusar", cookie_customize:"Personalizar",
+      cookie_customize_alert:"Painel de personalização de cookies (em breve)",
+      cookie_modal_title:"Preferências de cookies", cookie_modal_intro:"Escolha quais cookies autoriza na LovMy. Pode alterar estas definições a qualquer momento.",
+      cookie_accept_all:"Aceitar tudo", cookie_refuse_all:"Recusar tudo",
+      cookie_save_prefs:"Guardar as minhas escolhas", cookie_required_badge:"Sempre ativo",
+      cat_essential_title:"Cookies essenciais", cat_essential_desc:"Necessários para o funcionamento do site (início de sessão, segurança, memorização das suas preferências). Não podem ser desativados.",
+      cat_analytics_title:"Medição de audiência", cat_analytics_desc:"Ajudam-nos a compreender como a LovMy é utilizada, para melhorar o serviço.",
+      cat_ads_title:"Publicidade personalizada", cat_ads_desc:"Permitem mostrar-lhe anúncios adaptados aos seus interesses, na LovMy e noutros sites.",
+      cat_personalization_title:"Personalização de conteúdo", cat_personalization_desc:"Adaptam os conteúdos e sugestões apresentados de acordo com o seu perfil e a sua navegação.",
+      footer_manage_cookies:"Gerir cookies"
+    },
+    de:{
+      nav_how:"So funktioniert's", nav_trust:"Vertrauen", nav_pricing:"Preise", nav_download:"Herunterladen",
+      nav_login:"Anmelden",
+      ad_label:"Werbefläche", ad_msg:"Ihre Marke, hier, vor einem Publikum, das Ja zur Liebe sagt.", ad_msg2:"Erreichen Sie verifizierte Singles, bereit zu handeln.",
+      hero_eyebrow:"Erweiterte Partnersuche, mit Herz",
+      hero_title:"Liebe, mit Herz berechnet.",
+      hero_lede:"LovMy verbindet dich mit verifizierten Singles in deiner Nähe — oder am anderen Ende der Welt. Eine diskrete Intelligenz, die deine Matches nach dem verfeinert, was dir wirklich wichtig ist.",
+      hero_cta_primary:"Kostenlos herunterladen", hero_cta_secondary:"So funktioniert's",
+      stat1_num:"15", stat1_label:"verfügbare Sprachen",
+      stat2_num:"92%", stat2_label:"per Selfie verifizierte Profile",
+      stat3_num:"24/7", stat3_label:"aktive menschliche Moderation",
+      how_eyebrow:"Der Weg", how_title:"Drei Schritte, keine Zeitverschwendung.",
+      how_intro:"Ein Ablauf, der direkt zum Wesentlichen führt, ganz ohne Druck.",
+      step1_title:"Erstelle ein verifiziertes Profil", step1_desc:"Live-Verifizierungs-Selfie und geführte Prompts statt eines simplen Dating-Lebenslaufs.",
+      step2_title:"Lass die KI deine Matches verfeinern", step2_desc:"Ein Kompatibilitätswert, der bei jedem Gespräch neu berechnet wird — nie an ein Foto gebunden.",
+      step3_title:"Triff dich, mit vollem Vertrauen", step3_desc:"Integrierter Videoanruf, sicheres Teilen des Standorts und ein Check-in nach dem Date.",
+      trust_eyebrow:"Sicherheit & Glaubwürdigkeit", trust_title:"Vertrauen, vor der Romantik.",
+      trust_intro:"Die gleichen Sicherheitsstandards, die gleichen Garantien — ganz gleich, wo auf der Welt du bist.",
+      card1_title:"Verifizierte Profile", card1_desc:"Selfie-Verifizierung und laufende Erkennung von Fake-Konten.",
+      card2_title:"24/7-Moderation", card2_desc:"Ein französischsprachiges Team antwortet Tag und Nacht innerhalb einer Stunde.",
+      card3_title:"Verschlüsselte Daten", card3_desc:"DSGVO-konform, europäisches Hosting, deine Daten werden nie weiterverkauft.",
+      card4_title:"Vertrauenswürdig seit 2019", card4_desc:"Eine etablierte Community, die wächst, ohne je ihre Standards zu senken.",
+      testimonial_quote:"„LovMy ist die erste App, bei der ich nicht 40 Profile durchsuchen musste, bevor ich ein echtes Gespräch führen konnte.“",
+      testimonial_author:"Fatou, 29 — Abidjan",
+      testimonial2_quote:"„Mir wurde immer gesagt, Apps würden Paare wie uns nicht verstehen. LovMy hat das schon in der ersten Woche geändert.“",
+      testimonial2_author:"Aïcha & Nadia, zusammen seit 2023 — Paris",
+      intl_eyebrow:"Eine App, die ganze Welt", intl_title:"Dasselbe LovMy, in deiner Sprache.",
+      intl_intro:"Oberfläche in 15 Sprachen verfügbar, mit der Währung deines Landes — gedacht für Frankreich, das frankophone Afrika und darüber hinaus.",
+      intl_lang_hint:"Wechsle die Sprache jederzeit über die Auswahl oben auf der Seite.",
+      lang_label:"Sprache", currency_label:"Währung",
+      pricing_eyebrow:"Preise", pricing_title:"Kostenlos starten. Mit Premium weiter gehen.",
+      pricing_intro:"Keine Kreditkarte nötig, um LovMy zu entdecken — wähle den Plan, der zu dir passt.",
+      period_always:"immer", period_month:"Monat",
+      plan_free_name:"Kostenlos", plan_free_f1:"Verifiziertes Profil und unbegrenzte Matches", plan_free_f2:"Sichere Nachrichten",
+      plan_free_f3:"24/7-Moderation", plan_free_cta:"Kostenlos starten",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Sieh, wer dich schon geliked hat",
+      plan_discovery_f2:"KI-verfeinerte Kompatibilität", plan_discovery_f3:"5 Super-Likes pro Woche",
+      plan_discovery_cta:"Premium testen",
+      plan_premium_name:"Gold", plan_premium_f1:"Unbegrenzte Videoanrufe", plan_premium_f2:"Wöchentlicher Profil-Boost",
+      plan_premium_f3:"Dedizierter Prioritäts-Support", plan_premium_cta:"Zu Gold wechseln",
+      final_eyebrow:"Bereit?", final_title:"Dein nächstes Gespräch wartet auf dich.",
+      final_p:"Lade LovMy in unter einer Minute herunter, kostenlos, egal wo du bist.",
+      store_ios_small:"Laden im", store_ios_big:"App Store", store_android_small:"Erhältlich bei", store_android_big:"Google Play",
+      qr_caption:"Scannen zum Herunterladen",
+      footer_tagline:"Die Dating-App, die diskrete Intelligenz mit echten menschlichen Verbindungen verbindet.",
+      footer_age_notice:"🔞 LovMy ist ausschließlich Erwachsenen vorbehalten. Zugang für Personen unter 18 Jahren streng untersagt.",
+      footer_col1_title:"Produkt", footer_col1_l1:"So funktioniert's", footer_col1_l2:"Sicherheit", footer_col1_l3:"Preise",
+      footer_col2_title:"Unternehmen", footer_col2_l1:"International", footer_col2_l2:"Über uns", footer_col2_l3:"Kontakt",
+      footer_col3_title:"Rechtliches", footer_col3_l1:"Nutzungsbedingungen", footer_col3_l2:"Datenschutz", footer_col3_l3:"Datensicherheit",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Ihre Privatsphäre ist uns wichtig",
+      cookie_text_before:"Wir verwenden Cookies, um Ihre Erfahrung zu verbessern, den Traffic zu analysieren und Inhalte zu personalisieren. Mit einem Klick auf „Akzeptieren“ stimmen Sie der Nutzung dieser Daten zu. Lesen Sie unsere ",
+      cookie_link:"Datenschutzrichtlinie", cookie_text_after:", um mehr zu erfahren.",
+      cookie_accept:"Akzeptieren", cookie_refuse:"Ablehnen", cookie_customize:"Anpassen",
+      cookie_customize_alert:"Cookie-Einstellungen (in Kürze verfügbar)",
+      cookie_modal_title:"Cookie-Einstellungen", cookie_modal_intro:"Wählen Sie, welche Cookies Sie auf LovMy zulassen. Sie können diese Einstellungen jederzeit ändern.",
+      cookie_accept_all:"Alle akzeptieren", cookie_refuse_all:"Alle ablehnen",
+      cookie_save_prefs:"Auswahl speichern", cookie_required_badge:"Immer aktiv",
+      cat_essential_title:"Essenzielle Cookies", cat_essential_desc:"Für den Betrieb der Website erforderlich (Anmeldung, Sicherheit, Speicherung Ihrer Einstellungen). Sie können nicht deaktiviert werden.",
+      cat_analytics_title:"Reichweitenmessung", cat_analytics_desc:"Helfen uns zu verstehen, wie LovMy genutzt wird, um den Service zu verbessern.",
+      cat_ads_title:"Personalisierte Werbung", cat_ads_desc:"Ermöglichen Ihnen Anzeigen, die auf Ihre Interessen zugeschnitten sind, auf LovMy und anderswo.",
+      cat_personalization_title:"Inhaltspersonalisierung", cat_personalization_desc:"Passen die angezeigten Inhalte und Vorschläge an Ihr Profil und Ihr Nutzungsverhalten an.",
+      footer_manage_cookies:"Cookies verwalten"
+    },
+    it:{
+      nav_how:"Come funziona", nav_trust:"Fiducia", nav_pricing:"Prezzi", nav_download:"Scarica",
+      nav_login:"Accedi",
+      ad_label:"Spazio pubblicitario", ad_msg:"Il tuo brand, qui, davanti a un pubblico che dice sì all'amore.", ad_msg2:"Raggiungi single verificati, pronti ad agire.",
+      hero_eyebrow:"Incontri aumentati, cuore garantito",
+      hero_title:"L'amore, calcolato con il cuore.",
+      hero_lede:"LovMy ti mette in contatto con single verificati vicino a te — o dall'altra parte del mondo. Un'intelligenza discreta che affina i tuoi incontri in base a ciò che conta davvero per te.",
+      hero_cta_primary:"Scarica gratis", hero_cta_secondary:"Scopri come funziona",
+      stat1_num:"15", stat1_label:"lingue disponibili",
+      stat2_num:"92%", stat2_label:"profili verificati con selfie",
+      stat3_num:"24/7", stat3_label:"moderazione umana attiva",
+      how_eyebrow:"Il percorso", how_title:"Tre passi, senza perdere tempo.",
+      how_intro:"Un percorso pensato per andare dritti all'essenziale, senza mai metterti fretta.",
+      step1_title:"Crea un profilo verificato", step1_desc:"Selfie di verifica dal vivo e domande guidate, invece di un semplice curriculum sentimentale.",
+      step2_title:"Lascia che l'IA affini i tuoi match", step2_desc:"Un punteggio di compatibilità ricalcolato a ogni conversazione, mai fissato su una foto.",
+      step3_title:"Incontratevi, in totale fiducia", step3_desc:"Videochiamata integrata, condivisione sicura della posizione e check-in dopo l'appuntamento.",
+      trust_eyebrow:"Sicurezza e credibilità", trust_title:"La fiducia, prima del romanticismo.",
+      trust_intro:"Gli stessi standard di sicurezza, le stesse garanzie, ovunque tu sia nel mondo.",
+      card1_title:"Profili verificati", card1_desc:"Verifica tramite selfie e rilevamento continuo degli account falsi.",
+      card2_title:"Moderazione 24/7", card2_desc:"Un team francofono risponde entro un'ora, giorno e notte.",
+      card3_title:"Dati criptati", card3_desc:"Conforme al GDPR, hosting europeo, i tuoi dati non vengono mai rivenduti.",
+      card4_title:"Affidabile dal 2019", card4_desc:"Una community consolidata che cresce senza mai abbassare i propri standard.",
+      testimonial_quote:"«LovMy è la prima app in cui non ho dovuto scorrere 40 profili prima di avere una vera conversazione.»",
+      testimonial_author:"Fatou, 29 anni — Abidjan",
+      testimonial2_quote:"«Mi avevano sempre detto che le app non capivano le coppie come la nostra. LovMy l’ha cambiato fin dalla prima settimana.»",
+      testimonial2_author:"Aïcha e Nadia, insieme dal 2023 — Parigi",
+      intl_eyebrow:"Un'app, il mondo intero", intl_title:"Lo stesso LovMy, nella tua lingua.",
+      intl_intro:"Interfaccia disponibile in 15 lingue, con la valuta del tuo paese — pensata per la Francia, l'Africa francofona e non solo.",
+      intl_lang_hint:"Cambia lingua in qualsiasi momento dal selettore in alto nella pagina.",
+      lang_label:"Lingua", currency_label:"Valuta",
+      pricing_eyebrow:"Prezzi", pricing_title:"Gratis per iniziare. Premium per andare oltre.",
+      pricing_intro:"Nessuna carta richiesta per scoprire LovMy — scegli il piano che ti somiglia.",
+      period_always:"sempre", period_month:"mese",
+      plan_free_name:"Gratis", plan_free_f1:"Profilo verificato e match illimitati", plan_free_f2:"Messaggistica sicura",
+      plan_free_f3:"Moderazione 24/7", plan_free_cta:"Inizia gratis",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Scopri chi ti ha già messo like",
+      plan_discovery_f2:"Compatibilità affinata dall'IA", plan_discovery_f3:"5 super-like a settimana",
+      plan_discovery_cta:"Prova Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Videochiamate illimitate", plan_premium_f2:"Boost del profilo ogni settimana",
+      plan_premium_f3:"Supporto prioritario dedicato", plan_premium_cta:"Passa a Gold",
+      final_eyebrow:"Pronto·a?", final_title:"La tua prossima conversazione ti aspetta.",
+      final_p:"Scarica LovMy in meno di un minuto, gratis, ovunque tu sia.",
+      store_ios_small:"Scarica su", store_ios_big:"App Store", store_android_small:"Disponibile su", store_android_big:"Google Play",
+      qr_caption:"Scansiona per scaricare",
+      footer_tagline:"L'app di incontri che unisce intelligenza discreta e vere connessioni umane.",
+      footer_age_notice:"🔞 LovMy è riservato ai maggiorenni. Accesso severamente vietato ai minori di 18 anni.",
+      footer_col1_title:"Prodotto", footer_col1_l1:"Come funziona", footer_col1_l2:"Sicurezza", footer_col1_l3:"Prezzi",
+      footer_col2_title:"Azienda", footer_col2_l1:"Internazionale", footer_col2_l2:"Chi siamo", footer_col2_l3:"Contatti",
+      footer_col3_title:"Legale", footer_col3_l1:"Termini di utilizzo", footer_col3_l2:"Privacy", footer_col3_l3:"Sicurezza dei dati",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 La tua privacy ci sta a cuore",
+      cookie_text_before:"Utilizziamo i cookie per migliorare la tua esperienza, analizzare il traffico e personalizzare i contenuti. Cliccando su «Accetta», acconsenti al nostro utilizzo di questi dati. Consulta la nostra ",
+      cookie_link:"Informativa sulla privacy", cookie_text_after:" per saperne di più.",
+      cookie_accept:"Accetta", cookie_refuse:"Rifiuta", cookie_customize:"Personalizza",
+      cookie_customize_alert:"Pannello di personalizzazione dei cookie (in arrivo)",
+      cookie_modal_title:"Preferenze sui cookie", cookie_modal_intro:"Scegli quali cookie autorizzare su LovMy. Puoi modificare queste impostazioni in qualsiasi momento.",
+      cookie_accept_all:"Accetta tutto", cookie_refuse_all:"Rifiuta tutto",
+      cookie_save_prefs:"Salva le mie scelte", cookie_required_badge:"Sempre attivo",
+      cat_essential_title:"Cookie essenziali", cat_essential_desc:"Necessari per il funzionamento del sito (accesso, sicurezza, memorizzazione delle tue preferenze). Non possono essere disattivati.",
+      cat_analytics_title:"Misurazione dell'audience", cat_analytics_desc:"Ci aiutano a capire come viene utilizzato LovMy, per migliorare il servizio.",
+      cat_ads_title:"Pubblicità personalizzata", cat_ads_desc:"Permettono di mostrarti annunci in linea con i tuoi interessi, su LovMy e altrove.",
+      cat_personalization_title:"Personalizzazione dei contenuti", cat_personalization_desc:"Adattano i contenuti e i suggerimenti mostrati in base al tuo profilo e alla tua navigazione.",
+      footer_manage_cookies:"Gestisci cookie"
+    },
+    nl:{
+      nav_how:"Hoe het werkt", nav_trust:"Vertrouwen", nav_pricing:"Prijzen", nav_download:"Downloaden",
+      nav_login:"Inloggen",
+      ad_label:"Advertentieruimte", ad_msg:"Jouw merk, hier, voor een publiek dat ja zegt tegen de liefde.", ad_msg2:"Bereik geverifieerde singles, klaar om in actie te komen.",
+      hero_eyebrow:"Daten met AI, hart gegarandeerd",
+      hero_title:"Liefde, berekend met hart.",
+      hero_lede:"LovMy verbindt je met geverifieerde singles in jouw buurt — of aan de andere kant van de wereld. Een discrete intelligentie die je matches verfijnt op basis van wat écht belangrijk voor je is.",
+      hero_cta_primary:"Gratis downloaden", hero_cta_secondary:"Bekijk hoe het werkt",
+      stat1_num:"15", stat1_label:"beschikbare talen",
+      stat2_num:"92%", stat2_label:"profielen geverifieerd met selfie",
+      stat3_num:"24/7", stat3_label:"actieve menselijke moderatie",
+      how_eyebrow:"Het traject", how_title:"Drie stappen, geen tijdverlies.",
+      how_intro:"Een traject dat direct naar de kern gaat, zonder je ooit te haasten.",
+      step1_title:"Maak een geverifieerd profiel", step1_desc:"Live verificatie-selfie en begeleide prompts, in plaats van een simpel datingcv.",
+      step2_title:"Laat AI je matches verfijnen", step2_desc:"Een compatibiliteitsscore die bij elk gesprek opnieuw wordt berekend, nooit vastgezet op een foto.",
+      step3_title:"Ontmoet elkaar, met volledig vertrouwen", step3_desc:"Ingebouwde videogesprekken, veilig locatie delen en een check-in na de date.",
+      trust_eyebrow:"Veiligheid & geloofwaardigheid", trust_title:"Vertrouwen, vóór romantiek.",
+      trust_intro:"Dezelfde veiligheidsstandaarden, dezelfde garanties, waar je ook ter wereld bent.",
+      card1_title:"Geverifieerde profielen", card1_desc:"Selfie-verificatie en doorlopende opsporing van nepaccounts.",
+      card2_title:"24/7-moderatie", card2_desc:"Een Franstalig team reageert binnen een uur, dag en nacht.",
+      card3_title:"Versleutelde gegevens", card3_desc:"AVG-conform, Europese hosting, je gegevens worden nooit doorverkocht.",
+      card4_title:"Vertrouwd sinds 2019", card4_desc:"Een gevestigde community die groeit zonder ooit haar standaarden te verlagen.",
+      testimonial_quote:"“LovMy is de eerste app waarbij ik geen 40 profielen hoefde door te spitten voor één écht gesprek.”",
+      testimonial_author:"Fatou, 29 — Abidjan",
+      testimonial2_quote:"“Mij werd altijd verteld dat apps stellen zoals wij niet begrepen. LovMy veranderde dat al in de eerste week.”",
+      testimonial2_author:"Aïcha & Nadia, samen sinds 2023 — Parijs",
+      intl_eyebrow:"Eén app, de hele wereld", intl_title:"Dezelfde LovMy, in jouw taal.",
+      intl_intro:"Interface beschikbaar in 15 talen, met de valuta van jouw land — gemaakt voor Frankrijk, Franstalig Afrika en daarbuiten.",
+      intl_lang_hint:"Wissel op elk moment van taal via de kiezer bovenaan de pagina.",
+      lang_label:"Taal", currency_label:"Valuta",
+      pricing_eyebrow:"Prijzen", pricing_title:"Gratis om te beginnen. Premium om verder te gaan.",
+      pricing_intro:"Geen kaart nodig om LovMy te ontdekken — kies het plan dat bij je past.",
+      period_always:"altijd", period_month:"maand",
+      plan_free_name:"Gratis", plan_free_f1:"Geverifieerd profiel en onbeperkte matches", plan_free_f2:"Beveiligde berichten",
+      plan_free_f3:"24/7-moderatie", plan_free_cta:"Gratis starten",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Zie wie je al leuk vond",
+      plan_discovery_f2:"Door AI verfijnde compatibiliteit", plan_discovery_f3:"5 super-likes per week",
+      plan_discovery_cta:"Probeer Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Onbeperkte videogesprekken", plan_premium_f2:"Wekelijkse profielboost",
+      plan_premium_f3:"Toegewijde prioritaire ondersteuning", plan_premium_cta:"Ga naar Gold",
+      final_eyebrow:"Klaar?", final_title:"Je volgende gesprek wacht op je.",
+      final_p:"Download LovMy in minder dan een minuut, gratis, waar je ook bent.",
+      store_ios_small:"Downloaden in de", store_ios_big:"App Store", store_android_small:"Verkrijgbaar via", store_android_big:"Google Play",
+      qr_caption:"Scan om te downloaden",
+      footer_tagline:"De datingapp die discrete intelligentie combineert met echte menselijke connecties.",
+      footer_age_notice:"🔞 LovMy is uitsluitend bedoeld voor volwassenen. Toegang voor personen onder de 18 jaar is strikt verboden.",
+      footer_col1_title:"Product", footer_col1_l1:"Hoe het werkt", footer_col1_l2:"Veiligheid", footer_col1_l3:"Prijzen",
+      footer_col2_title:"Bedrijf", footer_col2_l1:"Internationaal", footer_col2_l2:"Over ons", footer_col2_l3:"Contact",
+      footer_col3_title:"Juridisch", footer_col3_l1:"Gebruiksvoorwaarden", footer_col3_l2:"Privacy", footer_col3_l3:"Gegevensveiligheid",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Uw privacy is belangrijk voor ons",
+      cookie_text_before:"We gebruiken cookies om uw ervaring te verbeteren, verkeer te analyseren en inhoud te personaliseren. Door op “Accepteren” te klikken, stemt u in met ons gebruik van deze gegevens. Lees ons ",
+      cookie_link:"Privacybeleid", cookie_text_after:" voor meer informatie.",
+      cookie_accept:"Accepteren", cookie_refuse:"Weigeren", cookie_customize:"Aanpassen",
+      cookie_customize_alert:"Cookie-instellingenpaneel (binnenkort beschikbaar)",
+      cookie_modal_title:"Cookievoorkeuren", cookie_modal_intro:"Kies welke cookies u toestaat op LovMy. U kunt deze instellingen op elk moment wijzigen.",
+      cookie_accept_all:"Alles accepteren", cookie_refuse_all:"Alles weigeren",
+      cookie_save_prefs:"Mijn keuzes opslaan", cookie_required_badge:"Altijd actief",
+      cat_essential_title:"Essentiële cookies", cat_essential_desc:"Noodzakelijk voor de werking van de site (inloggen, beveiliging, onthouden van uw voorkeuren). Kunnen niet worden uitgeschakeld.",
+      cat_analytics_title:"Publieksmeting", cat_analytics_desc:"Helpen ons begrijpen hoe LovMy wordt gebruikt, om de dienst te verbeteren.",
+      cat_ads_title:"Gepersonaliseerde advertenties", cat_ads_desc:"Laten toe u advertenties te tonen die aansluiten bij uw interesses, op LovMy en elders.",
+      cat_personalization_title:"Personalisatie van inhoud", cat_personalization_desc:"Passen de getoonde inhoud en suggesties aan op basis van uw profiel en surfgedrag.",
+      footer_manage_cookies:"Cookies beheren"
+    },
+    ru:{
+      nav_how:"Как это работает", nav_trust:"Доверие", nav_pricing:"Тарифы", nav_download:"Скачать",
+      nav_login:"Войти",
+      ad_label:"Рекламное место", ad_msg:"Ваш бренд здесь, перед аудиторией, которая говорит любви «да».", ad_msg2:"Охватите проверенных одиноких людей, готовых к действию.",
+      hero_eyebrow:"Знакомства нового уровня, сердце гарантировано",
+      hero_title:"Любовь, просчитанная сердцем.",
+      hero_lede:"LovMy знакомит вас с проверенными одинокими людьми рядом с вами — или на другом конце света. Деликатный интеллект, который подбирает совпадения по-настоящему важному для вас.",
+      hero_cta_primary:"Скачать бесплатно", hero_cta_secondary:"Посмотреть, как это работает",
+      stat1_num:"15", stat1_label:"доступных языков",
+      stat2_num:"92%", stat2_label:"анкет проверено по селфи",
+      stat3_num:"24/7", stat3_label:"активная модерация людьми",
+      how_eyebrow:"Путь пользователя", how_title:"Три шага, никакой потери времени.",
+      how_intro:"Путь, продуманный так, чтобы сразу перейти к главному, никуда не торопя.",
+      step1_title:"Создайте проверенную анкету", step1_desc:"Живое селфи для верификации и подсказки вместо обычного «резюме» для знакомств.",
+      step2_title:"Доверьте ИИ уточнение совпадений", step2_desc:"Оценка совместимости пересчитывается при каждом диалоге, а не застывает на одной фотографии.",
+      step3_title:"Встречайтесь с полной уверенностью", step3_desc:"Встроенный видеозвонок, безопасная передача геолокации и проверка после встречи.",
+      trust_eyebrow:"Безопасность и доверие", trust_title:"Доверие — прежде романтики.",
+      trust_intro:"Одни и те же стандарты безопасности, одни и те же гарантии — где бы вы ни находились в мире.",
+      card1_title:"Проверенные анкеты", card1_desc:"Верификация по селфи и постоянное выявление фальшивых аккаунтов.",
+      card2_title:"Модерация 24/7", card2_desc:"Франкоязычная команда отвечает менее чем за час, днём и ночью.",
+      card3_title:"Шифрование данных", card3_desc:"Соответствие GDPR, европейский хостинг, ваши данные никогда не перепродаются.",
+      card4_title:"Доверие с 2019 года", card4_desc:"Устоявшееся сообщество, которое растёт, никогда не снижая своих стандартов.",
+      testimonial_quote:"«LovMy — первое приложение, где мне не пришлось перебирать 40 анкет, прежде чем состоялся настоящий разговор.»",
+      testimonial_author:"Фату, 29 лет — Абиджан",
+      testimonial2_quote:"«Мне всегда говорили, что приложения не понимают таких пар, как наша. LovMy изменил это уже в первую неделю.»",
+      testimonial2_author:"Аиша и Надя, вместе с 2023 года — Париж",
+      intl_eyebrow:"Одно приложение, весь мир", intl_title:"Тот же LovMy, на вашем языке.",
+      intl_intro:"Интерфейс доступен на 15 языках, с валютой вашей страны — создано для Франции, франкоязычной Африки и не только.",
+      intl_lang_hint:"Меняйте язык в любой момент с помощью переключателя вверху страницы.",
+      lang_label:"Язык", currency_label:"Валюта",
+      pricing_eyebrow:"Тарифы", pricing_title:"Бесплатно для старта. Premium — чтобы идти дальше.",
+      pricing_intro:"Карта не требуется, чтобы попробовать LovMy — выберите тариф, который вам подходит.",
+      period_always:"навсегда", period_month:"месяц",
+      plan_free_name:"Бесплатно", plan_free_f1:"Проверенная анкета и неограниченные совпадения", plan_free_f2:"Безопасные сообщения",
+      plan_free_f3:"Модерация 24/7", plan_free_cta:"Начать бесплатно",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Смотрите, кто уже поставил вам лайк",
+      plan_discovery_f2:"Совместимость, уточнённая ИИ", plan_discovery_f3:"5 супер-лайков в неделю",
+      plan_discovery_cta:"Попробовать Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Неограниченные видеозвонки", plan_premium_f2:"Еженедельное продвижение анкеты",
+      plan_premium_f3:"Выделенная приоритетная поддержка", plan_premium_cta:"Перейти на Gold",
+      final_eyebrow:"Готовы?", final_title:"Ваш следующий разговор уже ждёт.",
+      final_p:"Скачайте LovMy меньше чем за минуту, бесплатно, где бы вы ни находились.",
+      store_ios_small:"Загрузить в", store_ios_big:"App Store", store_android_small:"Доступно в", store_android_big:"Google Play",
+      qr_caption:"Отсканируйте, чтобы скачать",
+      footer_tagline:"Приложение для знакомств, сочетающее деликатный интеллект и настоящие человеческие связи.",
+      footer_age_notice:"🔞 LovMy предназначен только для совершеннолетних. Доступ лицам младше 18 лет строго запрещён.",
+      footer_col1_title:"Продукт", footer_col1_l1:"Как это работает", footer_col1_l2:"Безопасность", footer_col1_l3:"Тарифы",
+      footer_col2_title:"Компания", footer_col2_l1:"Международное присутствие", footer_col2_l2:"О нас", footer_col2_l3:"Контакты",
+      footer_col3_title:"Правовая информация", footer_col3_l1:"Условия использования", footer_col3_l2:"Конфиденциальность", footer_col3_l3:"Безопасность данных",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Ваша конфиденциальность важна для нас",
+      cookie_text_before:"Мы используем файлы cookie, чтобы улучшить ваш опыт, анализировать трафик и персонализировать контент. Нажимая «Принять», вы соглашаетесь на использование этих данных. Ознакомьтесь с нашей ",
+      cookie_link:"Политикой конфиденциальности", cookie_text_after:", чтобы узнать больше.",
+      cookie_accept:"Принять", cookie_refuse:"Отклонить", cookie_customize:"Настроить",
+      cookie_customize_alert:"Панель настройки cookie (скоро)",
+      cookie_modal_title:"Настройки cookie", cookie_modal_intro:"Выберите, какие файлы cookie вы разрешаете на LovMy. Эти настройки можно изменить в любое время.",
+      cookie_accept_all:"Принять все", cookie_refuse_all:"Отклонить все",
+      cookie_save_prefs:"Сохранить мой выбор", cookie_required_badge:"Всегда активны",
+      cat_essential_title:"Необходимые файлы cookie", cat_essential_desc:"Нужны для работы сайта (вход, безопасность, запоминание ваших настроек). Их нельзя отключить.",
+      cat_analytics_title:"Измерение аудитории", cat_analytics_desc:"Помогают нам понять, как используется LovMy, чтобы улучшить сервис.",
+      cat_ads_title:"Персонализированная реклама", cat_ads_desc:"Позволяют показывать вам рекламу с учётом ваших интересов, на LovMy и на других сайтах.",
+      cat_personalization_title:"Персонализация контента", cat_personalization_desc:"Адаптируют показываемый контент и рекомендации на основе вашего профиля и действий.",
+      footer_manage_cookies:"Управление cookie"
+    },
+    uk:{
+      nav_how:"Як це працює", nav_trust:"Довіра", nav_pricing:"Тарифи", nav_download:"Завантажити",
+      nav_login:"Увійти",
+      ad_label:"Рекламне місце", ad_msg:"Ваш бренд тут, перед аудиторією, яка каже коханню «так».", ad_msg2:"Охопіть перевірених самотніх людей, готових до дії.",
+      hero_eyebrow:"Знайомства нового рівня, серце гарантоване",
+      hero_title:"Кохання, обчислене серцем.",
+      hero_lede:"LovMy знайомить вас із перевіреними самотніми людьми поруч із вами — або на іншому кінці світу. Делікатний інтелект, який добирає збіги за тим, що справді важливо для вас.",
+      hero_cta_primary:"Завантажити безкоштовно", hero_cta_secondary:"Подивитися, як це працює",
+      stat1_num:"15", stat1_label:"доступних мов",
+      stat2_num:"92%", stat2_label:"анкет перевірено за селфі",
+      stat3_num:"24/7", stat3_label:"активна модерація людьми",
+      how_eyebrow:"Шлях користувача", how_title:"Три кроки, без втрати часу.",
+      how_intro:"Шлях, продуманий так, щоб одразу перейти до суті, нікуди не поспішаючи.",
+      step1_title:"Створіть перевірену анкету", step1_desc:"Живе селфі для верифікації та підказки замість звичайного «резюме» для знайомств.",
+      step2_title:"Довірте ШІ уточнення збігів", step2_desc:"Оцінка сумісності перераховується при кожному діалозі, а не застигає на одній фотографії.",
+      step3_title:"Зустрічайтеся з повною впевненістю", step3_desc:"Вбудований відеодзвінок, безпечна передача геолокації та перевірка після зустрічі.",
+      trust_eyebrow:"Безпека та довіра", trust_title:"Довіра — перед романтикою.",
+      trust_intro:"Ті самі стандарти безпеки, ті самі гарантії — де б ви не були у світі.",
+      card1_title:"Перевірені анкети", card1_desc:"Верифікація за селфі та постійне виявлення фейкових акаунтів.",
+      card2_title:"Модерація 24/7", card2_desc:"Франкомовна команда відповідає менш ніж за годину, вдень і вночі.",
+      card3_title:"Шифрування даних", card3_desc:"Відповідність GDPR, європейський хостинг, ваші дані ніколи не перепродаються.",
+      card4_title:"Довіра з 2019 року", card4_desc:"Усталена спільнота, яка зростає, ніколи не знижуючи власних стандартів.",
+      testimonial_quote:"«LovMy — перший застосунок, де мені не довелося перебирати 40 анкет, перш ніж відбулася справжня розмова.»",
+      testimonial_author:"Фату, 29 років — Абіджан",
+      testimonial2_quote:"«Мені завжди казали, що застосунки не розуміють таких пар, як наша. LovMy змінив це вже в перший тиждень.»",
+      testimonial2_author:"Аїша і Надя, разом з 2023 року — Париж",
+      intl_eyebrow:"Один застосунок, увесь світ", intl_title:"Той самий LovMy, вашою мовою.",
+      intl_intro:"Інтерфейс доступний 15 мовами, з валютою вашої країни — створено для Франції, франкомовної Африки та за їхніми межами.",
+      intl_lang_hint:"Змінюйте мову будь-коли за допомогою перемикача вгорі сторінки.",
+      lang_label:"Мова", currency_label:"Валюта",
+      pricing_eyebrow:"Тарифи", pricing_title:"Безкоштовно для старту. Premium — щоб іти далі.",
+      pricing_intro:"Картка не потрібна, щоб спробувати LovMy — оберіть тариф, який вам підходить.",
+      period_always:"назавжди", period_month:"місяць",
+      plan_free_name:"Безкоштовно", plan_free_f1:"Перевірена анкета та необмежені збіги", plan_free_f2:"Безпечні повідомлення",
+      plan_free_f3:"Модерація 24/7", plan_free_cta:"Почати безкоштовно",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Дивіться, хто вже вподобав вас",
+      plan_discovery_f2:"Сумісність, уточнена ШІ", plan_discovery_f3:"5 супер-лайків на тиждень",
+      plan_discovery_cta:"Спробувати Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Необмежені відеодзвінки", plan_premium_f2:"Щотижневе просування анкети",
+      plan_premium_f3:"Виділена пріоритетна підтримка", plan_premium_cta:"Перейти на Gold",
+      final_eyebrow:"Готові?", final_title:"Ваша наступна розмова вже чекає.",
+      final_p:"Завантажте LovMy менш ніж за хвилину, безкоштовно, де б ви не були.",
+      store_ios_small:"Завантажити в", store_ios_big:"App Store", store_android_small:"Доступно в", store_android_big:"Google Play",
+      qr_caption:"Відскануйте, щоб завантажити",
+      footer_tagline:"Застосунок для знайомств, що поєднує делікатний інтелект і справжні людські зв'язки.",
+      footer_age_notice:"🔞 LovMy призначений лише для повнолітніх. Доступ особам молодше 18 років суворо заборонено.",
+      footer_col1_title:"Продукт", footer_col1_l1:"Як це працює", footer_col1_l2:"Безпека", footer_col1_l3:"Тарифи",
+      footer_col2_title:"Компанія", footer_col2_l1:"Міжнародна присутність", footer_col2_l2:"Про нас", footer_col2_l3:"Контакти",
+      footer_col3_title:"Правова інформація", footer_col3_l1:"Умови використання", footer_col3_l2:"Конфіденційність", footer_col3_l3:"Безпека даних",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Ваша конфіденційність важлива для нас",
+      cookie_text_before:"Ми використовуємо файли cookie, щоб покращити ваш досвід, аналізувати трафік і персоналізувати контент. Натискаючи «Прийняти», ви погоджуєтеся на використання цих даних. Ознайомтеся з нашою ",
+      cookie_link:"Політикою конфіденційності", cookie_text_after:", щоб дізнатися більше.",
+      cookie_accept:"Прийняти", cookie_refuse:"Відхилити", cookie_customize:"Налаштувати",
+      cookie_customize_alert:"Панель налаштування cookie (незабаром)",
+      cookie_modal_title:"Налаштування cookie", cookie_modal_intro:"Оберіть, які файли cookie ви дозволяєте на LovMy. Ці налаштування можна змінити будь-коли.",
+      cookie_accept_all:"Прийняти всі", cookie_refuse_all:"Відхилити всі",
+      cookie_save_prefs:"Зберегти мій вибір", cookie_required_badge:"Завжди активні",
+      cat_essential_title:"Необхідні файли cookie", cat_essential_desc:"Потрібні для роботи сайту (вхід, безпека, запам'ятовування ваших налаштувань). Їх не можна вимкнути.",
+      cat_analytics_title:"Вимірювання аудиторії", cat_analytics_desc:"Допомагають нам зрозуміти, як використовується LovMy, щоб покращити сервіс.",
+      cat_ads_title:"Персоналізована реклама", cat_ads_desc:"Дозволяють показувати вам рекламу відповідно до ваших інтересів, на LovMy та поза ним.",
+      cat_personalization_title:"Персоналізація контенту", cat_personalization_desc:"Адаптують контент і пропозиції відповідно до вашого профілю та навігації.",
+      footer_manage_cookies:"Керування cookie"
+    },
+    pl:{
+      nav_how:"Jak to działa", nav_trust:"Zaufanie", nav_pricing:"Cennik", nav_download:"Pobierz",
+      nav_login:"Zaloguj się",
+      ad_label:"Miejsce reklamowe", ad_msg:"Twoja marka, tutaj, przed publicznością, która mówi tak miłości.", ad_msg2:"Dotrzyj do zweryfikowanych singli, gotowych do działania.",
+      hero_eyebrow:"Randkowanie wspomagane, z sercem",
+      hero_title:"Miłość, obliczona sercem.",
+      hero_lede:"LovMy łączy Cię ze zweryfikowanymi singlami w Twojej okolicy — albo po drugiej stronie świata. Dyskretna inteligencja, która dopasowuje Twoje matche do tego, co naprawdę się liczy.",
+      hero_cta_primary:"Pobierz za darmo", hero_cta_secondary:"Zobacz, jak to działa",
+      stat1_num:"15", stat1_label:"dostępnych języków",
+      stat2_num:"92%", stat2_label:"profili zweryfikowanych selfie",
+      stat3_num:"24/7", stat3_label:"aktywna moderacja ludzka",
+      how_eyebrow:"Ścieżka użytkownika", how_title:"Trzy kroki, bez tracenia czasu.",
+      how_intro:"Ścieżka pomyślana tak, by od razu przejść do sedna, nigdy nie ponaglając.",
+      step1_title:"Stwórz zweryfikowany profil", step1_desc:"Selfie weryfikacyjne na żywo i prowadzone podpowiedzi zamiast zwykłego CV randkowego.",
+      step2_title:"Pozwól AI dopracować Twoje dopasowania", step2_desc:"Wynik kompatybilności przeliczany przy każdej rozmowie, nigdy zamrożony na jednym zdjęciu.",
+      step3_title:"Spotykajcie się z pełnym zaufaniem", step3_desc:"Wbudowana rozmowa wideo, bezpieczne udostępnianie lokalizacji i check-in po randce.",
+      trust_eyebrow:"Bezpieczeństwo i wiarygodność", trust_title:"Zaufanie przed romansem.",
+      trust_intro:"Te same standardy bezpieczeństwa, te same gwarancje — gdziekolwiek jesteś na świecie.",
+      card1_title:"Zweryfikowane profile", card1_desc:"Weryfikacja selfie i ciągłe wykrywanie fałszywych kont.",
+      card2_title:"Moderacja 24/7", card2_desc:"Francuskojęzyczny zespół odpowiada w mniej niż godzinę, dniem i nocą.",
+      card3_title:"Szyfrowane dane", card3_desc:"Zgodność z RODO, hosting europejski, Twoje dane nigdy nie są odsprzedawane.",
+      card4_title:"Zaufanie od 2019 roku", card4_desc:"Ugruntowana społeczność, która rośnie, nigdy nie obniżając swoich standardów.",
+      testimonial_quote:"„LovMy to pierwsza aplikacja, w której nie musiałam przeglądać 40 profili, zanim doszło do prawdziwej rozmowy.”",
+      testimonial_author:"Fatou, 29 lat — Abidżan",
+      testimonial2_quote:"„Zawsze mówiono mi, że aplikacje nie rozumieją takich par jak nasza. LovMy zmienił to już w pierwszym tygodniu.”",
+      testimonial2_author:"Aïcha i Nadia, razem od 2023 roku — Paryż",
+      intl_eyebrow:"Jedna aplikacja, cały świat", intl_title:"To samo LovMy, w Twoim języku.",
+      intl_intro:"Interfejs dostępny w 15 językach, z walutą Twojego kraju — stworzony z myślą o Francji, Afryce frankofońskiej i nie tylko.",
+      intl_lang_hint:"Zmieniaj język w dowolnym momencie za pomocą przełącznika u góry strony.",
+      lang_label:"Język", currency_label:"Waluta",
+      pricing_eyebrow:"Cennik", pricing_title:"Za darmo na start. Premium, by iść dalej.",
+      pricing_intro:"Karta nie jest wymagana, by odkryć LovMy — wybierz plan, który do Ciebie pasuje.",
+      period_always:"zawsze", period_month:"miesiąc",
+      plan_free_name:"Darmowy", plan_free_f1:"Zweryfikowany profil i nieograniczone dopasowania", plan_free_f2:"Bezpieczne wiadomości",
+      plan_free_f3:"Moderacja 24/7", plan_free_cta:"Zacznij za darmo",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Zobacz, kto Cię już polubił",
+      plan_discovery_f2:"Kompatybilność dopracowana przez AI", plan_discovery_f3:"5 super polubień tygodniowo",
+      plan_discovery_cta:"Wypróbuj Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"Nieograniczone rozmowy wideo", plan_premium_f2:"Cotygodniowe wyróżnienie profilu",
+      plan_premium_f3:"Dedykowane wsparcie priorytetowe", plan_premium_cta:"Przejdź na Gold",
+      final_eyebrow:"Gotowi?", final_title:"Twoja następna rozmowa już czeka.",
+      final_p:"Pobierz LovMy w mniej niż minutę, za darmo, gdziekolwiek jesteś.",
+      store_ios_small:"Pobierz w", store_ios_big:"App Store", store_android_small:"Dostępne w", store_android_big:"Google Play",
+      qr_caption:"Zeskanuj, aby pobrać",
+      footer_tagline:"Aplikacja randkowa, która łączy dyskretną inteligencję z prawdziwymi relacjami międzyludzkimi.",
+      footer_age_notice:"🔞 LovMy jest przeznaczony wyłącznie dla osób pełnoletnich. Dostęp osobom poniżej 18 roku życia jest surowo zabroniony.",
+      footer_col1_title:"Produkt", footer_col1_l1:"Jak to działa", footer_col1_l2:"Bezpieczeństwo", footer_col1_l3:"Cennik",
+      footer_col2_title:"Firma", footer_col2_l1:"Międzynarodowo", footer_col2_l2:"O nas", footer_col2_l3:"Kontakt",
+      footer_col3_title:"Informacje prawne", footer_col3_l1:"Warunki korzystania", footer_col3_l2:"Prywatność", footer_col3_l3:"Bezpieczeństwo danych",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Twoja prywatność jest dla nas ważna",
+      cookie_text_before:"Używamy plików cookie, aby poprawić Twoje wrażenia, analizować ruch i personalizować treści. Klikając «Akceptuj», wyrażasz zgodę na wykorzystanie tych danych. Zapoznaj się z naszą ",
+      cookie_link:"Polityką prywatności", cookie_text_after:", aby dowiedzieć się więcej.",
+      cookie_accept:"Akceptuj", cookie_refuse:"Odrzuć", cookie_customize:"Dostosuj",
+      cookie_customize_alert:"Panel personalizacji plików cookie (wkrótce)",
+      cookie_modal_title:"Preferencje plików cookie", cookie_modal_intro:"Wybierz, na jakie pliki cookie zgadzasz się w LovMy. Te ustawienia możesz zmienić w dowolnym momencie.",
+      cookie_accept_all:"Zaakceptuj wszystkie", cookie_refuse_all:"Odrzuć wszystkie",
+      cookie_save_prefs:"Zapisz moje wybory", cookie_required_badge:"Zawsze aktywne",
+      cat_essential_title:"Niezbędne pliki cookie", cat_essential_desc:"Konieczne do działania strony (logowanie, bezpieczeństwo, zapamiętywanie preferencji). Nie można ich wyłączyć.",
+      cat_analytics_title:"Pomiar odbiorców", cat_analytics_desc:"Pomagają nam zrozumieć, jak korzysta się z LovMy, aby ulepszać usługę.",
+      cat_ads_title:"Spersonalizowane reklamy", cat_ads_desc:"Pozwalają wyświetlać reklamy dopasowane do Twoich zainteresowań, w LovMy i poza nim.",
+      cat_personalization_title:"Personalizacja treści", cat_personalization_desc:"Dostosowują wyświetlane treści i sugestie na podstawie Twojego profilu i aktywności.",
+      footer_manage_cookies:"Zarządzaj plikami cookie"
+    },
+    tr:{
+      nav_how:"Nasıl çalışır", nav_trust:"Güven", nav_pricing:"Fiyatlandırma", nav_download:"İndir",
+      nav_login:"Giriş yap",
+      ad_label:"Reklam alanı", ad_msg:"Markanız burada, aşka evet diyen bir kitlenin önünde.", ad_msg2:"Harekete geçmeye hazır, doğrulanmış bekarlara ulaşın.",
+      hero_eyebrow:"Yapay zekâ destekli tanışma, kalpten",
+      hero_title:"Aşk, kalple hesaplanır.",
+      hero_lede:"LovMy, sizi yakınınızdaki ya da dünyanın öbür ucundaki doğrulanmış bekarlarla buluşturur. Sizin için gerçekten önemli olanı anlayan sağduyulu bir zekâ ile eşleşmelerinizi inceltir.",
+      hero_cta_primary:"Ücretsiz indir", hero_cta_secondary:"Nasıl çalıştığını gör",
+      stat1_num:"15", stat1_label:"kullanılabilir dil",
+      stat2_num:"92%", stat2_label:"selfie ile doğrulanmış profil",
+      stat3_num:"24/7", stat3_label:"aktif insan moderasyonu",
+      how_eyebrow:"Yolculuk", how_title:"Üç adım, zaman kaybı yok.",
+      how_intro:"Sizi hiç aceleye getirmeden doğrudan öze giden bir akış.",
+      step1_title:"Doğrulanmış bir profil oluşturun", step1_desc:"Basit bir aşk özgeçmişi yerine canlı doğrulama selfie'si ve yönlendirilmiş sorular.",
+      step2_title:"Eşleşmelerinizi yapay zekâya iyileştirtin", step2_desc:"Her sohbette yeniden hesaplanan, tek bir fotoğrafa asla takılıp kalmayan bir uyumluluk puanı.",
+      step3_title:"Tam bir güvenle tanışın", step3_desc:"Uygulama içi görüntülü arama, güvenli konum paylaşımı ve buluşma sonrası kontrol.",
+      trust_eyebrow:"Güvenlik ve güvenilirlik", trust_title:"Romantizmden önce güven.",
+      trust_intro:"Dünyanın neresinde olursanız olun aynı güvenlik standartları, aynı garantiler.",
+      card1_title:"Doğrulanmış profiller", card1_desc:"Selfie doğrulaması ve sahte hesapların sürekli tespiti.",
+      card2_title:"7/24 moderasyon", card2_desc:"Fransızca konuşan bir ekip, gece gündüz bir saatten kısa sürede yanıt verir.",
+      card3_title:"Şifreli veriler", card3_desc:"GDPR uyumlu, Avrupa'da barındırma, verileriniz asla yeniden satılmaz.",
+      card4_title:"2019'dan beri güvenilir", card4_desc:"Standartlarından asla ödün vermeden büyüyen köklü bir topluluk.",
+      testimonial_quote:"“LovMy, gerçek bir sohbet edebilmek için 40 profili elemem gerekmeyen ilk uygulama.”",
+      testimonial_author:"Fatou, 29 — Abidjan",
+      testimonial2_quote:"“Bana hep uygulamaların bizimki gibi çiftleri anlamadığı söylenmişti. LovMy bunu daha ilk hafta değiştirdi.”",
+      testimonial2_author:"Aïcha & Nadia, 2023’ten beri birlikte — Paris",
+      intl_eyebrow:"Tek uygulama, tüm dünya", intl_title:"Aynı LovMy, kendi dilinizde.",
+      intl_intro:"Arayüz 15 dilde ve ülkenizin para biriminde sunulur — Fransa, Frankofon Afrika ve ötesi için tasarlandı.",
+      intl_lang_hint:"Sayfanın üstündeki seçiciden istediğiniz an dili değiştirebilirsiniz.",
+      lang_label:"Dil", currency_label:"Para birimi",
+      pricing_eyebrow:"Fiyatlandırma", pricing_title:"Başlamak ücretsiz. Daha ileri gitmek için Premium.",
+      pricing_intro:"LovMy'ı keşfetmek için kart gerekmez — size uygun planı seçin.",
+      period_always:"her zaman", period_month:"ay",
+      plan_free_name:"Ücretsiz", plan_free_f1:"Doğrulanmış profil ve sınırsız eşleşme", plan_free_f2:"Güvenli mesajlaşma",
+      plan_free_f3:"7/24 moderasyon", plan_free_cta:"Ücretsiz başla",
+      plan_discovery_name:"Premium", plan_discovery_f1:"Sizi kimlerin beğendiğini görün",
+      plan_discovery_f2:"Yapay zekâ ile iyileştirilmiş uyumluluk", plan_discovery_f3:"Haftada 5 süper beğeni",
+      plan_discovery_cta:"Premium'u deneyin",
+      plan_premium_name:"Gold", plan_premium_f1:"Sınırsız görüntülü arama", plan_premium_f2:"Haftalık profil öne çıkarma",
+      plan_premium_f3:"Özel öncelikli destek", plan_premium_cta:"Gold'a geçin",
+      final_eyebrow:"Hazır mısınız?", final_title:"Bir sonraki sohbetiniz sizi bekliyor.",
+      final_p:"LovMy'ı bir dakikadan kısa sürede, ücretsiz olarak, nerede olursanız olun indirin.",
+      store_ios_small:"İndirin", store_ios_big:"App Store", store_android_small:"Edinin", store_android_big:"Google Play",
+      qr_caption:"İndirmek için tarayın",
+      footer_tagline:"Sağduyulu zekâ ile gerçek insan bağlantılarını birleştiren tanışma uygulaması.",
+      footer_age_notice:"🔞 LovMy yalnızca reşit kişiler içindir. 18 yaşından küçüklerin erişimi kesinlikle yasaktır.",
+      footer_col1_title:"Ürün", footer_col1_l1:"Nasıl çalışır", footer_col1_l2:"Güvenlik", footer_col1_l3:"Fiyatlandırma",
+      footer_col2_title:"Şirket", footer_col2_l1:"Uluslararası", footer_col2_l2:"Hakkımızda", footer_col2_l3:"İletişim",
+      footer_col3_title:"Yasal", footer_col3_l1:"Kullanım koşulları", footer_col3_l2:"Gizlilik", footer_col3_l3:"Veri güvenliği",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 Gizliliğiniz bizim için önemli",
+      cookie_text_before:"Deneyiminizi geliştirmek, trafiği analiz etmek ve içerikleri kişiselleştirmek için çerezler kullanıyoruz. «Kabul Et»e tıklayarak bu verileri kullanmamızı kabul etmiş olursunuz. Daha fazla bilgi için ",
+      cookie_link:"Gizlilik Politikamızı", cookie_text_after:" inceleyin.",
+      cookie_accept:"Kabul Et", cookie_refuse:"Reddet", cookie_customize:"Özelleştir",
+      cookie_customize_alert:"Çerez özelleştirme paneli (yakında)",
+      cookie_modal_title:"Çerez tercihleri", cookie_modal_intro:"LovMy'de hangi çerezlere izin vereceğinizi seçin. Bu ayarları istediğiniz zaman değiştirebilirsiniz.",
+      cookie_accept_all:"Tümünü kabul et", cookie_refuse_all:"Tümünü reddet",
+      cookie_save_prefs:"Seçimlerimi kaydet", cookie_required_badge:"Her zaman etkin",
+      cat_essential_title:"Zorunlu çerezler", cat_essential_desc:"Sitenin çalışması için gereklidir (oturum açma, güvenlik, tercihlerinizin hatırlanması). Devre dışı bırakılamazlar.",
+      cat_analytics_title:"Kitle ölçümü", cat_analytics_desc:"LovMy'nin nasıl kullanıldığını anlamamıza yardımcı olarak hizmeti geliştirmemizi sağlar.",
+      cat_ads_title:"Kişiselleştirilmiş reklamlar", cat_ads_desc:"İlgi alanlarınıza uygun reklamları, LovMy'de ve başka yerlerde göstermemizi sağlar.",
+      cat_personalization_title:"İçerik kişiselleştirme", cat_personalization_desc:"Gösterilen içerik ve önerileri profilinize ve gezinme geçmişinize göre uyarlar.",
+      footer_manage_cookies:"Çerezleri yönet"
+    },
+    ar:{
+      nav_how:"كيف يعمل", nav_trust:"الثقة", nav_pricing:"الأسعار", nav_download:"تحميل",
+      nav_login:"تسجيل الدخول",
+      ad_label:"مساحة إعلانية", ad_msg:"علامتك التجارية هنا، أمام جمهور يقول نعم للحب.", ad_msg2:"تواصل مع عازبين موثّقين، مستعدين لاتخاذ خطوة.",
+      hero_eyebrow:"مواعدة معزّزة، بقلب مضمون",
+      hero_title:"الحب، محسوب بالقلب.",
+      hero_lede:"يربطك LovMy بأشخاص عازبين موثّقين بالقرب منك — أو في الطرف الآخر من العالم. ذكاء اصطناعي دقيق يُحسّن تطابقاتك بناءً على ما يهمك فعلاً.",
+      hero_cta_primary:"تحميل مجانًا", hero_cta_secondary:"شاهد كيف يعمل",
+      stat1_num:"15", stat1_label:"لغة متاحة",
+      stat2_num:"92%", stat2_label:"من الملفات موثّقة بالسيلفي",
+      stat3_num:"24/7", stat3_label:"إشراف بشري نشط",
+      how_eyebrow:"الرحلة", how_title:"ثلاث خطوات، دون إضاعة الوقت.",
+      how_intro:"مسار مصمم للوصول إلى الجوهر مباشرة، دون أي استعجال.",
+      step1_title:"أنشئ ملفًا موثّقًا", step1_desc:"سيلفي توثيق مباشر وأسئلة موجّهة، بدلاً من سيرة ذاتية عاطفية بسيطة.",
+      step2_title:"دع الذكاء الاصطناعي يحسّن تطابقاتك", step2_desc:"درجة توافق يُعاد حسابها مع كل محادثة، ولا تبقى أبدًا ثابتة عند صورة واحدة.",
+      step3_title:"التقيا بكل ثقة", step3_desc:"مكالمة فيديو مدمجة، ومشاركة آمنة للموقع، ومتابعة بعد الموعد.",
+      trust_eyebrow:"الأمان والمصداقية", trust_title:"الثقة، قبل الرومانسية.",
+      trust_intro:"نفس معايير الأمان، ونفس الضمانات، أينما كنت في العالم.",
+      card1_title:"ملفات موثّقة", card1_desc:"توثيق بالسيلفي وكشف مستمر للحسابات المزيفة.",
+      card2_title:"إشراف على مدار الساعة", card2_desc:"فريق ناطق بالفرنسية يرد في أقل من ساعة، ليلاً ونهارًا.",
+      card3_title:"بيانات مشفّرة", card3_desc:"متوافق مع اللائحة الأوروبية لحماية البيانات، استضافة أوروبية، بياناتك لا تُباع أبدًا.",
+      card4_title:"موثوق منذ 2019", card4_desc:"مجتمع راسخ ينمو دون أن يتنازل يومًا عن معاييره.",
+      testimonial_quote:"«LovMy هو أول تطبيق لم أضطر فيه لتصفح 40 ملفًا قبل الحصول على محادثة حقيقية واحدة.»",
+      testimonial_author:"فاتو، 29 عامًا — أبيدجان",
+      testimonial2_quote:"«قيل لي دائمًا إن التطبيقات لا تفهم الأزواج مثلنا. غيّر LovMy ذلك منذ الأسبوع الأول.»",
+      testimonial2_author:"عائشة ونادية، معًا منذ 2023 — باريس",
+      intl_eyebrow:"تطبيق واحد، العالم بأسره", intl_title:"نفس LovMy، بلغتك.",
+      intl_intro:"الواجهة متاحة بـ 15 لغة، بعملة بلدك — مصمم لفرنسا وأفريقيا الفرنكوفونية وخارجها.",
+      intl_lang_hint:"يمكنك تغيير اللغة في أي وقت من القائمة أعلى الصفحة.",
+      lang_label:"اللغة", currency_label:"العملة",
+      pricing_eyebrow:"الأسعار", pricing_title:"مجاني للبدء. Premium للمضي قدمًا.",
+      pricing_intro:"لا حاجة لبطاقة لاكتشاف LovMy — اختر الباقة التي تناسبك.",
+      period_always:"دائمًا", period_month:"شهر",
+      plan_free_name:"مجاني", plan_free_f1:"ملف موثّق وتطابقات غير محدودة", plan_free_f2:"مراسلة آمنة",
+      plan_free_f3:"إشراف على مدار الساعة", plan_free_cta:"ابدأ مجانًا",
+      plan_discovery_name:"Premium", plan_discovery_f1:"شاهد من أعجب بك بالفعل",
+      plan_discovery_f2:"توافق محسّن بالذكاء الاصطناعي", plan_discovery_f3:"5 إعجابات مميزة أسبوعيًا",
+      plan_discovery_cta:"جرّب Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"مكالمات فيديو غير محدودة", plan_premium_f2:"إبراز الملف الشخصي أسبوعيًا",
+      plan_premium_f3:"دعم مخصص ذو أولوية", plan_premium_cta:"الترقية إلى Gold",
+      final_eyebrow:"جاهز؟", final_title:"محادثتك القادمة في انتظارك.",
+      final_p:"حمّل LovMy في أقل من دقيقة، مجانًا، أينما كنت.",
+      store_ios_small:"حمّله من", store_ios_big:"App Store", store_android_small:"متوفر على", store_android_big:"Google Play",
+      qr_caption:"امسح للتحميل",
+      footer_tagline:"تطبيق المواعدة الذي يجمع بين الذكاء الدقيق والتواصل الإنساني الحقيقي.",
+      footer_age_notice:"🔞 تطبيق LovMy مخصص للبالغين فقط. يُمنع منعًا باتًا دخول من هم دون 18 عامًا.",
+      footer_col1_title:"المنتج", footer_col1_l1:"كيف يعمل", footer_col1_l2:"الأمان", footer_col1_l3:"الأسعار",
+      footer_col2_title:"الشركة", footer_col2_l1:"دولي", footer_col2_l2:"من نحن", footer_col2_l3:"اتصل بنا",
+      footer_col3_title:"قانوني", footer_col3_l1:"شروط الاستخدام", footer_col3_l2:"الخصوصية", footer_col3_l3:"أمان البيانات",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 خصوصيتك تهمّنا",
+      cookie_text_before:"نستخدم ملفات تعريف الارتباط (كوكيز) لتحسين تجربتك وتحليل حركة المرور وتخصيص المحتوى. بالنقر على «قبول»، فإنك توافق على استخدامنا لهذه البيانات. اطّلع على ",
+      cookie_link:"سياسة الخصوصية", cookie_text_after:" لمعرفة المزيد.",
+      cookie_accept:"قبول", cookie_refuse:"رفض", cookie_customize:"تخصيص",
+      cookie_customize_alert:"لوحة تخصيص ملفات تعريف الارتباط (قريبًا)",
+      cookie_modal_title:"تفضيلات ملفات تعريف الارتباط", cookie_modal_intro:"اختر ملفات تعريف الارتباط التي تسمح بها على LovMy. يمكنك تغيير هذه الإعدادات في أي وقت.",
+      cookie_accept_all:"قبول الكل", cookie_refuse_all:"رفض الكل",
+      cookie_save_prefs:"حفظ اختياراتي", cookie_required_badge:"نشط دائمًا",
+      cat_essential_title:"ملفات تعريف الارتباط الأساسية", cat_essential_desc:"ضرورية لعمل الموقع (تسجيل الدخول، الأمان، تذكّر تفضيلاتك). لا يمكن تعطيلها.",
+      cat_analytics_title:"قياس الجمهور", cat_analytics_desc:"تساعدنا على فهم كيفية استخدام LovMy لتحسين الخدمة.",
+      cat_ads_title:"الإعلانات المخصصة", cat_ads_desc:"تتيح لنا عرض إعلانات تتناسب مع اهتماماتك، على LovMy وخارجها.",
+      cat_personalization_title:"تخصيص المحتوى", cat_personalization_desc:"تُكيّف المحتوى والاقتراحات المعروضة وفقًا لملفك الشخصي وتصفحك.",
+      footer_manage_cookies:"إدارة ملفات تعريف الارتباط"
+    },
+    zh:{
+      nav_how:"如何使用", nav_trust:"信任与安全", nav_pricing:"价格", nav_download:"下载",
+      nav_login:"登录",
+      ad_label:"广告位", ad_msg:"您的品牌，就在这里，面向对爱说“是”的受众。", ad_msg2:"触达已验证、随时行动的单身人士。",
+      hero_eyebrow:"智能加持的约会，用心保证",
+      hero_title:"用心计算的爱情。",
+      hero_lede:"LovMy 让您与身边或世界另一端经过验证的单身人士相遇——凭借懂得您真正在意之事的低调智能，优化每一次匹配。",
+      hero_cta_primary:"免费下载", hero_cta_secondary:"了解运作方式",
+      stat1_num:"15", stat1_label:"种可用语言",
+      stat2_num:"92%", stat2_label:"资料经自拍验证",
+      stat3_num:"24/7", stat3_label:"全天候人工审核",
+      how_eyebrow:"使用流程", how_title:"三个步骤，绝不浪费时间。",
+      how_intro:"这一流程直击重点，绝不催促您。",
+      step1_title:"创建经过验证的资料", step1_desc:"实时验证自拍与引导式提示，而非一份简单的恋爱简历。",
+      step2_title:"让 AI 优化您的匹配", step2_desc:"兼容度评分会随每次对话重新计算，绝不固定在一张照片上。",
+      step3_title:"安心见面", step3_desc:"内置视频通话、安全的位置共享，以及约会后的安全确认。",
+      trust_eyebrow:"安全与可信度", trust_title:"先有信任，才有浪漫。",
+      trust_intro:"无论您身在世界何处，安全标准与保障始终如一。",
+      card1_title:"经过验证的资料", card1_desc:"自拍验证，持续检测虚假账号。",
+      card2_title:"全天候审核", card2_desc:"法语团队全天候在一小时内回复。",
+      card3_title:"数据加密", card3_desc:"符合 GDPR，欧洲托管，您的数据绝不转售。",
+      card4_title:"自 2019 年起值得信赖", card4_desc:"一个不断壮大、从不降低标准的成熟社区。",
+      testimonial_quote:"「LovMy 是我用过的第一款应用，让我不用翻遍40个资料就能进行一次真正的对话。」",
+      testimonial_author:"法图，29岁 — 阿比让",
+      testimonial2_quote:"「一直有人告诉我，应用程序不理解像我们这样的伴侣。LovMy 在第一周就改变了这一点。」",
+      testimonial2_author:"艾莎与娜迪亚，2023年至今 — 巴黎",
+      intl_eyebrow:"一个应用，覆盖全世界", intl_title:"同一个 LovMy，说您的语言。",
+      intl_intro:"界面支持15种语言，并适配您所在国家的货币——专为法国、法语非洲及更广地区打造。",
+      intl_lang_hint:"您可以随时通过页面顶部的选择器切换语言。",
+      lang_label:"语言", currency_label:"货币",
+      pricing_eyebrow:"价格", pricing_title:"免费开始，Premium 更进一步。",
+      pricing_intro:"无需信用卡即可体验 LovMy——选择最适合您的方案。",
+      period_always:"永久", period_month:"月",
+      plan_free_name:"免费版", plan_free_f1:"经过验证的资料与无限匹配", plan_free_f2:"安全消息",
+      plan_free_f3:"全天候审核", plan_free_cta:"免费开始",
+      plan_discovery_name:"Premium", plan_discovery_f1:"查看谁已经喜欢您",
+      plan_discovery_f2:"AI 优化的兼容度", plan_discovery_f3:"每周5次超级喜欢",
+      plan_discovery_cta:"试用 Premium",
+      plan_premium_name:"Gold", plan_premium_f1:"无限视频通话", plan_premium_f2:"每周资料曝光提升",
+      plan_premium_f3:"专属优先客服支持", plan_premium_cta:"升级到 Gold",
+      final_eyebrow:"准备好了吗？", final_title:"您的下一段对话正在等待。",
+      final_p:"不到一分钟即可免费下载 LovMy，无论您身在何处。",
+      store_ios_small:"前往下载", store_ios_big:"App Store", store_android_small:"前往获取", store_android_big:"Google Play",
+      qr_caption:"扫码 下载",
+      footer_tagline:"这款约会应用将低调的智能与真实的人际连接融为一体。",
+      footer_age_notice:"🔞 LovMy 仅限成年人使用，严禁18岁以下人士访问。",
+      footer_col1_title:"产品", footer_col1_l1:"如何使用", footer_col1_l2:"安全", footer_col1_l3:"价格",
+      footer_col2_title:"公司", footer_col2_l1:"国际", footer_col2_l2:"关于我们", footer_col2_l3:"联系我们",
+      footer_col3_title:"法律", footer_col3_l1:"使用条款", footer_col3_l2:"隐私政策", footer_col3_l3:"数据安全",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 我们重视您的隐私",
+      cookie_text_before:"我们使用 Cookie 来改善您的体验、分析流量并个性化内容。点击「接受」即表示您同意我们使用这些数据。请查阅我们的",
+      cookie_link:"隐私政策", cookie_text_after:"以了解更多信息。",
+      cookie_accept:"接受", cookie_refuse:"拒绝", cookie_customize:"自定义",
+      cookie_customize_alert:"Cookie 自定义面板（即将推出）",
+      cookie_modal_title:"Cookie 偏好设置", cookie_modal_intro:"选择您在 LovMy 上允许使用的 Cookie。您可以随时更改这些设置。",
+      cookie_accept_all:"全部接受", cookie_refuse_all:"全部拒绝",
+      cookie_save_prefs:"保存我的选择", cookie_required_badge:"始终启用",
+      cat_essential_title:"必要性 Cookie", cat_essential_desc:"网站正常运行所必需（登录、安全、记住您的偏好设置）。无法关闭。",
+      cat_analytics_title:"受众统计", cat_analytics_desc:"帮助我们了解 LovMy 的使用情况，以改进服务。",
+      cat_ads_title:"个性化广告", cat_ads_desc:"让我们能在 LovMy 及其他平台上向您展示符合您兴趣的广告。",
+      cat_personalization_title:"内容个性化", cat_personalization_desc:"根据您的资料和浏览行为调整展示的内容与推荐。",
+      footer_manage_cookies:"管理 Cookie"
+    },
+    ja:{
+      nav_how:"使い方", nav_trust:"信頼と安全", nav_pricing:"料金", nav_download:"ダウンロード",
+      nav_login:"ログイン",
+      ad_label:"広告スペース", ad_msg:"あなたのブランドを、愛にイエスと言うオーディエンスの前に。", ad_msg2:"行動する準備ができた、認証済みの独身者にアプローチ。",
+      hero_eyebrow:"知性が支える出会い、心は本物",
+      hero_title:"心で計算する、恋。",
+      hero_lede:"LovMyは、あなたのそばにいる、あるいは地球の裏側にいる、身元確認済みの独身者とあなたをつなげます。本当に大切にしていることを理解する控えめな知性が、マッチングを精緻化します。",
+      hero_cta_primary:"無料でダウンロード", hero_cta_secondary:"使い方を見る",
+      stat1_num:"15", stat1_label:"対応言語",
+      stat2_num:"92%", stat2_label:"セルフィーで本人確認済みプロフィール",
+      stat3_num:"24/7", stat3_label:"有人モデレーション体制",
+      how_eyebrow:"利用の流れ", how_title:"3つのステップ、無駄な時間はありません。",
+      how_intro:"急かすことなく、本質にまっすぐ向かう流れです。",
+      step1_title:"認証済みプロフィールを作成", step1_desc:"単なる恋愛の履歴書ではなく、ライブ確認セルフィーとガイド付きの質問。",
+      step2_title:"AIにマッチングを精緻化してもらう", step2_desc:"会話のたびに再計算される相性スコアは、一枚の写真に固定されません。",
+      step3_title:"安心して出会う", step3_desc:"アプリ内ビデオ通話、安全な位置情報共有、デート後のチェックイン。",
+      trust_eyebrow:"安全と信頼性", trust_title:"ロマンスの前に、信頼を。",
+      trust_intro:"世界のどこにいても、同じ安全基準、同じ保証を。",
+      card1_title:"認証済みプロフィール", card1_desc:"セルフィー認証と偽アカウントの継続的な検出。",
+      card2_title:"24時間365日のモデレーション", card2_desc:"フランス語対応チームが昼夜を問わず1時間以内に対応。",
+      card3_title:"データの暗号化", card3_desc:"GDPR準拠、欧州でのホスティング、データが転売されることは決してありません。",
+      card4_title:"2019年から続く信頼", card4_desc:"基準を下げることなく成長し続ける、確立されたコミュニティ。",
+      testimonial_quote:"「本当の会話が始まるまでに40件ものプロフィールを選別する必要がなかった、初めてのアプリがLovMyでした。」",
+      testimonial_author:"ファトゥ、29歳 — アビジャン",
+      testimonial2_quote:"「私たちのようなカップルをアプリは理解してくれないと、いつも言われてきました。LovMyは最初の週からそれを変えてくれました。」",
+      testimonial2_author:"アイシャ＆ナディア、2023年から交際中 — パリ",
+      intl_eyebrow:"一つのアプリで、世界中へ", intl_title:"同じLovMyを、あなたの言語で。",
+      intl_intro:"インターフェースは15言語に対応し、通貨もお住まいの国に合わせられます — フランス、フランス語圏アフリカ、そしてその先のために設計されています。",
+      intl_lang_hint:"ページ上部のセレクターからいつでも言語を切り替えられます。",
+      lang_label:"言語", currency_label:"通貨",
+      pricing_eyebrow:"料金", pricing_title:"無料で始めて、Premiumでさらに先へ。",
+      pricing_intro:"LovMyを試すのにカードは不要です — あなたに合ったプランをお選びください。",
+      period_always:"ずっと", period_month:"月",
+      plan_free_name:"無料", plan_free_f1:"認証済みプロフィールと無制限のマッチング", plan_free_f2:"安全なメッセージ機能",
+      plan_free_f3:"24時間365日のモデレーション", plan_free_cta:"無料で始める",
+      plan_discovery_name:"Premium", plan_discovery_f1:"すでに「いいね」してくれた人を確認",
+      plan_discovery_f2:"AIによる相性の精緻化", plan_discovery_f3:"週5回のスーパーいいね",
+      plan_discovery_cta:"Premiumを試す",
+      plan_premium_name:"Gold", plan_premium_f1:"無制限のビデオ通話", plan_premium_f2:"毎週のプロフィールブースト",
+      plan_premium_f3:"専任の優先サポート", plan_premium_cta:"Goldにアップグレード",
+      final_eyebrow:"準備はいいですか？", final_title:"次の会話が、あなたを待っています。",
+      final_p:"1分もかからず、無料で、どこにいてもLovMyをダウンロードできます。",
+      store_ios_small:"ダウンロードは", store_ios_big:"App Store", store_android_small:"入手先は", store_android_big:"Google Play",
+      qr_caption:"スキャンして ダウンロード",
+      footer_tagline:"控えめな知性と本物の人とのつながりを両立させた出会い系アプリ。",
+      footer_age_notice:"🔞 LovMyは成人限定のサービスです。18歳未満の方のアクセスは固くお断りします。",
+      footer_col1_title:"製品", footer_col1_l1:"使い方", footer_col1_l2:"安全性", footer_col1_l3:"料金",
+      footer_col2_title:"会社情報", footer_col2_l1:"海外展開", footer_col2_l2:"会社概要", footer_col2_l3:"お問い合わせ",
+      footer_col3_title:"法的情報", footer_col3_l1:"利用規約", footer_col3_l2:"プライバシー", footer_col3_l3:"データの安全性",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 お客様のプライバシーを大切にしています",
+      cookie_text_before:"私たちは、体験の向上、トラフィックの分析、コンテンツのパーソナライズのためにCookieを使用しています。「同意する」をクリックすると、これらのデータの使用に同意したことになります。詳しくは",
+      cookie_link:"プライバシーポリシー", cookie_text_after:"をご確認ください。",
+      cookie_accept:"同意する", cookie_refuse:"拒否する", cookie_customize:"カスタマイズ",
+      cookie_customize_alert:"Cookie設定パネル（近日公開）",
+      cookie_modal_title:"Cookie設定", cookie_modal_intro:"LovMyで許可するCookieを選択してください。この設定はいつでも変更できます。",
+      cookie_accept_all:"すべて同意する", cookie_refuse_all:"すべて拒否する",
+      cookie_save_prefs:"選択内容を保存", cookie_required_badge:"常に有効",
+      cat_essential_title:"必須Cookie", cat_essential_desc:"サイトの動作に必要です（ログイン、セキュリティ、設定の記憶など）。無効にすることはできません。",
+      cat_analytics_title:"オーディエンス測定", cat_analytics_desc:"LovMyの利用状況を把握し、サービス改善に役立てます。",
+      cat_ads_title:"パーソナライズ広告", cat_ads_desc:"LovMyおよび他のサイトで、あなたの興味に合わせた広告を表示できるようにします。",
+      cat_personalization_title:"コンテンツのパーソナライズ", cat_personalization_desc:"プロフィールや閲覧履歴に応じて表示するコンテンツやおすすめを調整します。",
+      footer_manage_cookies:"Cookie設定を管理"
+    },
+    ko:{
+      nav_how:"이용 방법", nav_trust:"신뢰와 안전", nav_pricing:"요금제", nav_download:"다운로드",
+      nav_login:"로그인",
+      ad_label:"광고 공간", ad_msg:"사랑에 예스라고 말하는 이들 앞에, 당신의 브랜드를.", ad_msg2:"행동할 준비가 된 인증된 싱글에게 다가가세요.",
+      hero_eyebrow:"지능이 더한 만남, 진심은 그대로",
+      hero_title:"마음으로 계산하는 사랑.",
+      hero_lede:"LovMy는 당신 근처에 있든, 지구 반대편에 있든 신원이 확인된 싱글과 당신을 연결합니다. 진정으로 중요한 것을 이해하는 섬세한 지능이 매칭을 정교하게 다듬습니다.",
+      hero_cta_primary:"무료로 다운로드", hero_cta_secondary:"이용 방법 보기",
+      stat1_num:"15", stat1_label:"지원 언어",
+      stat2_num:"92%", stat2_label:"셀피로 인증된 프로필",
+      stat3_num:"24/7", stat3_label:"상시 운영되는 사람 모니터링",
+      how_eyebrow:"이용 흐름", how_title:"세 단계, 시간 낭비 없이.",
+      how_intro:"서두르지 않으면서도 핵심으로 곧장 향하는 흐름입니다.",
+      step1_title:"인증된 프로필 만들기", step1_desc:"단순한 연애 이력서 대신, 실시간 인증 셀피와 안내형 질문.",
+      step2_title:"AI가 매칭을 다듬도록 하기", step2_desc:"대화가 오갈 때마다 다시 계산되는 궁합 점수, 사진 한 장에 고정되지 않습니다.",
+      step3_title:"안심하고 만나기", step3_desc:"내장 영상통화, 안전한 위치 공유, 데이트 후 체크인까지.",
+      trust_eyebrow:"안전과 신뢰성", trust_title:"로맨스보다 먼저, 신뢰.",
+      trust_intro:"세계 어디에 있든 동일한 안전 기준과 보장을 제공합니다.",
+      card1_title:"인증된 프로필", card1_desc:"셀피 인증과 지속적인 가짜 계정 탐지.",
+      card2_title:"24시간 모니터링", card2_desc:"프랑스어 지원팀이 밤낮없이 한 시간 이내에 응답합니다.",
+      card3_title:"암호화된 데이터", card3_desc:"GDPR 준수, 유럽 호스팅, 당신의 데이터는 절대 재판매되지 않습니다.",
+      card4_title:"2019년부터 신뢰받는", card4_desc:"기준을 낮추지 않고 꾸준히 성장해 온 확고한 커뮤니티.",
+      testimonial_quote:"“진짜 대화를 나누기까지 40개의 프로필을 걸러낼 필요가 없었던 첫 번째 앱이 바로 LovMy였어요.”",
+      testimonial_author:"파투, 29세 — 아비장",
+      testimonial2_quote:"“우리 같은 커플을 앱들은 이해하지 못한다는 말을 늘 들었어요. LovMy는 첫 주부터 그걸 바꿐았죠.”",
+      testimonial2_author:"아이샨 & 나디아, 2023년부터 함께 — 파리",
+      intl_eyebrow:"하나의 앱, 전 세계로", intl_title:"같은 LovMy를, 당신의 언어로.",
+      intl_intro:"인터페이스는 15개 언어로 제공되며, 국가에 맞는 통화도 지원됩니다 — 프랑스, 프랑스어권 아프리카 및 그 너머를 위해 만들어졌습니다.",
+      intl_lang_hint:"페이지 상단의 선택기에서 언제든지 언어를 변경할 수 있습니다.",
+      lang_label:"언어", currency_label:"통화",
+      pricing_eyebrow:"요금제", pricing_title:"무료로 시작, Premium으로 한 걸음 더.",
+      pricing_intro:"LovMy를 체험하는 데 카드가 필요하지 않습니다 — 나에게 맞는 요금제를 선택하세요.",
+      period_always:"항상", period_month:"월",
+      plan_free_name:"무료", plan_free_f1:"인증된 프로필과 무제한 매칭", plan_free_f2:"안전한 메시지",
+      plan_free_f3:"24시간 모니터링", plan_free_cta:"무료로 시작하기",
+      plan_discovery_name:"Premium", plan_discovery_f1:"이미 나를 좋아요한 사람 보기",
+      plan_discovery_f2:"AI로 정교화된 궁합", plan_discovery_f3:"주 5회 슈퍼 라이크",
+      plan_discovery_cta:"Premium 체험하기",
+      plan_premium_name:"Gold", plan_premium_f1:"무제한 영상통화", plan_premium_f2:"매주 프로필 부스트",
+      plan_premium_f3:"전담 우선 고객지원", plan_premium_cta:"Gold로 전환하기",
+      final_eyebrow:"준비되셨나요?", final_title:"다음 대화가 당신을 기다리고 있어요.",
+      final_p:"1분도 채 걸리지 않아 LovMy를 무료로, 어디서든 다운로드하세요.",
+      store_ios_small:"다운로드", store_ios_big:"App Store", store_android_small:"다운로드", store_android_big:"Google Play",
+      qr_caption:"스캔하여 다운로드",
+      footer_tagline:"섬세한 지능과 진짜 인간적 연결을 결합한 데이팅 앱.",
+      footer_age_notice:"🔞 LovMy는 성인 전용 서비스입니다. 18세 미만은 이용하실 수 없습니다.",
+      footer_col1_title:"제품", footer_col1_l1:"이용 방법", footer_col1_l2:"안전", footer_col1_l3:"요금제",
+      footer_col2_title:"회사", footer_col2_l1:"글로벌 진출", footer_col2_l2:"회사 소개", footer_col2_l3:"문의하기",
+      footer_col3_title:"법적 고지", footer_col3_l1:"이용약관", footer_col3_l2:"개인정보 처리방침", footer_col3_l3:"데이터 보안",
+      footer_legal:"© 2026 LovMy — Full IT.",
+      cookie_title:"🍪 고객님의 개인정보를 소중히 여깁니다",
+      cookie_text_before:"저희는 이용 경험을 개선하고 트래픽을 분석하며 콘텐츠를 맞춤화하기 위해 쿠키를 사용합니다. «수락»을 클릭하면 이러한 데이터 사용에 동의하는 것입니다. 자세한 내용은 ",
+      cookie_link:"개인정보 처리방침", cookie_text_after:"을 참고하세요.",
+      cookie_accept:"수락", cookie_refuse:"거부", cookie_customize:"맞춤 설정",
+      cookie_customize_alert:"쿠키 맞춤 설정 패널 (준비 중)",
+      cookie_modal_title:"쿠키 환경설정", cookie_modal_intro:"LovMy에서 허용할 쿠키를 선택하세요. 이 설정은 언제든지 변경할 수 있습니다.",
+      cookie_accept_all:"모두 수락", cookie_refuse_all:"모두 거부",
+      cookie_save_prefs:"선택 사항 저장", cookie_required_badge:"항상 활성화",
+      cat_essential_title:"필수 쿠키", cat_essential_desc:"사이트 운영에 필요합니다 (로그인, 보안, 환경설정 저장). 비활성화할 수 없습니다.",
+      cat_analytics_title:"방문자 통계 측정", cat_analytics_desc:"LovMy 이용 방식을 파악하여 서비스를 개선하는 데 도움을 줍니다.",
+      cat_ads_title:"맞춤형 광고", cat_ads_desc:"LovMy 및 다른 곳에서 회원님의 관심사에 맞는 광고를 표시할 수 있게 합니다.",
+      cat_personalization_title:"콘텐츠 맞춤화", cat_personalization_desc:"프로필과 이용 기록을 바탕으로 표시되는 콘텐츠와 추천을 조정합니다.",
+      footer_manage_cookies:"쿠키 관리"
+    }
+  };
+
+  /* ================= language menu build (top nav only) ================= */
+  var langMenu = document.getElementById('langMenu');
+  LANGS.forEach(function(l){
+    var b = document.createElement('button');
+    b.type = 'button'; b.dataset.code = l.code;
+    b.innerHTML = '<img class="flag" src="'+flagUrl(l.cc)+'" width="20" height="15" alt="">'+'<span>'+l.name+'</span>';
+    b.addEventListener('click', function(){ setLang(l.code); closeMenu(); });
+    langMenu.appendChild(b);
+  });
+
+  var langBtn = document.getElementById('langBtn');
+  function closeMenu(){ langMenu.classList.remove('open'); langBtn.setAttribute('aria-expanded','false'); }
+  langBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = langMenu.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', open ? 'true':'false');
+  });
+  document.addEventListener('click', function(e){
+    if(!langMenu.contains(e.target) && e.target!==langBtn){ closeMenu(); }
+  });
+
+  var currentLang = 'fr';
+  function setLang(code, opts){
+    var dict = T[code]; if(!dict) return;
+    currentLang = code;
+    var meta = LANGS.filter(function(l){return l.code===code;})[0];
+    document.documentElement.lang = code;
+    document.documentElement.dir = meta.dir;
+    document.getElementById('langBtnFlag').src = flagUrl(meta.cc);
+    document.getElementById('langBtnCode').textContent = code.toUpperCase();
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      var val = dict[key];
+      if(val !== undefined){ el.textContent = val; }
+    });
+
+    document.querySelectorAll('.lang-menu button').forEach(function(b){
+      b.classList.toggle('on', b.dataset.code===code);
+    });
+
+    if(!opts || !opts.silent){
+      try{ localStorage.setItem('lovmy_lang', code); }catch(e){}
+    }
+  }
+
+  /* langue par défaut : choix déjà mémorisé, sinon langue du navigateur, sinon français */
+  function detectInitialLang(){
+    var saved = null;
+    try{ saved = localStorage.getItem('lovmy_lang'); }catch(e){}
+    if(saved && T[saved]) return saved;
+
+    var browserLangs = (navigator.languages && navigator.languages.length) ? navigator.languages
+      : [navigator.language || navigator.userLanguage || 'fr'];
+    for(var i=0;i<browserLangs.length;i++){
+      var code = String(browserLangs[i]).toLowerCase().split('-')[0];
+      if(T[code]) return code;
+    }
+    return 'fr';
+  }
+  setLang(detectInitialLang(), {silent:true});
+  /* exposé pour les modules chargés séparément (ex. js/cookie-consent.js) qui doivent
+     traduire du contenu injecté après coup dans le DOM. */
+  window.LovMyI18n = { dict: function(){ return T[currentLang]; } };
+
+  /* ---- devise par défaut selon le pays détecté : CFA en zone UEMOA/CEMAC, EUR en zone euro, USD ailleurs ---- */
+  var CFA_COUNTRIES = ["BJ","BF","CI","GW","ML","NE","SN","TG","CM","CF","TD","CG","GQ","GA"];
+  var EURO_COUNTRIES = ["FR","DE","ES","IT","PT","NL","BE","IE","AT","FI","GR","LU","SI","SK","EE","LV","LT","CY","MT","HR","AD","MC","SM","VA"];
+  (function detectCountry(){
+    var timedOut = false;
+    var timer = setTimeout(function(){ timedOut = true; }, 4000);
+    fetch('https://get.geojs.io/v1/ip/country.json')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        clearTimeout(timer);
+        if(timedOut || !data || !data.country || currencyManuallySet) return;
+        if(CFA_COUNTRIES.indexOf(data.country) !== -1){ applyCurrency('xof'); }
+        else if(EURO_COUNTRIES.indexOf(data.country) !== -1){ applyCurrency('eur'); }
+        else{ applyCurrency('usd'); }
+      })
+      .catch(function(){
+        clearTimeout(timer);
+        /* échec ou bloqué par un bloqueur de pub : on garde la devise par défaut (EUR) */
+      });
+  })();
+
+  /* ================= currency switch (dropdown, same pattern as language) ================= */
+  var CURRENCIES = [
+    {code:"eur", symbol:"€",   short:"EUR", label:"Euro"},
+    {code:"xof", symbol:"CFA", short:"XOF", label:"Franc CFA"},
+    {code:"usd", symbol:"$",   short:"USD", label:"Dollar US"}
+  ];
+
+  var currentCurrency = 'eur';
+  var currencyManuallySet = false;
+  function fmtPrice(cur, eur, usd, xof){
+    if(cur==='usd'){ return '$' + usd.toFixed(2); }
+    if(cur==='xof'){ return (xof===0? '0' : Math.round(xof).toLocaleString('fr-FR')) + ' CFA'; }
+    return (eur===0? '0' : eur.toFixed(2).replace('.',',')) + ' €';
+  }
+  function applyCurrency(cur){
+    currentCurrency = cur;
+    var meta = CURRENCIES.filter(function(c){return c.code===cur;})[0];
+    document.querySelectorAll('.price-value').forEach(function(el){
+      var eur = parseFloat(el.dataset.eur||'0');
+      var usd = parseFloat(el.dataset.usd||'0');
+      var xof = parseFloat(el.dataset.xof||'0');
+      el.textContent = fmtPrice(cur, eur, usd, xof);
+    });
+    document.querySelectorAll('.curr-switch').forEach(function(group){
+      var btn = group.querySelector('.curr-btn');
+      btn.querySelector('.curr-sym').textContent = meta.symbol;
+      btn.querySelector('.curr-code').textContent = meta.short;
+      group.querySelectorAll('.curr-menu button').forEach(function(b){
+        b.classList.toggle('on', b.dataset.curr===cur);
+      });
+    });
+  }
+
+  function closeCurrMenu(menu, btn){
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  document.querySelectorAll('.curr-switch').forEach(function(group){
+    var btn = group.querySelector('.curr-btn');
+    var menu = group.querySelector('.curr-menu');
+    CURRENCIES.forEach(function(c){
+      var b = document.createElement('button');
+      b.type = 'button'; b.dataset.curr = c.code;
+      b.innerHTML = '<span class="sym">'+c.symbol+'</span><span>'+c.label+' ('+c.short+')</span>';
+      b.addEventListener('click', function(){ currencyManuallySet = true; applyCurrency(c.code); closeCurrMenu(menu, btn); });
+      menu.appendChild(b);
+    });
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      document.querySelectorAll('.curr-menu.open').forEach(function(m){
+        if(m!==menu){ m.classList.remove('open'); }
+      });
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function(e){
+    document.querySelectorAll('.curr-switch').forEach(function(group){
+      if(!group.contains(e.target)){
+        closeCurrMenu(group.querySelector('.curr-menu'), group.querySelector('.curr-btn'));
+      }
+    });
+  });
+  applyCurrency('eur');
+
+  /* ================= mobile nav burger ================= */
+  var navBurger = document.getElementById('navBurger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  function closeMobileMenu(){
+    mobileMenu.classList.remove('open');
+    navBurger.classList.remove('open');
+    navBurger.setAttribute('aria-expanded', 'false');
+  }
+  navBurger.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = mobileMenu.classList.toggle('open');
+    navBurger.classList.toggle('open', open);
+    navBurger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMobileMenu);
+  });
+  document.addEventListener('click', function(e){
+    if(mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && !navBurger.contains(e.target)){
+      closeMobileMenu();
+    }
+  });
+
+  /* ================= back to top ================= */
+  var backToTop = document.getElementById('backToTop');
+  function toggleBackToTop(){ backToTop.classList.toggle('show', window.scrollY > 480); }
+  window.addEventListener('scroll', toggleBackToTop, {passive:true});
+  toggleBackToTop();
+  backToTop.addEventListener('click', function(){
+    var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0, behavior: reduced ? 'auto' : 'smooth'});
+  });
+
+  /* ---- external links + QR code (from the LINKS config above) ---- */
+  document.getElementById('iosLink').href = LINKS.ios;
+  document.getElementById('androidLink').href = LINKS.android;
+  document.getElementById('loginLink').href = LINKS.login;
+  document.getElementById('loginLinkMobile').href = LINKS.login;
+  document.getElementById('socialFacebook').href = LINKS.facebook;
+  document.getElementById('socialInstagram').href = LINKS.instagram;
+  document.getElementById('socialTiktok').href = LINKS.tiktok;
+  document.getElementById('socialYoutube').href = LINKS.youtube;
+  document.getElementById('qrImg').src =
+    'https://api.qrserver.com/v1/create-qr-code/?size=208x208&margin=0&color=080714&bgcolor=ffffff&data='
+    + encodeURIComponent(LINKS.download);
+
+  /* ---- hero background slideshow ---- */
+  var heroSlides = Array.prototype.slice.call(document.querySelectorAll('#heroSlides .hero-slide'));
+  heroSlides.forEach(function(img){
+    img.addEventListener('error', function(){ img.dataset.broken = 'true'; img.classList.remove('is-active'); });
+  });
+  if(heroSlides.length > 1 && (!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches)){
+    var heroIdx = 0;
+    setInterval(function(){
+      var usable = heroSlides.filter(function(img){ return img.dataset.broken !== 'true'; });
+      if(usable.length < 2) return;
+      heroIdx = heroIdx % usable.length;
+      var current = usable[heroIdx];
+      heroIdx = (heroIdx + 1) % usable.length;
+      var next = usable[heroIdx];
+      if(next.complete && next.naturalWidth === 0){ next.dataset.broken = 'true'; return; }
+      current.classList.remove('is-active');
+      next.classList.add('is-active');
+    }, 6000);
+  }
+
+  /* ---- scroll reveal ---- */
+  if(!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{threshold:.12});
+    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  }
+
+})();
