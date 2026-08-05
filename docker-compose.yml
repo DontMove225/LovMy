@@ -1,0 +1,124 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  LovMy — stack unique, 2 environnements (staging / prod)
+#  Lancé par : docker compose -p ${COMPOSE_PROJECT_NAME} \
+#                --env-file /opt/lovmy/<env>/compose.env \
+#                -f /opt/lovmy/compose/docker-compose.yml up -d
+#
+#  Routage same-origin (aucun CORS) sur UN seul host par env :
+#     {HOST}/                    -> landing statique      [prio 1]
+#     {HOST}/app                 -> front web Next.js      [prio 90]
+#     {HOST}/api|/storage|/up    -> backend Laravel        [prio 100]
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── Backend Laravel 12 (nginx + php-fpm + supervisor dans l'image) ──────────
+  backend:
+    image: ${BACKEND_IMAGE}
+    container_name: lovmy-backend-${ENV}
+    restart: unless-stopped
+    env_file:
+      - ${ENV_DIR}/backend.env
+    volumes:
+      - storage-data:/var/www/html/storage
+    depends_on:
+      - db
+    networks:
+      - traefik
+      - internal
+    mem_limit: ${BACKEND_MEM:-320m}
+    cpus: ${BACKEND_CPUS:-0.75}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      - "traefik.http.routers.lovmy-${ENV}-api.rule=Host(`${PUBLIC_HOST}`) && (PathPrefix(`/api`) || PathPrefix(`/storage`) || PathPrefix(`/up`))"
+      - "traefik.http.routers.lovmy-${ENV}-api.priority=100"
+      - "traefik.http.routers.lovmy-${ENV}-api.entrypoints=websecure"
+      - "traefik.http.routers.lovmy-${ENV}-api.tls.certresolver=${CERT_RESOLVER}"
+      - "traefik.http.services.lovmy-${ENV}-api.loadbalancer.server.port=80"
+
+  # ── Front web Next.js 14 (servi sous /app) ──────────────────────────────────
+  frontend:
+    image: ${FRONTEND_IMAGE}
+    container_name: lovmy-frontend-${ENV}
+    restart: unless-stopped
+    networks:
+      - traefik
+      - internal
+    mem_limit: ${FRONTEND_MEM:-448m}
+    cpus: ${FRONTEND_CPUS:-0.75}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      - "traefik.http.routers.lovmy-${ENV}-app.rule=Host(`${PUBLIC_HOST}`) && PathPrefix(`/app`)"
+      - "traefik.http.routers.lovmy-${ENV}-app.priority=90"
+      - "traefik.http.routers.lovmy-${ENV}-app.entrypoints=websecure"
+      - "traefik.http.routers.lovmy-${ENV}-app.tls.certresolver=${CERT_RESOLVER}"
+      - "traefik.http.services.lovmy-${ENV}-app.loadbalancer.server.port=3000"
+
+  # ── Landing statique (apex) ─────────────────────────────────────────────────
+  landing:
+    image: ${LANDING_IMAGE}
+    container_name: lovmy-landing-${ENV}
+    restart: unless-stopped
+    networks:
+      - traefik
+    mem_limit: ${LANDING_MEM:-32m}
+    cpus: ${LANDING_CPUS:-0.25}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      - "traefik.http.routers.lovmy-${ENV}-web.rule=Host(`${PUBLIC_HOST}`)"
+      - "traefik.http.routers.lovmy-${ENV}-web.priority=1"
+      - "traefik.http.routers.lovmy-${ENV}-web.entrypoints=websecure"
+      - "traefik.http.routers.lovmy-${ENV}-web.tls.certresolver=${CERT_RESOLVER}"
+      - "traefik.http.services.lovmy-${ENV}-web.loadbalancer.server.port=80"
+
+  # ── Base de données MariaDB (réseau interne uniquement) ─────────────────────
+  db:
+    image: mariadb:11.4
+    container_name: lovmy-db-${ENV}
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_AUTO_UPGRADE: "1"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - internal
+    mem_limit: ${DB_MEM:-320m}
+    cpus: ${DB_CPUS:-0.75}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── Redis (OPTIONNEL — désactivé par défaut, voir guide §7) ─────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: lovmy-redis-${ENV}
+    restart: unless-stopped
+    command: ["redis-server", "--save", "60", "1", "--maxmemory", "96mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - internal
+    mem_limit: ${REDIS_MEM:-128m}
+    cpus: 0.25
+    profiles: ["redis"]
+
+volumes:
+  db-data:
+  storage-data:
+  redis-data:
+
+networks:
+  traefik:
+    external: true
+    name: ${TRAEFIK_NETWORK}
+  internal:
+    driver: bridge
