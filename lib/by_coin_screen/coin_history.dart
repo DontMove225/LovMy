@@ -164,7 +164,7 @@ class _CoinHistoryState extends State<CoinHistory> with TickerProviderStateMixin
                                                   children: [
                                                     Text(AppLocalizations.of(context)?.translate("Payout id") ?? "Payout id", style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
                                                     const Spacer(),
-                                                    Text(byCoinProvider.payOutListApiModel.payoutlist[index].payoutId,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
+                                                    Flexible(child: Text(byCoinProvider.payOutListApiModel.payoutlist[index].payoutId,maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold))),
                                                   ],
                                                 ),
                                                 const SizedBox(height: 10,),
@@ -189,7 +189,7 @@ class _CoinHistoryState extends State<CoinHistory> with TickerProviderStateMixin
                                                     Text(AppLocalizations.of(context)?.translate("Pay by") ?? "Pay by",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
                                                     const Spacer(),
                                                     Text(byCoinProvider.payOutListApiModel.payoutlist[index].rType,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
-                                                    byCoinProvider.payOutListApiModel.payoutlist[index].rType == "BANK Transfer" ?const SizedBox():Text('(${byCoinProvider.payOutListApiModel.payoutlist[index].rType == "UPI" ? byCoinProvider.payOutListApiModel.payoutlist[index].upiId : byCoinProvider.payOutListApiModel.payoutlist[index].paypalId})',style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
+                                                    byCoinProvider.payOutListApiModel.payoutlist[index].rType == "BANK Transfer" ?const SizedBox():Flexible(child: Text('(${byCoinProvider.payOutListApiModel.payoutlist[index].rType == "UPI" ? byCoinProvider.payOutListApiModel.payoutlist[index].upiId : byCoinProvider.payOutListApiModel.payoutlist[index].paypalId})',maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold))),
                                                   ],
                                                 ),
                                                 byCoinProvider.payOutListApiModel.payoutlist[index].rType == "BANK Transfer" ?   Column(
@@ -199,7 +199,7 @@ class _CoinHistoryState extends State<CoinHistory> with TickerProviderStateMixin
                                                       children: [
                                                         Text(AppLocalizations.of(context)?.translate("Account Number") ?? "Account Number",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
                                                         const Spacer(),
-                                                        Text(byCoinProvider.payOutListApiModel.payoutlist[index].accNumber,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
+                                                        Flexible(child: Text(byCoinProvider.payOutListApiModel.payoutlist[index].accNumber,maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold))),
                                                       ],
                                                     ),
                                                     const SizedBox(height: 10,),
@@ -207,7 +207,7 @@ class _CoinHistoryState extends State<CoinHistory> with TickerProviderStateMixin
                                                       children: [
                                                         Text(AppLocalizations.of(context)?.translate("Bank Name") ?? "Bank Name",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
                                                         const Spacer(),
-                                                        Text(byCoinProvider.payOutListApiModel.payoutlist[index].bankName,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
+                                                        Flexible(child: Text(byCoinProvider.payOutListApiModel.payoutlist[index].bankName,maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold))),
                                                       ],
                                                     ),
                                                     const SizedBox(height: 10,),
@@ -215,7 +215,7 @@ class _CoinHistoryState extends State<CoinHistory> with TickerProviderStateMixin
                                                       children: [
                                                         Text(AppLocalizations.of(context)?.translate("Account Name") ?? "Account Name",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
                                                         const Spacer(),
-                                                        Text(byCoinProvider.payOutListApiModel.payoutlist[index].accName,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold)),
+                                                        Flexible(child: Text(byCoinProvider.payOutListApiModel.payoutlist[index].accName,maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15,fontWeight: FontWeight.bold))),
                                                       ],
                                                     ),
                                                   ],

@@ -62,6 +62,7 @@ class DetailProvider extends ChangeNotifier {
         return DetailModel.fromJson(response.data);
       }
     } catch (e) {
+      Fluttertoast.showToast(msg: "Something went Wrong....!!!");
       rethrow;
     }
   }

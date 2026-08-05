@@ -36,12 +36,16 @@ class FillButton extends StatelessWidget {
                 : const SizedBox(
                     width: 8,
                   ),
-            Text(
-              title,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(color: AppColors.white),
+            Flexible(
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium!
+                    .copyWith(color: AppColors.white),
+              ),
             ),
           ],
         ));

@@ -96,14 +96,14 @@ class _PlanDetilsState extends State<PlanDetils> {
                           children: [
                         Text(AppLocalizations.of(context)?.translate("Payment method") ?? "Payment method",style: Theme.of(context).textTheme.bodySmall),
                         const Spacer(),
-                        Text(state.homeData.plandata!.pName.toString(),style: Theme.of(context).textTheme.bodyMedium),
+                        Flexible(child: Text(state.homeData.plandata!.pName.toString(),maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium)),
                       ]),
                       const SizedBox(height: 10,),
                       Row(
                           children: [
                             Text(AppLocalizations.of(context)?.translate("transaction id") ?? "transaction id",style: Theme.of(context).textTheme.bodySmall),
                             const Spacer(),
-                            Text(state.homeData.plandata!.transId.toString(),style: Theme.of(context).textTheme.bodyMedium),
+                            Flexible(child: Text(state.homeData.plandata!.transId.toString(),maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.right,style: Theme.of(context).textTheme.bodyMedium)),
                           ]),
                       Divider(height: 20,color: Theme.of(context).dividerTheme.color!,),
                       Row(

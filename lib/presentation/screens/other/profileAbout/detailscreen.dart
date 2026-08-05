@@ -838,11 +838,13 @@ class _DetailScreenState extends State<DetailScreen> {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                "${detailProvider.detailModel.profileinfo!.profileName} (${detailProvider.detailModel.profileinfo!.profileAge})",
-                                style: Theme.of(context).textTheme.headlineSmall,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              Flexible(
+                                child: Text(
+                                  "${detailProvider.detailModel.profileinfo!.profileName} (${detailProvider.detailModel.profileinfo!.profileAge})",
+                                  style: Theme.of(context).textTheme.headlineSmall,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               const SizedBox(width: 10,),
                               detailProvider.detailModel.profileinfo!.isVerify == "0" ? const Padding(
@@ -966,6 +968,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                           const SizBoxH(size: 0.02),
                           Container(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 40),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
@@ -974,11 +977,15 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(detailProvider.detailModel.profileinfo!.relationTitle ?? "",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        ),
+                                Flexible(
+                                  child: Text(detailProvider.detailModel.profileinfo!.relationTitle ?? "",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          ),
+                                ),
                               ],
                             ),
                           ),
@@ -990,6 +997,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                           const SizBoxH(size: 0.02),
                           Container(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 40),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
@@ -999,11 +1007,15 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                    detailProvider.detailModel.profileinfo!
-                                            .religionTitle ??
-                                        "",
-                                    style: Theme.of(context).textTheme.bodySmall!),
+                                Flexible(
+                                  child: Text(
+                                      detailProvider.detailModel.profileinfo!
+                                              .religionTitle ??
+                                          "",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context).textTheme.bodySmall!),
+                                ),
                               ],
                             ),
                           ),

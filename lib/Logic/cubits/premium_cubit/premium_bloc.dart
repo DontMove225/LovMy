@@ -83,8 +83,7 @@ class PremiumBloc extends Cubit<PremiumState>{
         if(response.data["Result"] == "true"){
           Provider.of<HomeProvider>(context,listen: false).setSelectPage(0);
           Fluttertoast.showToast(msg: response.data["ResponseMsg"]);
-          // Navigator.pushNamedAndRemoveUntil(context, BottomBar.bottomBarRoute, (route) => false);
-          Navigator.pushNamedAndRemoveUntil(context, BottomBar.bottomBarRoute, (route) => true);
+          Navigator.pushNamedAndRemoveUntil(context, BottomBar.bottomBarRoute, (route) => false);
         }else{
           Fluttertoast.showToast(msg: response.data["ResponseMsg"]);
           Navigator.pop(context);

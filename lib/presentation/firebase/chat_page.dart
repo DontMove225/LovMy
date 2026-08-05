@@ -442,6 +442,8 @@ class _ChattingPageState extends State<ChattingPage> {
 
                         Text(
                           resiverUseremail,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyLarge!,
                         ),
 
