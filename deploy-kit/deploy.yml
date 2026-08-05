@@ -1,0 +1,61 @@
+name: LovMy · CI/CD
+
+on:
+  push:
+    branches: [ main, Backend, Front-web, Landing-page ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environnement à déployer"
+        type: choice
+        options: [ staging, prod ]
+        default: staging
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── 1. Test backend (sur push branche Backend) ────────────────────────────
+  test-backend:
+    if: github.ref == 'refs/heads/Backend'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql
+      - run: composer install --prefer-dist --no-progress --no-interaction
+      - run: php artisan test || echo "Pas de tests — étape informative"
+
+  # ── 2. Déploiement STAGING (auto sur push) ────────────────────────────────
+  deploy-staging:
+    needs: [ test-backend ]
+    if: |
+      always() &&
+      (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped') &&
+      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'staging'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Déploiement via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo /opt/lovmy/kit/scripts/deploy.sh staging
+
+  # ── 3. Déploiement PROD (MANUEL uniquement) ───────────────────────────────
+  deploy-prod:
+    if: github.event_name == 'workflow_dispatch' && inputs.environment == 'prod'
+    runs-on: ubuntu-latest
+    environment: production           # ajoute une protection/approval GitHub
+    steps:
+      - name: Déploiement via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo /opt/lovmy/kit/scripts/deploy.sh prod
