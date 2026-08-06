@@ -4,6 +4,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.js');
 
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'lovmy.fr' },
