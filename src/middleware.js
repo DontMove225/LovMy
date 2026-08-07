@@ -4,6 +4,5 @@ import { routing } from './i18n/routing';
 export default createMiddleware(routing);
 
 export const config = {
-  // Skip /admin, /api, Next internals, and files with an extension (e.g. favicon.ico).
-  matcher: ['/((?!api|admin|_next|.*\\..*).*)'],
+  matcher: ['/', '/(fr|en|de|es|it|pt|pl|is|ja|ko|zh|ar|th)/:path*', '/((?!api|_next|_vercel|.*\\..*).*)']
 };
