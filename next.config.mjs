@@ -3,6 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.js');
 
 const nextConfig = {
+  basePath: process.env.NEXT_BASE_PATH || '', 
   reactStrictMode: true,
   output: 'standalone',
   images: {
